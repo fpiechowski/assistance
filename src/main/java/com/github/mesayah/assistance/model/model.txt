@@ -1,1 +1,0 @@
-Here we have model classes for entities of our app.
