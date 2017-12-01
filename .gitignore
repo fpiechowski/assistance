@@ -24,4 +24,4 @@ nbdist/
 .nb-gradle/
 
 ### Database Configuration ###
-/src/main/resources/application-database.properties
+src/main/resources/application-database.properties
