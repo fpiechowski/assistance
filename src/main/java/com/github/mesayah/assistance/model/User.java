@@ -10,13 +10,13 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-    private String user;
-    private String role;
+    private String username;
+    private Role role;
     private String firstName;
     private String lastName;
 
-    public User(String user, String role, String firstName, String lastName) {
-        this.user = user;
+    public User(String username, Role role, String firstName, String lastName) {
+        this.username = username;
         this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,18 +34,18 @@ public class User {
     }
 
     public String getUser() {
-        return user;
+        return username;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String username) {
+        this.username = username;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
