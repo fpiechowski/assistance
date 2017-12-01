@@ -1,4 +1,4 @@
-package com.github.mesayah.assistance;
+package com.github.mesayah.assistance.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
