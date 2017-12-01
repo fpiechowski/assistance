@@ -12,12 +12,12 @@ public class PersonalTask {
     private long id;
     private PersonalTask parentPersonalTask;
     private String name;
-    private boolean complete;
+    private boolean completed;
 
-    public PersonalTask(PersonalTask parentPersonalTask, String name, boolean complete) {
+    public PersonalTask(PersonalTask parentPersonalTask, String name, boolean completed) {
         this.parentPersonalTask = parentPersonalTask;
         this.name = name;
-        this.complete = complete;
+        this.completed = completed;
     }
 
     public PersonalTask() {
@@ -47,11 +47,13 @@ public class PersonalTask {
         this.name = name;
     }
 
-    public boolean isComplete() {
-        return complete;
+    public boolean isCompleted() {
+
+        return completed;
     }
 
-    public void setComplete(boolean complete) {
-        this.complete = complete;
+    public void setCompleted(boolean completed) {
+
+        this.completed = completed;
     }
 }
