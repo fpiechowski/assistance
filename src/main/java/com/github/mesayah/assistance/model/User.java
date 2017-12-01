@@ -11,11 +11,11 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     private String user;
-    private String role;
+    private Role role;
     private String firstName;
     private String lastName;
 
-    public User(String user, String role, String firstName, String lastName) {
+    public User(String user, Role role, String firstName, String lastName) {
         this.user = user;
         this.role = role;
         this.firstName = firstName;
@@ -41,11 +41,11 @@ public class User {
         this.user = user;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
