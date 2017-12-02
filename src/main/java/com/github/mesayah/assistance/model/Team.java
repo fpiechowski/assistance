@@ -1,9 +1,7 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Team {
@@ -11,9 +9,12 @@ public class Team {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     private String name;
-    private User members;
+    @ManyToMany
+    @JoinTable(name = "team_user", joinColumns = {@JoinColumn(name = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "id")})
+    private Set<User> members;
 
-    public Team(String name, User members) {
+    public Team(String name, Set<User> members) {
         this.name = name;
         this.members = members;
     }
@@ -37,11 +38,11 @@ public class Team {
         this.name = name;
     }
 
-    public User getMembers() {
+    public Set<User> getMembers() {
         return members;
     }
 
-    public void setMembers(User members) {
+    public void setMembers(Set<User> members) {
         this.members = members;
     }
 }

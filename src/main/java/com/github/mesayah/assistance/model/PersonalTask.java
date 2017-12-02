@@ -1,21 +1,21 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class PersonalTask {
+public class PersonalTask implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
-    private PersonalTask parentPersonalTask;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private PersonalTask parent;
     private String name;
     private boolean completed;
 
-    public PersonalTask(PersonalTask parentPersonalTask, String name, boolean completed) {
-        this.parentPersonalTask = parentPersonalTask;
+    public PersonalTask(PersonalTask parent, String name, boolean completed) {
+
+        this.parent = parent;
         this.name = name;
         this.completed = completed;
     }
@@ -31,12 +31,14 @@ public class PersonalTask {
         this.id = id;
     }
 
-    public PersonalTask getParentPersonalTask() {
-        return parentPersonalTask;
+    public PersonalTask getParent() {
+
+        return parent;
     }
 
-    public void setParentPersonalTask(PersonalTask parentPersonalTask) {
-        this.parentPersonalTask = parentPersonalTask;
+    public void setParent(PersonalTask parent) {
+
+        this.parent = parent;
     }
 
     public String getName() {

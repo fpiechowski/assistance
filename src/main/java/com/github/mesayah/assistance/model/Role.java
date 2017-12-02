@@ -1,60 +1,69 @@
 package com.github.mesayah.assistance.model;
 
-import netscape.security.Privilege;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Role {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private User users;
-    private List<String> privileges;
+    private Set<User> users;
+    private Set<Privilege> privileges;
 
-    public Role(String name, User users, List<String> privileges) {
+    public Role(String name, Set<User> users, Set<Privilege> privileges) {
+
         this.name = name;
         this.users = users;
         this.privileges = privileges;
     }
 
     public Role() {
+
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
-    public User getUsers() {
+    public Set<User> getUsers() {
+
         return users;
     }
 
-    public void setUsers(User users) {
+    public void setUsers(Set<User> users) {
+
         this.users = users;
     }
 
-    public List<String> getPrivileges() {
+    public Set<Privilege> getPrivileges() {
+
         return privileges;
     }
 
-    public void setPrivileges(List<String> privileges) {
+    public void setPrivileges(Set<Privilege> privileges) {
+
         this.privileges = privileges;
     }
 }
