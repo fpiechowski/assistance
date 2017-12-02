@@ -1,9 +1,6 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -13,11 +10,13 @@ public class Task {
     private long id;
     private String name;
     private User assigneeUser;
+    @Enumerated(EnumType.ORDINAL)
     private Status status; //alt + enter
     private Priority priority;
     private Date deadline;
     private String description;
     private Task parentTask;
+    @Enumerated(EnumType.ORDINAL)
     private Type type;
 
 

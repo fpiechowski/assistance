@@ -1,10 +1,9 @@
 package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-public class PersonalTask implements Serializable {
+public class PersonalTask {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;

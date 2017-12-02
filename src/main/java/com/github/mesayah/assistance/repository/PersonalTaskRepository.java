@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonalTaskRepository extends CrudRepository<Long, PersonalTask> {
+public interface PersonalTaskRepository extends CrudRepository<PersonalTask, Long> {
 
 
 }

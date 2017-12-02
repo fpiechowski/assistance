@@ -1,9 +1,6 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +14,7 @@ public class Project {
     private Date deadline;
     private Date starttime;
     private List<Task> tasks;
+    @Enumerated(EnumType.ORDINAL)
     private Status status;
     private Set<User> members;
     private String description;
