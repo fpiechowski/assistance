@@ -2,31 +2,43 @@ package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
 
+/**
+ * A small, personal assignment that can be compared to traditional sticky note.
+ */
 @Entity
 public class PersonalTask {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     @OneToOne(cascade = CascadeType.REMOVE)
+    /**
+     * A personal task this personal task is a subtask of.
+     */
     private PersonalTask parent;
+    /**
+     * Name of this personal task which describes its subject.
+     */
     private String name;
+    /**
+     * A user who created this personal task.
+     */
+    private User owner;
+    /**
+     * Indicates whether this personal task is completed.
+     */
     private boolean completed;
 
-    public PersonalTask(PersonalTask parent, String name, boolean completed) {
-
-        this.parent = parent;
-        this.name = name;
-        this.completed = completed;
-    }
-
     public PersonalTask() {
+
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
@@ -41,10 +53,12 @@ public class PersonalTask {
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
@@ -56,5 +70,15 @@ public class PersonalTask {
     public void setCompleted(boolean completed) {
 
         this.completed = completed;
+    }
+
+    public User getOwner() {
+
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+
+        this.owner = owner;
     }
 }

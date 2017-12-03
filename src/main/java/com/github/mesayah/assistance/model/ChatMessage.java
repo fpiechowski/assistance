@@ -7,25 +7,34 @@ import javax.persistence.Id;
 import java.sql.Time;
 import java.util.Date;
 
-
+/**
+ * A message that can be sent to a {@link Channel}.
+ */
 @Entity
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    /**
+     * A user who wrote and sent this message.
+     */
     private User author;
+    /**
+     * A day this message was sent.
+     */
     private Date sendDate;
+    /**
+     * Time of day this message was sent.
+     */
     private Time sendTime;
+    /**
+     * Content of this message.
+     */
     private String textBody;
+    /**
+     * Channel this message was sent to.
+     */
     private Channel channel;
-
-    public ChatMessage(User author, Date sendDate, Time sendTime, String textBody, Channel channel) {
-        this.author = author;
-        this.sendDate = sendDate;
-        this.sendTime = sendTime;
-        this.textBody = textBody;
-        this.channel = channel;
-    }
 
     public ChatMessage(){
 

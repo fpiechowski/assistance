@@ -12,16 +12,14 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    /**
+     * Name of this role.
+     */
     private String name;
-    private Set<User> users;
+    /**
+     * Privileges this role grants.
+     */
     private Set<Privilege> privileges;
-
-    public Role(String name, Set<User> users, Set<Privilege> privileges) {
-
-        this.name = name;
-        this.users = users;
-        this.privileges = privileges;
-    }
 
     public Role() {
 
@@ -45,16 +43,6 @@ public class Role {
     public void setName(String name) {
 
         this.name = name;
-    }
-
-    public Set<User> getUsers() {
-
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-
-        this.users = users;
     }
 
     public Set<Privilege> getPrivileges() {

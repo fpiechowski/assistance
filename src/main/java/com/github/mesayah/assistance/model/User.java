@@ -2,26 +2,33 @@ package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
 
+/**
+ * Person who can use this application.
+ */
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    /**
+     * User name, login, credential used to sign in.
+     */
     private String username;
+    /**
+     * Position of this user in an organization.
+     */
     @ManyToOne
     @JoinColumn(name = "id")
     private Role role;
+    /**
+     * First name of this user.
+     */
     private String firstName;
+    /**
+     * Last name of this user.
+     */
     private String lastName;
-
-    public User(String username, Role role, String firstName, String lastName) {
-
-        this.username = username;
-        this.role = role;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
 
     public User() {
 

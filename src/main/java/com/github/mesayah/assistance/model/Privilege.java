@@ -5,19 +5,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * A benefit of possibility to perform a specific operation.
+ */
 @Entity
 public class Privilege {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    /**
+     * Name of this privelege describing actions it permits.
+     */
     private String name;
-    private Role roles;
-
-    public Privilege(String name, Role roles) {
-        this.name = name;
-        this.roles = roles;
-    }
 
     public Privilege() {
 
@@ -25,26 +25,22 @@ public class Privilege {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
-    }
-
-    public Role getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Role roles) {
-        this.roles = roles;
     }
 }
