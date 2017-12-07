@@ -1,9 +1,7 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -11,10 +9,11 @@ import java.util.Set;
  * A place {@link ChatMessage}s are sent to.
  */
 @Entity
-public class Channel {
+public class Channel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "channel_id")
     private long id;
     /**
      * Name of this channel.
@@ -25,10 +24,18 @@ public class Channel {
     /**
      * Users to be notified about new messages on this channel.
      */
+    @ManyToMany
+    @JoinTable(
+            name = "channel_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
     private Set<User> subscribedUsers;
+
     /**
      * Messages sent to this channel.
      */
+    @OneToMany(mappedBy = "channel")
     private List<ChatMessage> messages;
 
     public Channel() {

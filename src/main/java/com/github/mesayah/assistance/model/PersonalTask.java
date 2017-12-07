@@ -1,19 +1,23 @@
 package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A small, personal assignment that can be compared to traditional sticky note.
  */
 @Entity
-public class PersonalTask {
+public class PersonalTask implements Serializable {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "personaltask_id")
     private long id;
     @OneToOne(cascade = CascadeType.REMOVE)
     /**
      * A personal task this personal task is a subtask of.
      */
+    @ManyToOne
+    @JoinColumn(name = "parent_personaltask_id")
     private PersonalTask parent;
     /**
      * Name of this personal task which describes its subject.
@@ -22,6 +26,8 @@ public class PersonalTask {
     /**
      * A user who created this personal task.
      */
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User owner;
     /**
      * Indicates whether this personal task is completed.

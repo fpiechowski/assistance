@@ -1,15 +1,17 @@
 package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * A group of users who works together.
  */
 @Entity
-public class Team {
+public class Team implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "team_id")
     private long id;
     /**
      * Name of this team.
@@ -19,8 +21,8 @@ public class Team {
      * Users who are members of this team.
      */
     @ManyToMany
-    @JoinTable(name = "team_user", joinColumns = {@JoinColumn(name = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "id")})
+    @JoinTable(name = "team_user", joinColumns = {@JoinColumn(name = "team_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> members;
 
 

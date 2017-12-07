@@ -1,15 +1,19 @@
 package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Person who can use this application.
  */
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private long id;
     /**
      * User name, login, credential used to sign in.
@@ -19,7 +23,7 @@ public class User {
      * Position of this user in an organization.
      */
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "role_id")
     private Role role;
     /**
      * First name of this user.
@@ -29,9 +33,44 @@ public class User {
      * Last name of this user.
      */
     private String lastName;
+    /**
+     * List of this user's personal tasks.
+     */
+    @OneToMany(mappedBy = "owner")
+    private List<PersonalTask> personalTasks;
+    /**
+     * Channels this user subscribes.
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "channel_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
+    private Set<Channel> subscribedChannels;
 
     public User() {
 
+    }
+
+    public List<PersonalTask> getPersonalTasks() {
+
+        return personalTasks;
+    }
+
+    public void setPersonalTasks(List<PersonalTask> personalTasks) {
+
+        this.personalTasks = personalTasks;
+    }
+
+    public Set<Channel> getSubscribedChannels() {
+
+        return subscribedChannels;
+    }
+
+    public void setSubscribedChannels(Set<Channel> subscribedChannels) {
+
+        this.subscribedChannels = subscribedChannels;
     }
 
     public long getId() {

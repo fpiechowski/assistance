@@ -1,6 +1,7 @@
 package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -9,9 +10,10 @@ import java.util.Set;
  * A planned piece of work that has a particular aim like achieving a goal or developing a product.
  */
 @Entity
-public class Project implements Discussable {
+public class Project implements Serializable, Discussable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "project_id")
     private long id;
     /**
      * Name of this project.
@@ -32,6 +34,7 @@ public class Project implements Discussable {
     /**
      * Things to do to develop and realize this project.
      */
+    @OneToMany(mappedBy = "project")
     private List<Task> tasks;
     /**
      * Stage and progress indicator of this project.
@@ -41,14 +44,23 @@ public class Project implements Discussable {
     /**
      * Groups of workers that works on this project.
      */
+    @ManyToMany
+    @JoinTable(
+            name = "project_team",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
     private Set<Team> teams;
     /**
      * Significant events and achievements that indicates stages of progress of this project.
      */
-    private Milestone milestones;
+    @OneToMany(mappedBy = "project")
+    private List<Milestone> milestones;
     /**
      * Place where this project is discussed using a chat.
      */
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     public Project() {
@@ -136,12 +148,12 @@ public class Project implements Discussable {
         this.description = description;
     }
 
-    public Milestone getMilestones() {
+    public List<Milestone> getMilestones() {
 
         return milestones;
     }
 
-    public void setMilestones(Milestone milestones) {
+    public void setMilestones(List<Milestone> milestones) {
 
         this.milestones = milestones;
     }

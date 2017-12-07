@@ -1,18 +1,17 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A benefit of possibility to perform a specific operation.
  */
 @Entity
-public class Privilege {
+public class Privilege implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "privilege_id")
     private long id;
     /**
      * Name of this privelege describing actions it permits.

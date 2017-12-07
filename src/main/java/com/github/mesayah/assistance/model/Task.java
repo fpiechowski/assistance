@@ -1,15 +1,18 @@
 package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Something to do.
  */
 @Entity
-public class Task implements Discussable {
+public class Task implements Serializable, Discussable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "task_id")
     private long id;
     /**
      * Name of this task.
@@ -18,7 +21,13 @@ public class Task implements Discussable {
     /**
      * User's responsible for completing this task.
      */
-    private User assigneeUser;
+    @ManyToMany
+    @JoinTable(
+            name = "user_task",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> assigneeUsers;
     /**
      * Stage of progress this task is in.
      */
@@ -39,7 +48,14 @@ public class Task implements Discussable {
     /**
      * The task this task is subtask of.
      */
+    @ManyToOne
+    @JoinColumn(name = "parent_task_id")
     private Task parentTask;
+    /**
+     * Subtasks of this task.
+     */
+    @OneToMany(mappedBy = "parentTask")
+    private Set<Task> subtasks;
     /**
      * Type of this task.
      */
@@ -48,12 +64,38 @@ public class Task implements Discussable {
     /**
      * Channel where this task is discussed.
      */
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "channel_id")
     private Channel channel;
-
-
+    /**
+     * A project this task involves.
+     */
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
     public Task() {
 
 
+    }
+
+    public Set<Task> getSubtasks() {
+
+        return subtasks;
+    }
+
+    public void setSubtasks(Set<Task> subtasks) {
+
+        this.subtasks = subtasks;
+    }
+
+    public Project getProject() {
+
+        return project;
+    }
+
+    public void setProject(Project project) {
+
+        this.project = project;
     }
 
     public long getId() {
@@ -76,14 +118,14 @@ public class Task implements Discussable {
         this.name = name;
     }
 
-    public User getAssigneeUser() {
+    public Set<User> getAssigneeUsers() {
 
-        return assigneeUser;
+        return assigneeUsers;
     }
 
-    public void setAssigneeUser(User assigneeUser) {
+    public void setAssigneeUsers(Set<User> assigneeUsers) {
 
-        this.assigneeUser = assigneeUser;
+        this.assigneeUsers = assigneeUsers;
     }
 
     public Status getStatus() {

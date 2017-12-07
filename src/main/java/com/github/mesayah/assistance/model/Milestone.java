@@ -1,18 +1,17 @@
 package com.github.mesayah.assistance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * A significant stage or event in the development.
  */
 @Entity
-public class Milestone {
+public class Milestone implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "milestone_id")
     private long id;
     /**
      * Name of this milestone describing a stage of progress or an event.
@@ -21,10 +20,14 @@ public class Milestone {
     /**
      * Tasks that have to be completed to achieve this milestone.
      */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
     private List<Task> tasks;
     /**
      * A project this milestone describes progress for.
      */
+    @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public Milestone() {
