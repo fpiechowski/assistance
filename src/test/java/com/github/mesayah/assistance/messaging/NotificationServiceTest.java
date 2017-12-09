@@ -12,6 +12,11 @@ public class NotificationServiceTest {
         NotificationService service = new NotificationService();
 
         Notification testNotification = new Notification();
-        testNotification.set
+        testNotification.setTitle("Test notification");
+        testNotification.setTextBody("Test notification body.");
+
+        service.save(testNotification);
+
+        Assert.
     }
 }
