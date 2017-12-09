@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * @author Filip Piechowski
+ */
+
+/**
  * Service for managing milestones.
  */
 @Service
@@ -21,7 +25,7 @@ public class MilestoneService {
     private MilestoneRepository milestoneRepository;
 
     /**
-     * Default constructor with no arguments.
+     * Constructs a default milestone service. Needed for JPA to work.
      */
     public MilestoneService() {
 
@@ -30,7 +34,7 @@ public class MilestoneService {
     /**
      * Saves given milestone in the database.
      *
-     * @param milestone milestone to save
+     * @param milestone a milestone to save
      */
     public void save(Milestone milestone) {
 
@@ -40,8 +44,8 @@ public class MilestoneService {
     /**
      * Finds one milestone by unique identifier.
      *
-     * @param id unique identifier of the project looked for
-     * @return milestone with given ID or null if not found
+     * @param id an unique identifier of the project looked for
+     * @return a milestone with given ID or null if not found
      */
     public Milestone findById(Long id) {
 
@@ -49,9 +53,9 @@ public class MilestoneService {
     }
 
     /**
-     * Find all milestones for given project.
+     * Finds all milestones for given project.
      *
-     * @param project project whose milestones we look for
+     * @param project a project whose milestones we look for
      * @return all milestones of given project
      */
     public List<Milestone> findByProject(Project project) {
@@ -62,7 +66,7 @@ public class MilestoneService {
     /**
      * Deletes milestone with given ID.
      *
-     * @param id id of the milestone to delete
+     * @param id an id of the milestone to delete
      */
     public void delete(Long id) {
 
@@ -72,7 +76,7 @@ public class MilestoneService {
     /**
      * Deletes given milestone from the database.
      *
-     * @param milestone milestone to delete
+     * @param milestone a milestone to delete
      */
     public void delete(Milestone milestone) {
 
