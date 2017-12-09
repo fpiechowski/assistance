@@ -4,15 +4,26 @@ package com.github.mesayah.assistance.messaging;
 import com.github.mesayah.assistance.model.Notification;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class NotificationServiceTest {
 
     @Autowired
     private NotificationService service;
 
+    /**
+     * Test for CRUD operations.
+     * <p>
+     * It starts with creating test notification object, then It saves and fetches it to and from the database.
+     * It then asserts objects equality. Then it modifies an object and sends it again to the database. Object is
+     * fetched and modified value is asserted. Then it deletes the object from database and tries to fetch it.
+     * Checks if fetched object is null.
+     */
     @Test
     public void testCrud() {
 
