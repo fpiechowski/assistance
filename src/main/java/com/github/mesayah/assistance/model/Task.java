@@ -3,6 +3,7 @@ package com.github.mesayah.assistance.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -73,9 +74,36 @@ public class Task implements Serializable, Discussable {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
     public Task() {
 
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id &&
+                Objects.equals(name, task.name) &&
+                Objects.equals(assigneeUsers, task.assigneeUsers) &&
+                status == task.status &&
+                priority == task.priority &&
+                Objects.equals(deadline, task.deadline) &&
+                Objects.equals(description, task.description) &&
+                Objects.equals(parentTask, task.parentTask) &&
+                Objects.equals(subtasks, task.subtasks) &&
+                taskType == task.taskType &&
+                Objects.equals(channel, task.channel) &&
+                Objects.equals(project, task.project);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, assigneeUsers, status, priority, deadline, description, parentTask, subtasks, taskType, channel, project);
     }
 
     public Set<Task> getSubtasks() {

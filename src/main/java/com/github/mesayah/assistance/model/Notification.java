@@ -3,6 +3,7 @@ package com.github.mesayah.assistance.model;
 import javax.persistence.Entity;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Objects;
 
 /**
  * TaskType of chat message that is sent by application to notify user about an event.
@@ -26,6 +27,13 @@ public class Notification extends ChatMessage {
      * Time this notification was sent.
      */
     private Time sendTime;
+
+    /**
+     * Constructs default notification entity with no specified parameters.
+     */
+    public Notification() {
+
+    }
 
     public String getTitle() {
 
@@ -70,10 +78,22 @@ public class Notification extends ChatMessage {
         this.sendTime = sendTime;
     }
 
-    /**
-     * Constructs default notification entity with no specified parameters.
-     */
-    public Notification() {
+    @Override
+    public boolean equals(Object o) {
 
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Notification that = (Notification) o;
+        return Objects.equals(title, that.title) &&
+                type == that.type &&
+                Objects.equals(sendDate, that.sendDate) &&
+                Objects.equals(sendTime, that.sendTime);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), title, type, sendDate, sendTime);
     }
 }

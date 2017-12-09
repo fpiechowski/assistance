@@ -3,6 +3,7 @@ package com.github.mesayah.assistance.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A significant stage or event in the development.
@@ -72,5 +73,23 @@ public class Milestone implements Serializable {
     public void setProject(Project project) {
 
         this.project = project;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Milestone milestone = (Milestone) o;
+        return id == milestone.id &&
+                Objects.equals(name, milestone.name) &&
+                Objects.equals(tasks, milestone.tasks) &&
+                Objects.equals(project, milestone.project);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, tasks, project);
     }
 }

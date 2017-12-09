@@ -2,6 +2,7 @@ package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -58,5 +59,22 @@ public class Team implements Serializable {
     public void setMembers(Set<User> members) {
 
         this.members = members;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return id == team.id &&
+                Objects.equals(name, team.name) &&
+                Objects.equals(members, team.members);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, members);
     }
 }

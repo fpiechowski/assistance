@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -167,6 +168,30 @@ public class Project implements Serializable, Discussable {
     public void setChannel(Channel channel) {
 
         this.channel = channel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id == project.id &&
+                Objects.equals(name, project.name) &&
+                Objects.equals(description, project.description) &&
+                Objects.equals(deadline, project.deadline) &&
+                Objects.equals(startTime, project.startTime) &&
+                Objects.equals(tasks, project.tasks) &&
+                status == project.status &&
+                Objects.equals(teams, project.teams) &&
+                Objects.equals(milestones, project.milestones) &&
+                Objects.equals(channel, project.channel);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, description, deadline, startTime, tasks, status, teams, milestones, channel);
     }
 }
 

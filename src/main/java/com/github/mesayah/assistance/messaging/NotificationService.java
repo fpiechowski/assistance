@@ -29,9 +29,9 @@ public class NotificationService {
      *
      * @param notification a notification to save
      */
-    public void save(Notification notification) {
+    public Notification save(Notification notification) {
 
-        notificationRepository.save(notification);
+        return notificationRepository.save(notification);
     }
 
     /**
@@ -39,9 +39,9 @@ public class NotificationService {
      *
      * @param id an ID of notification to find
      */
-    public void findById(Long id) {
+    public Notification findById(Long id) {
 
-        notificationRepository.findOne(id);
+        return notificationRepository.findOne(id);
     }
 
     /**

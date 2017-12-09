@@ -3,6 +3,7 @@ package com.github.mesayah.assistance.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -31,16 +32,32 @@ public class Channel implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "channel_id")
     )
     private Set<User> subscribedUsers;
-
     /**
      * Messages sent to this channel.
      */
     @OneToMany(mappedBy = "channel")
     private List<ChatMessage> messages;
-
     public Channel() {
 
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Channel channel = (Channel) o;
+        return id == channel.id &&
+                Objects.equals(name, channel.name) &&
+                Objects.equals(subscribedUsers, channel.subscribedUsers) &&
+                Objects.equals(messages, channel.messages);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, subscribedUsers, messages);
     }
 
     public long getId() {

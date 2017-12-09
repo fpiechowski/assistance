@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * A message that can be sent to a {@link Channel}.
@@ -99,5 +100,25 @@ public class ChatMessage implements Serializable {
     public void setChannel(Channel channel) {
 
         this.channel = channel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChatMessage that = (ChatMessage) o;
+        return id == that.id &&
+                Objects.equals(author, that.author) &&
+                Objects.equals(sendDate, that.sendDate) &&
+                Objects.equals(sendTime, that.sendTime) &&
+                Objects.equals(textBody, that.textBody) &&
+                Objects.equals(channel, that.channel);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, author, sendDate, sendTime, textBody, channel);
     }
 }

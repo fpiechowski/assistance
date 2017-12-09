@@ -2,6 +2,7 @@ package com.github.mesayah.assistance.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A small, personal assignment that can be compared to traditional sticky note.
@@ -86,5 +87,24 @@ public class PersonalTask implements Serializable {
     public void setOwner(User owner) {
 
         this.owner = owner;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonalTask that = (PersonalTask) o;
+        return id == that.id &&
+                completed == that.completed &&
+                Objects.equals(parent, that.parent) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(owner, that.owner);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, parent, name, owner, completed);
     }
 }
