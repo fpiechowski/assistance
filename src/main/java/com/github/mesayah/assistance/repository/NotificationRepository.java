@@ -4,7 +4,7 @@ import com.github.mesayah.assistance.model.Notification;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * Repositofy for fetching notifications from the database.
+ * Repository for fetching and saving notifications in the database. It handles database communication.
  */
 public interface NotificationRepository extends CrudRepository<Notification, Long> {
 
