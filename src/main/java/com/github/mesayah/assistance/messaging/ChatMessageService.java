@@ -1,4 +1,4 @@
-package com.github.mesayah.assistance.projects;
+package com.github.mesayah.assistance.messaging;
 
 import com.github.mesayah.assistance.model.Channel;
 import com.github.mesayah.assistance.model.ChatMessage;

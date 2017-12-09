@@ -1,6 +1,5 @@
-package com.github.mesayah.assistance.projects;
+package com.github.mesayah.assistance.auth;
 
-import com.github.mesayah.assistance.model.Channel;
 import com.github.mesayah.assistance.model.Role;
 import com.github.mesayah.assistance.model.User;
 import com.github.mesayah.assistance.repository.UserRepository;
