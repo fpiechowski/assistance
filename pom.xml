@@ -93,7 +93,7 @@
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
                 <version>${vaadin.version}</version>
-                <type>pom</type>
+                <taskType>pom</taskType>
                 <scope>import</scope>
             </dependency>
         </dependencies>

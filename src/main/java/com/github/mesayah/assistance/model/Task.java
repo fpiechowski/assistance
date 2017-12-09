@@ -57,10 +57,10 @@ public class Task implements Serializable, Discussable {
     @OneToMany(mappedBy = "parentTask")
     private Set<Task> subtasks;
     /**
-     * Type of this task.
+     * TaskType of this task.
      */
     @Enumerated(EnumType.ORDINAL)
-    private Type type;
+    private TaskType taskType;
     /**
      * Channel where this task is discussed.
      */
@@ -178,14 +178,14 @@ public class Task implements Serializable, Discussable {
         this.parentTask = parentTask;
     }
 
-    public Type getType() {
+    public TaskType getTaskType() {
 
-        return type;
+        return taskType;
     }
 
-    public void setType(Type type) {
+    public void setTaskType(TaskType taskType) {
 
-        this.type = type;
+        this.taskType = taskType;
     }
 
     @Override
@@ -200,4 +200,4 @@ public class Task implements Serializable, Discussable {
     }
 }
 
-// id, name, assignee user, status, priority, deadline, description, parent task, type (including issue type).
+// id, name, assignee user, status, priority, deadline, description, parent task, taskType (including issue taskType).
