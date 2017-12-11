@@ -23,8 +23,8 @@ public class Channel implements Serializable {
 
     /**
      * Name of this channel.
-     * If channel is made for a task or a whole project the name for it is generated basing on project's or task's
-     * name.
+     * <p>
+     * If a channel is made for a discussable object the name is generated based on the discussable object's name.
      */
     @NotNull
     private String name;
@@ -46,6 +46,9 @@ public class Channel implements Serializable {
     @OneToMany(mappedBy = "channel")
     private List<ChatMessage> messages;
 
+    /**
+     * Constructs a channel object with no attributes specified.
+     */
     public Channel() {
 
 
