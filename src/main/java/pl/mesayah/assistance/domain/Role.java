@@ -14,12 +14,15 @@ import java.util.Set;
 @Entity
 public class Role implements Serializable {
 
+    /**
+     * An unique identifier of this project.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
-     * Name of this role.
+     * A name of this role.
      */
     @NotNull
     private String name;
@@ -35,35 +38,56 @@ public class Role implements Serializable {
     )
     private Set<Privilege> privileges;
 
+    /**
+     * Constructs a role object with no attributes specified.
+     */
     public Role() {
 
     }
 
+    /**
+     * @return an unique identifier of this role
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this role
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return the name of this project
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this project
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     * @return a set of privileges this role grants
+     */
     public Set<Privilege> getPrivileges() {
 
         return privileges;
     }
 
+    /**
+     * @param privileges a set of privileges to be granted by this role
+     */
     public void setPrivileges(Set<Privilege> privileges) {
 
         this.privileges = privileges;
