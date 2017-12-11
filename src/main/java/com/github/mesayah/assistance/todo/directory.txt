@@ -1,1 +1,0 @@
-Personal task management and "To Do" lists related services and components are here.
