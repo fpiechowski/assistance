@@ -17,28 +17,31 @@ import java.util.Set;
 @Entity
 public class Project implements Serializable, Discussable {
 
+    /**
+     * An unique identifier of this project.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
-     * Name of this project.
+     * A name of this project.
      */
     @NotNull
     private String name;
 
     /**
-     * What this project is about.
+     * A description of this project.
      */
     private String description;
 
     /**
-     * Date when this project ends.
+     * A date when this project ends.
      */
     private Date deadline;
 
     /**
-     * Date when this project starts.
+     * A date when this project starts.
      */
     @NotNull
     private Date startTime;
@@ -50,14 +53,14 @@ public class Project implements Serializable, Discussable {
     private List<Task> tasks;
 
     /**
-     * Stage and progress indicator of this project.
+     * A stage and progress indicator of this project.
      */
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
     /**
-     * Groups of workers that works on this project.
+     * Groups of users that works on this project.
      */
     @ManyToMany
     @JoinTable(
@@ -74,103 +77,160 @@ public class Project implements Serializable, Discussable {
     private List<Milestone> milestones;
 
     /**
-     * Place where this project is discussed using a chat.
+     * A place where this project is discussed by using a chat.
      */
     @NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "channel_id")
     private Channel channel;
 
+    /**
+     * Constructs a project object with no attributes specified.
+     */
     public Project() {
 
 
     }
 
+    /**
+     * @return an unique identifier of this project
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this project
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return the name of this project
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this project
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     * @return a deadline date of this project
+     */
     public Date getDeadline() {
 
         return deadline;
     }
 
+    /**
+     * @param deadline a deadline date for this project
+     */
     public void setDeadline(Date deadline) {
 
         this.deadline = deadline;
     }
 
+    /**
+     * @return a date this project starts
+     */
     public Date getStartTime() {
 
         return startTime;
     }
 
+    /**
+     * @param startTime a date for this project to start
+     */
     public void setStartTime(Date startTime) {
 
         this.startTime = startTime;
     }
 
+    /**
+     * @return a list of tasks defined for this project
+     */
     public List<Task> getTasks() {
 
         return tasks;
     }
 
+    /**
+     * @param tasks a list of task to be completed for this project
+     */
     public void setTasks(List<Task> tasks) {
 
         this.tasks = tasks;
     }
 
+    /**
+     * @return a status indicator of this project
+     */
     public Status getStatus() {
 
         return status;
     }
 
+    /**
+     * @param status a status indicator for this project
+     */
     public void setStatus(Status status) {
 
         this.status = status;
     }
 
+    /**
+     * @return a set of teams working on this project
+     */
     public Set<Team> getTeams() {
 
         return teams;
     }
 
+    /**
+     * @param teams a set of teams to work on this project
+     */
     public void setTeams(Set<Team> teams) {
 
         this.teams = teams;
     }
 
+    /**
+     * @return a description of this project
+     */
     public String getDescription() {
 
         return description;
     }
 
+    /**
+     * @param description a description for this project
+     */
     public void setDescription(String description) {
 
         this.description = description;
     }
 
+    /**
+     * @return a list of milestones defined for this project
+     */
     public List<Milestone> getMilestones() {
 
         return milestones;
     }
 
+    /**
+     * @param milestones a list of milestones to be defined for this project
+     */
     public void setMilestones(List<Milestone> milestones) {
 
         this.milestones = milestones;
@@ -182,6 +242,9 @@ public class Project implements Serializable, Discussable {
         return channel;
     }
 
+    /**
+     * @param channel a channel where this project is discussed
+     */
     public void setChannel(Channel channel) {
 
         this.channel = channel;
