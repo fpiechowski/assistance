@@ -13,6 +13,9 @@ import java.util.Objects;
 @Entity
 public class PersonalTask implements Serializable {
 
+    /**
+     * An unique identifier of this personal task.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -25,7 +28,7 @@ public class PersonalTask implements Serializable {
     private PersonalTask parent;
 
     /**
-     * Name of this personal task which describes its subject.
+     * A name of this personal task which describes its subject.
      */
     @NotNull
     private String name;
@@ -44,55 +47,88 @@ public class PersonalTask implements Serializable {
     @NotNull
     private boolean completed;
 
+    /**
+     * Constructs a personal task object with no attributes specified.
+     */
     public PersonalTask() {
 
     }
 
+    /**
+     * @return an unique identifier of this personal task
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this personal task
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return a parent task of this personal task
+     */
     public PersonalTask getParent() {
 
         return parent;
     }
 
+    /**
+     * @param parent a parent task for this personal task
+     */
     public void setParent(PersonalTask parent) {
 
         this.parent = parent;
     }
 
+    /**
+     * @return a name of this personal task
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this personal task
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     * @return true if this personal task is completed
+     */
     public boolean isCompleted() {
 
         return completed;
     }
 
+    /**
+     * @param completed a logic value whether this task is to be completed
+     */
     public void setCompleted(boolean completed) {
 
         this.completed = completed;
     }
 
+    /**
+     * @return a user who created and owns this personal task
+     */
     public User getOwner() {
 
         return owner;
     }
 
+    /**
+     * @param owner a user to be the owner of this personal task
+     */
     public void setOwner(User owner) {
 
         this.owner = owner;
