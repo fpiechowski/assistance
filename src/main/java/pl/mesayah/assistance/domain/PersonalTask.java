@@ -28,7 +28,7 @@ public class PersonalTask implements Serializable {
     private PersonalTask parent;
 
     /**
-     * A name of this personal task which describes its subject.
+     * The name of this personal task which describes its subject.
      */
     @NotNull
     private String name;
@@ -87,7 +87,7 @@ public class PersonalTask implements Serializable {
     }
 
     /**
-     * @return a name of this personal task
+     * @return the name of this personal task
      */
     public String getName() {
 

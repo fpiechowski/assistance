@@ -25,7 +25,7 @@ public class Channel implements Serializable {
     private long id;
 
     /**
-     * A name of this channel.
+     * The name of this channel.
      * <p>
      * If a channel is made for a discussable object the name is generated based on the discussable object's name.
      */
@@ -92,7 +92,7 @@ public class Channel implements Serializable {
     }
 
     /**
-     * @return a name of this channel
+     * @return the name of this channel
      */
     public String getName() {
 

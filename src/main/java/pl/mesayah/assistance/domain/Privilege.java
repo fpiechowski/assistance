@@ -16,6 +16,9 @@ import java.util.Objects;
 @Entity
 public class Privilege implements Serializable {
 
+    /**
+     * An unique identifier of this privilege.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -26,26 +29,41 @@ public class Privilege implements Serializable {
     @NotNull
     private String name;
 
+    /**
+     * Constructs a privilege object with no attributes specified.
+     */
     public Privilege() {
 
 
     }
 
+    /**
+     * @return an unique identifier of this privilege
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this privilege
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return the name of this privilege
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this privilege
+     */
     public void setName(String name) {
 
         this.name = name;
