@@ -1,9 +1,9 @@
 package pl.mesayah.assistance.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Time;
 import java.util.Objects;
 
 /**
@@ -14,96 +14,58 @@ import java.util.Objects;
 @Entity
 public class Notification extends ChatMessage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     /**
-     * Title of this notification.
+     * A title of this notification.
      */
     @NotNull
     private String title;
 
     /**
-     * Type of this notification.
+     * A type of this notification.
      */
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private NotificationType type;
 
     /**
-     * Date this notification was sent.
-     */
-    @NotNull
-    private Date sendDate;
-
-    /**
-     * Time this notification was sent.
-     */
-    @NotNull
-    private Time sendTime;
-
-    /**
-     * Constructs default notification entity with no specified parameters.
+     * Constructs notification object with no specified attributes.
      */
     public Notification() {
 
     }
 
-    @Override
-    public long getId() {
-
-        return id;
-    }
-
-    @Override
-    public void setId(long id) {
-
-        this.id = id;
-    }
-
+    /**
+     * @return a title of this notification
+     */
     public String getTitle() {
 
         return title;
     }
 
+    /**
+     * @param title a title for this notification
+     */
     public void setTitle(String title) {
 
         this.title = title;
     }
 
+    /**
+     * @return a type of this notification
+     */
     public NotificationType getType() {
 
         return type;
     }
 
+    /**
+     * @param type a type for this notification
+     */
     public void setType(NotificationType type) {
 
         this.type = type;
     }
 
-    @Override
-    public Date getSendDate() {
-
-        return sendDate;
-    }
-
-    public void setSendDate(Date sendDate) {
-
-        this.sendDate = sendDate;
-    }
-
-    @Override
-    public Time getSendTime() {
-
-        return sendTime;
-    }
-
-    @Override
-    public void setSendTime(Time sendTime) {
-
-        this.sendTime = sendTime;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -113,14 +75,12 @@ public class Notification extends ChatMessage {
         if (!super.equals(o)) return false;
         Notification that = (Notification) o;
         return Objects.equals(title, that.title) &&
-                type == that.type &&
-                Objects.equals(sendDate, that.sendDate) &&
-                Objects.equals(sendTime, that.sendTime);
+                type == that.type;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), title, type, sendDate, sendTime);
+        return Objects.hash(super.hashCode(), title, type);
     }
 }
