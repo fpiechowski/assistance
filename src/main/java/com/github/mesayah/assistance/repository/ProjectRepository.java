@@ -1,8 +1,8 @@
 package com.github.mesayah.assistance.repository;
 
-import com.github.mesayah.assistance.model.Project;
-import com.github.mesayah.assistance.model.Status;
 import org.springframework.data.repository.CrudRepository;
+import pl.mesayah.assistance.domain.Project;
+import pl.mesayah.assistance.domain.Status;
 
 import java.util.List;
 
