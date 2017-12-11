@@ -15,18 +15,21 @@ import java.util.Objects;
 @Entity
 public class Milestone implements Serializable, Discussable {
 
+    /**
+     * An unique identifier of this milestone.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
-     * Name of this milestone describing a stage of progress or an event.
+     * A name of this milestone.
      */
     @NotNull
     private String name;
 
     /**
-     * Deadline for this milestone.
+     * A deadline for this milestone.
      */
     @NotNull
     private Date deadline;
@@ -44,7 +47,7 @@ public class Milestone implements Serializable, Discussable {
     private List<Task> tasks;
 
     /**
-     * A project this milestone describes progress for.
+     * A project this milestone indicates progress for.
      */
     @NotNull
     @ManyToOne
@@ -59,55 +62,88 @@ public class Milestone implements Serializable, Discussable {
     @JoinColumn(name = "channel_id")
     private Channel channel;
 
+    /**
+     * Constructs a milestone object with no attributes specified.
+     */
     public Milestone() {
 
     }
 
+    /**
+     * @return a deadline date of this milestone
+     */
     public Date getDeadline() {
 
         return deadline;
     }
 
+    /**
+     * @param deadline a deadline date for this milestone
+     */
     public void setDeadline(Date deadline) {
 
         this.deadline = deadline;
     }
 
+    /**
+     * @return an unique identifier of this milestone
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this milestone
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return a name of this milestone
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this milestone
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     * @return a list of tasks this milestone requires to be resolved in order to be achieved
+     */
     public List<Task> getTasks() {
 
         return tasks;
     }
 
+    /**
+     * @param tasks a list of tasks to be resolved in order to achieve this milestone
+     */
     public void setTasks(List<Task> tasks) {
 
         this.tasks = tasks;
     }
 
+    /**
+     * @return a project this milestone indicates progress for
+     */
     public Project getProject() {
 
         return project;
     }
 
+    /**
+     * @param project a project this milestone is to indicate progress for
+     */
     public void setProject(Project project) {
 
         this.project = project;
@@ -137,6 +173,9 @@ public class Milestone implements Serializable, Discussable {
         return channel;
     }
 
+    /**
+     * @param channel a channel where this milestone is discussed
+     */
     public void setChannel(Channel channel) {
 
         this.channel = channel;
