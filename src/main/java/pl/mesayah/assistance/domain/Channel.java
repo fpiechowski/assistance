@@ -17,12 +17,15 @@ import java.util.Set;
 @Entity
 public class Channel implements Serializable {
 
+    /**
+     * An unique identifier of this channel.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
-     * Name of this channel.
+     * A name of this channel.
      * <p>
      * If a channel is made for a discussable object the name is generated based on the discussable object's name.
      */
@@ -72,41 +75,65 @@ public class Channel implements Serializable {
         return Objects.hash(id, name, subscribedUsers, messages);
     }
 
+    /**
+     * @return an unique identifier of this channel
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this channel
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return a name of this channel
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this channel
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     * @return a set of users subscribed to this channel
+     */
     public Set<User> getSubscribedUsers() {
 
         return subscribedUsers;
     }
 
+    /**
+     * @param subscribedUsers a set of users to be subscribed to this channel
+     */
     public void setSubscribedUsers(Set<User> subscribedUsers) {
 
         this.subscribedUsers = subscribedUsers;
     }
 
+    /**
+     * @return a list of messages sent to this channel
+     */
     public List<ChatMessage> getMessages() {
 
         return messages;
     }
 
+    /**
+     * @param messages a list of messages to be sent to this channel
+     */
     public void setMessages(List<ChatMessage> messages) {
 
         this.messages = messages;
