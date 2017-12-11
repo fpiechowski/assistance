@@ -1,6 +1,8 @@
 package pl.mesayah.assistance.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -11,10 +13,6 @@ import java.util.Objects;
  */
 @Entity
 public class Issue extends Task {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
     /**
      * A user who reported this issue.
@@ -31,6 +29,22 @@ public class Issue extends Task {
 
     }
 
+    /**
+     * @return a user who reported this issue
+     */
+    public User getReportingUser() {
+
+        return reportingUser;
+    }
+
+    /**
+     * @param reportingUser a user this issue is to be reported by
+     */
+    public void setReportingUser(User reportingUser) {
+
+        this.reportingUser = reportingUser;
+    }
+
     @Override
     public boolean equals(Object o) {
 
@@ -38,25 +52,12 @@ public class Issue extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Issue issue = (Issue) o;
-        return id == issue.id;
+        return Objects.equals(reportingUser, issue.reportingUser);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), id);
-    }
-
-    @Override
-    public long getId() {
-
-
-        return id;
-    }
-
-    @Override
-    public void setId(long id) {
-
-        this.id = id;
+        return Objects.hash(super.hashCode(), reportingUser);
     }
 }
