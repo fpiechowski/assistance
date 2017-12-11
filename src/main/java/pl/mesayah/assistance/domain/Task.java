@@ -18,18 +18,21 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Task implements Serializable, Discussable {
 
+    /**
+     * An unique identifier of this task.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
-     * Name of this task.
+     * A name of this task.
      */
     @NotNull
     private String name;
 
     /**
-     * User's responsible for completing this task.
+     * Users responsible for completing this task.
      */
     @ManyToMany
     @JoinTable(
@@ -40,7 +43,7 @@ public class Task implements Serializable, Discussable {
     private Set<User> assigneeUsers;
 
     /**
-     * Stage of progress this task is in.
+     * A stage of progress this task is in.
      */
     @NotNull
     @Enumerated(EnumType.ORDINAL)
@@ -65,17 +68,17 @@ public class Task implements Serializable, Discussable {
     private Priority priority;
 
     /**
-     * Date when this task should be completed at the latest.
+     * A date when this task should be completed at the latest.
      */
     private Date deadline;
 
     /**
-     * Description of this task, what it is about.
+     * A description of this task, what it is about.
      */
     private String description;
 
     /**
-     * The task this task is subtask of.
+     * A task this task is a subtask of.
      */
     @ManyToOne
     @JoinColumn(name = "parent_task_id")
@@ -88,14 +91,14 @@ public class Task implements Serializable, Discussable {
     private Set<Task> subtasks;
 
     /**
-     * TaskType of this task.
+     * A type of this task.
      */
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private TaskType taskType;
 
     /**
-     * Channel where this task is discussed.
+     * A channel where this task is discussed.
      */
     @NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -110,16 +113,26 @@ public class Task implements Serializable, Discussable {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    /**
+     * Constructs a task object with no attributes specified.
+     */
     public Task() {
 
 
     }
 
+    /**
+     * @return a list of milestones this task is a part of
+     */
     public List<Milestone> getMilestones() {
 
         return milestones;
     }
 
+    /**
+     *
+     * @param milestones a list of milestones for this task to be a part of
+     */
     public void setMilestones(List<Milestone> milestones) {
 
         this.milestones = milestones;
@@ -151,111 +164,199 @@ public class Task implements Serializable, Discussable {
         return Objects.hash(id, name, assigneeUsers, status, priority, deadline, description, parentTask, subtasks, taskType, channel, project);
     }
 
+    /**
+     *
+     * @return a set of tasks being subtasks of this task
+     */
     public Set<Task> getSubtasks() {
 
         return subtasks;
     }
 
+    /**
+     *
+     * @param subtasks a set of tasks to be a subtasks for this task
+     */
     public void setSubtasks(Set<Task> subtasks) {
 
         this.subtasks = subtasks;
     }
 
+    /**
+     *
+     * @return a project this task is defined for
+     */
     public Project getProject() {
 
         return project;
     }
 
+    /**
+     *
+     * @param project a project this task is to be defined for
+     */
     public void setProject(Project project) {
 
         this.project = project;
     }
 
+    /**
+     *
+     * @return an unique identifier of this task
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     *
+     * @param id an unique identifier for this task
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     *
+     * @return the name of this task
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     *
+     * @param name a name for this task
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     *
+     * @return set of users responsible for completing this task
+     */
     public Set<User> getAssigneeUsers() {
 
         return assigneeUsers;
     }
 
+    /**
+     *
+     * @param assigneeUsers a set of users to be responsible for completing this task
+     */
     public void setAssigneeUsers(Set<User> assigneeUsers) {
 
         this.assigneeUsers = assigneeUsers;
     }
 
+    /**
+     *
+     * @return a progress status of this task
+     */
     public Status getStatus() {
 
         return status;
     }
 
+    /**
+     *
+     * @param status a progress status for this task
+     */
     public void setStatus(Status status) {
 
         this.status = status;
     }
 
+    /**
+     *
+     * @return a priority of this task
+     */
     public Priority getPriority() {
 
         return priority;
     }
 
+    /**
+     *
+     * @param priority a priority for this task
+     */
     public void setPriority(Priority priority) {
 
         this.priority = priority;
     }
 
+    /**
+     *
+     * @return a deadline date of this task
+     */
     public Date getDeadline() {
 
         return deadline;
     }
 
+    /**
+     *
+     * @param deadline a deadline date for this task
+     */
     public void setDeadline(Date deadline) {
 
         this.deadline = deadline;
     }
 
+    /**
+     *
+     * @return a description of this task
+     */
     public String getDescription() {
 
         return description;
     }
 
+    /**
+     *
+     * @param description a description for this task
+     */
     public void setDescription(String description) {
 
         this.description = description;
     }
 
+    /**
+     *
+     * @return a parent task of this task
+     */
     public Task getParentTask() {
 
         return parentTask;
     }
 
+    /**
+     *
+     * @param parentTask a parent task for this task
+     */
     public void setParentTask(Task parentTask) {
 
         this.parentTask = parentTask;
     }
 
+    /**
+     *
+     * @return a type of this task
+     */
     public TaskType getTaskType() {
 
         return taskType;
     }
 
+    /**
+     *
+     * @param taskType a type for this task
+     */
     public void setTaskType(TaskType taskType) {
 
         this.taskType = taskType;
@@ -267,6 +368,10 @@ public class Task implements Serializable, Discussable {
         return channel;
     }
 
+    /**
+     *
+     * @param channel a channel where this task is discussed
+     */
     public void setChannel(Channel channel) {
 
         this.channel = channel;
