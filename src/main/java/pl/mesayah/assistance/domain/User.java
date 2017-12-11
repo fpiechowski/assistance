@@ -15,19 +15,22 @@ import java.util.Set;
 @Entity
 public class User implements Serializable {
 
+    /**
+     * An unique identifier of this user.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private long id;
 
     /**
-     * User name, login, credential used to sign in.
+     * A credential this user uses to sign in.
      */
     @NotNull
     private String username;
 
     /**
-     * Position of this user in an organization.
+     * A role of this user.
      */
     @NotNull
     @ManyToOne
@@ -45,7 +48,7 @@ public class User implements Serializable {
     private String lastName;
 
     /**
-     * List of this user's personal task.
+     * A list of this user's personal task.
      */
     @OneToMany(mappedBy = "owner")
     private List<PersonalTask> personalTasks;
@@ -61,6 +64,9 @@ public class User implements Serializable {
     )
     private Set<Channel> subscribedChannels;
 
+    /**
+     * Constructs a user object with no attributes specified.
+     */
     public User() {
 
     }
@@ -86,71 +92,113 @@ public class User implements Serializable {
         return Objects.hash(id, username, role, firstName, lastName, personalTasks, subscribedChannels);
     }
 
+    /**
+     * @return a list of personal task this user is owner of
+     */
     public List<PersonalTask> getPersonalTasks() {
 
         return personalTasks;
     }
 
+    /**
+     * @param personalTasks a list of personal task this user is to be an owner of
+     */
     public void setPersonalTasks(List<PersonalTask> personalTasks) {
 
         this.personalTasks = personalTasks;
     }
 
+    /**
+     * @return a set of channels this user is subscribed to
+     */
     public Set<Channel> getSubscribedChannels() {
 
         return subscribedChannels;
     }
 
+    /**
+     * @param subscribedChannels a set of channels this user is to be subscribed to
+     */
     public void setSubscribedChannels(Set<Channel> subscribedChannels) {
 
         this.subscribedChannels = subscribedChannels;
     }
 
+    /**
+     * @return an unique identifier of this user
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this user
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return the username of this user
+     */
     public String getUsername() {
 
         return username;
     }
 
+    /**
+     * @param username a username for this user
+     */
     public void setUsername(String username) {
 
         this.username = username;
     }
 
+    /**
+     * @return a role of this user
+     */
     public Role getRole() {
 
         return role;
     }
 
+    /**
+     * @param role a role for this user
+     */
     public void setRole(Role role) {
 
         this.role = role;
     }
 
+    /**
+     * @return the first name of this user
+     */
     public String getFirstName() {
 
         return firstName;
     }
 
+    /**
+     * @param firstName a first name for this user
+     */
     public void setFirstName(String firstName) {
 
         this.firstName = firstName;
     }
 
+    /**
+     * @return the last name of this user
+     */
     public String getLastName() {
 
         return lastName;
     }
 
+    /**
+     * @param lastName a last name for this user
+     */
     public void setLastName(String lastName) {
 
         this.lastName = lastName;

@@ -12,12 +12,15 @@ import java.util.Set;
 @Entity
 public class Team implements Serializable {
 
+    /**
+     * An unique identifier of this task.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     /**
-     * Name of this team.
+     * A name of this team.
      */
     @NotNull
     private String name;
@@ -31,36 +34,56 @@ public class Team implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> members;
 
-
+    /**
+     * Constructs a team object with no attributes specified.
+     */
     public Team() {
 
     }
 
+    /**
+     * @return an unique identifier of this team
+     */
     public long getId() {
 
         return id;
     }
 
+    /**
+     * @param id an unique identifier for this team
+     */
     public void setId(long id) {
 
         this.id = id;
     }
 
+    /**
+     * @return the name of this team
+     */
     public String getName() {
 
         return name;
     }
 
+    /**
+     * @param name a name for this team
+     */
     public void setName(String name) {
 
         this.name = name;
     }
 
+    /**
+     * @return a set of users being members of this team
+     */
     public Set<User> getMembers() {
 
         return members;
     }
 
+    /**
+     * @param members a set of users to be members of this team
+     */
     public void setMembers(Set<User> members) {
 
         this.members = members;
