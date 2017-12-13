@@ -6,6 +6,10 @@ import pl.mesayah.assistance.domain.Notification;
 import pl.mesayah.assistance.repository.NotificationRepository;
 
 /**
+ * @author Filip Piechowski
+ */
+
+/**
  * Service for sending scheduled notifications.
  */
 @Service
