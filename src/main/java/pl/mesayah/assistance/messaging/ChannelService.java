@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 import pl.mesayah.assistance.domain.Channel;
 import pl.mesayah.assistance.repository.ChannelRepository;
 
+import java.util.List;
+
+/**
+ * @author Filip Piechowski
+ */
+
 /**
  * Service responsible for managing chat channels. It performs automatic channel creation for all
  * {@link pl.mesayah.assistance.domain.Discussable} objects.
@@ -37,6 +43,17 @@ public class ChannelService {
     public Channel findById(long id) {
 
         return channelRepository.findOne(id);
+    }
+
+    /**
+     * Finds channel with given channel name.
+     *
+     * @param name name of channels to find
+     * @return a list of channels with given name
+     */
+    public List<Channel> findByName(String name) {
+
+        return channelRepository.findByName(name);
     }
 
     /**
