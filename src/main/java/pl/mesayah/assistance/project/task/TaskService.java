@@ -1,4 +1,4 @@
-package pl.mesayah.assistance.task;
+package pl.mesayah.assistance.project.task;
 
 // TODO: Implement this.
 
