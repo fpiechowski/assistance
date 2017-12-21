@@ -11,8 +11,6 @@ import java.util.List;
 
 /**
  * Service for reporting {@link pl.mesayah.assistance.domain.Issue}s by clients.
- * <p>
- * Any user who has a {@link pl.mesayah.assistance.domain.Privilege} to report an issue can do it by using this service.
  */
 @Service
 public class IssueService {

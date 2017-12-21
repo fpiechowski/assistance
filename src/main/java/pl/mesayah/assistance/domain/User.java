@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * A person who can use this application.
  * <p>
- * Users have a role which defines their {@link Privilege}s to perform certain operations.
+ * Users have a role which defines their privileges to perform certain operations.
  */
 @Entity
 public class User implements Serializable {

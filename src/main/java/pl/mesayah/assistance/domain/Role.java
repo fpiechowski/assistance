@@ -1,15 +1,17 @@
 package pl.mesayah.assistance.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A set of privileges to be able to perform some operations.
  * <p>
- * A role is granted to a {@link User} to indicate that he can perform operations related to role's {@link Privilege}s.
+ * A role is granted to a {@link User} to indicate that he can perform specific operations.
  */
 @Entity
 public class Role implements Serializable {
@@ -26,17 +28,6 @@ public class Role implements Serializable {
      */
     @NotNull
     private String name;
-
-    /**
-     * Privileges this role grants.
-     */
-    @ManyToMany
-    @JoinTable(
-            name = "role_privilege",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "privilege_id")
-    )
-    private Set<Privilege> privileges;
 
     /**
      * Constructs a role object with no attributes specified.
@@ -77,20 +68,13 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    /**
-     * @return a set of privileges this role grants
-     */
-    public Set<Privilege> getPrivileges() {
+    @Override
+    public String toString() {
 
-        return privileges;
-    }
-
-    /**
-     * @param privileges a set of privileges to be granted by this role
-     */
-    public void setPrivileges(Set<Privilege> privileges) {
-
-        this.privileges = privileges;
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     @Override
@@ -100,13 +84,12 @@ public class Role implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
         return id == role.id &&
-                Objects.equals(name, role.name) &&
-                Objects.equals(privileges, role.privileges);
+                Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, privileges);
+        return Objects.hash(id, name);
     }
 }
