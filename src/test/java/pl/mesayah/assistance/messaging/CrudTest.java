@@ -7,7 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.mesayah.assistance.domain.Notification;
+import pl.mesayah.assistance.notification.Notification;
+import pl.mesayah.assistance.notification.NotificationService;
 
 import java.time.LocalDateTime;
 

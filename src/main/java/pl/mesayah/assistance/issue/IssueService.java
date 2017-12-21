@@ -3,14 +3,12 @@ package pl.mesayah.assistance.issue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mesayah.assistance.domain.Issue;
-import pl.mesayah.assistance.domain.User;
-import pl.mesayah.assistance.repository.IssueRepository;
+import pl.mesayah.assistance.user.User;
 
 import java.util.List;
 
 /**
- * Service for reporting {@link pl.mesayah.assistance.domain.Issue}s by clients.
+ * Service for reporting {@link Issue}s by clients.
  */
 @Service
 public class IssueService {

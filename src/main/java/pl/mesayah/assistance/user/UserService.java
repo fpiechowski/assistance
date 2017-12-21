@@ -2,9 +2,7 @@ package pl.mesayah.assistance.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mesayah.assistance.domain.Role;
-import pl.mesayah.assistance.domain.User;
-import pl.mesayah.assistance.repository.UserRepository;
+import pl.mesayah.assistance.security.auth.Role;
 
 import java.util.List;
 

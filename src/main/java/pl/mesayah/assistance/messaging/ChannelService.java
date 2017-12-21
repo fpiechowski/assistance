@@ -4,8 +4,6 @@ package pl.mesayah.assistance.messaging;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mesayah.assistance.domain.Channel;
-import pl.mesayah.assistance.repository.ChannelRepository;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
 
 /**
  * Service responsible for managing chat channels. It performs automatic channel creation for all
- * {@link pl.mesayah.assistance.domain.Discussable} objects.
+ * {@link Discussable} objects.
  */
 @Service
 public class ChannelService {
