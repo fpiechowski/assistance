@@ -1,9 +1,8 @@
 package pl.mesayah.assistance.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -12,13 +11,23 @@ import java.util.Objects;
  * Notifications are simply chat messages with an additional field for a title.
  */
 @Entity
-public class Notification extends ChatMessage {
+public class Notification {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     /**
      * A title of this notification.
      */
     @NotNull
     private String title;
+
+    /**
+     * Date and time this notification was sent.
+     */
+    @NotNull
+    private LocalDateTime sendDateTime;
 
     /**
      * A type of this notification.
@@ -32,6 +41,45 @@ public class Notification extends ChatMessage {
      */
     public Notification() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notification that = (Notification) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(sendDateTime, that.sendDateTime) &&
+                type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, title, sendDateTime, type);
+    }
+
+    public Long getId() {
+
+
+        return id;
+    }
+
+    public void setId(Long id) {
+
+        this.id = id;
+    }
+
+    public LocalDateTime getSendDateTime() {
+
+        return sendDateTime;
+    }
+
+    public void setSendDateTime(LocalDateTime sendDateTime) {
+
+        this.sendDateTime = sendDateTime;
     }
 
     /**
@@ -66,21 +114,11 @@ public class Notification extends ChatMessage {
         this.type = type;
     }
 
+    /**
+     * Describes a type of a notification.
+     */
+    public static enum NotificationType {
 
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Notification that = (Notification) o;
-        return Objects.equals(title, that.title) &&
-                type == that.type;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), title, type);
+        INFO, ALERT, WARNING;
     }
 }

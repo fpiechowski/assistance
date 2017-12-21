@@ -6,7 +6,7 @@ import pl.mesayah.assistance.domain.Channel;
 import pl.mesayah.assistance.domain.ChatMessage;
 import pl.mesayah.assistance.repository.ChatMessageRepository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -67,9 +67,9 @@ public class ChatMessageService {
      * @param sendDate given date.
      * @return entities in the given channel at a given date or null if none found.
      */
-    public List<ChatMessage> findAllByChannelAndSendDate(Channel channel, Date sendDate) {
+    public List<ChatMessage> findAllByChannelAndSendDate(Channel channel, LocalDateTime sendDate) {
 
-        return chatMessageRepository.findAllByChannelAndSendDate(channel, sendDate);
+        return chatMessageRepository.findAllByChannelAndSendDateTime(channel, sendDate);
     }
 
     /**
@@ -95,10 +95,10 @@ public class ChatMessageService {
     /**
      * Deletes all chat message entities before given date.
      *
-     * @param sendDate given date.
+     * @param sendDateTime given date.
      */
-    public void delete(Date sendDate) {
+    public void delete(LocalDateTime sendDateTime) {
 
-        chatMessageRepository.deleteAllBySendDateBefore(sendDate);
+        chatMessageRepository.deleteAllBySendDateTimeBefore(sendDateTime);
     }
 }

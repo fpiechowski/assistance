@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import pl.mesayah.assistance.domain.Channel;
 import pl.mesayah.assistance.domain.ChatMessage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -14,9 +14,9 @@ public interface ChatMessageRepository extends CrudRepository<ChatMessage, Long>
 
     List<ChatMessage> findAllByChannel(Channel channel);
 
-    List<ChatMessage> findAllByChannelAndSendDate(Channel channel, Date sendDate);
+    List<ChatMessage> findAllByChannelAndSendDateTime(Channel channel, LocalDateTime sendDateTime);
 
     void deleteAllByChannel(Channel channel);
 
-    void deleteAllBySendDateBefore(Date sendDate);
+    void deleteAllBySendDateTimeBefore(LocalDateTime sendDateTime);
 }

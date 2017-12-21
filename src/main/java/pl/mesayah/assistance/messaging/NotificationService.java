@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.mesayah.assistance.domain.Notification;
 import pl.mesayah.assistance.repository.NotificationRepository;
 
+import java.util.List;
+
 /**
  * @author Filip Piechowski
  */
@@ -39,6 +41,17 @@ public class NotificationService {
     }
 
     /**
+     * Checks if notification with given ID exists in the repository.
+     *
+     * @param id ID of notification to look for
+     * @return true if notification with given ID exists in the repository
+     */
+    public Boolean exists(Long id) {
+
+        return notificationRepository.exists(id);
+    }
+
+    /**
      * Finds a notification with given ID.
      *
      * @param id an ID of notification to find
@@ -46,6 +59,11 @@ public class NotificationService {
     public Notification findById(Long id) {
 
         return notificationRepository.findOne(id);
+    }
+
+    public List<Notification> findByType(Notification.NotificationType type) {
+
+        return notificationRepository.findByType(type);
     }
 
     /**

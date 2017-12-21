@@ -3,8 +3,7 @@ package pl.mesayah.assistance.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -34,13 +33,7 @@ public class ChatMessage implements Serializable {
      * A day this message was sent.
      */
     @NotNull
-    private Date sendDate;
-
-    /**
-     * Time of day this message was sent.
-     */
-    @NotNull
-    private Time sendTime;
+    private LocalDateTime sendDateTime;
 
     /**
      * Content of this message.
@@ -97,33 +90,17 @@ public class ChatMessage implements Serializable {
     /**
      * @return a date this chat message was sent
      */
-    public Date getSendDate() {
+    public LocalDateTime getSendDateTime() {
 
-        return sendDate;
+        return sendDateTime;
     }
 
     /**
-     * @param sendDate a date this chat message is to be sent
+     * @param sendDateTime a date this chat message is to be sent
      */
-    public void setSendDate(Date sendDate) {
+    public void setSendDateTime(LocalDateTime sendDateTime) {
 
-        this.sendDate = sendDate;
-    }
-
-    /**
-     * @return a time of day this message was sent
-     */
-    public Time getSendTime() {
-
-        return sendTime;
-    }
-
-    /**
-     * @param sendTime a time of day this this message is to be sent
-     */
-    public void setSendTime(Time sendTime) {
-
-        this.sendTime = sendTime;
+        this.sendDateTime = sendDateTime;
     }
 
     /**
@@ -166,8 +143,7 @@ public class ChatMessage implements Serializable {
         ChatMessage that = (ChatMessage) o;
         return id == that.id &&
                 Objects.equals(author, that.author) &&
-                Objects.equals(sendDate, that.sendDate) &&
-                Objects.equals(sendTime, that.sendTime) &&
+                Objects.equals(sendDateTime, that.sendDateTime) &&
                 Objects.equals(textBody, that.textBody) &&
                 Objects.equals(channel, that.channel);
     }
@@ -175,6 +151,6 @@ public class ChatMessage implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, author, sendDate, sendTime, textBody, channel);
+        return Objects.hash(id, author, sendDateTime, textBody, channel);
     }
 }
