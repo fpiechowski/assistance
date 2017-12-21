@@ -1,4 +1,4 @@
-package pl.mesayah.assistance.ui.view;
+package pl.mesayah.assistance.project;
 
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
