@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.project;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.mesayah.assistance.task.Task;
 
 import java.util.List;
 
@@ -10,5 +9,5 @@ import java.util.List;
  */
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
-    List<Project> findAllByStatus(Task.Status status);
+    List<Project> findAllByPhase(Project.Phase phase);
 }

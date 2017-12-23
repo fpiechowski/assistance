@@ -9,7 +9,7 @@ import pl.mesayah.assistance.team.Team;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -44,13 +44,13 @@ public class Project implements Serializable, Discussable {
     /**
      * A date when this project ends.
      */
-    private Date deadline;
+    private LocalDateTime deadline;
 
     /**
      * A date when this project starts.
      */
     @NotNull
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * Things to do to develop and realize this project.
@@ -133,7 +133,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @return a deadline date of this project
      */
-    public Date getDeadline() {
+    public LocalDateTime getDeadline() {
 
         return deadline;
     }
@@ -141,7 +141,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @param deadline a deadline date for this project
      */
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDateTime deadline) {
 
         this.deadline = deadline;
     }
@@ -149,7 +149,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @return a date this project starts
      */
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
 
         return startTime;
     }
@@ -157,7 +157,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @param startTime a date for this project to start
      */
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
 
         this.startTime = startTime;
     }
@@ -280,9 +280,32 @@ public class Project implements Serializable, Discussable {
         return Objects.hash(id, name, description, deadline, startTime, tasks, phase, teams, milestones, channel);
     }
 
-    private enum Phase {
+    enum Phase {
 
-        PLANNING, DESIGNING, IMPLEMENTATION, TESTING, INSTALLATION, MAINTENANCE;
+        PLANNING("Planning"),
+        DESIGNING("Designing"),
+        IMPLEMENTATION("Implementation"),
+        TESTING("Testing"),
+        INSTALLATION("Installation"),
+        MAINTENANCE("Maintenance");
+
+        private String name;
+
+        Phase(String name) {
+
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+
+            return name;
+        }
+
+        public String getName() {
+
+            return name;
+        }
     }
 }
 

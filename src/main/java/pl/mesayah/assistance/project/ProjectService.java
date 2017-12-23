@@ -2,7 +2,6 @@ package pl.mesayah.assistance.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mesayah.assistance.task.Task;
 
 import java.util.List;
 
@@ -49,12 +48,12 @@ public class ProjectService {
     /**
      * Retrive project entities with the given status.
      *
-     * @param status given status.
+     * @param phase given status.
      * @return project entities with the given status or null if none found.
      */
-    public List<Project> findAllByStatus(Task.Status status) {
+    public List<Project> findAllByStatus(Project.Phase phase) {
 
-        return projectRepository.findAllByStatus(status);
+        return projectRepository.findAllByPhase(phase);
     }
 
     /**
