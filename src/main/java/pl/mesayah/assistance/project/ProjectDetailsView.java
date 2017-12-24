@@ -158,23 +158,32 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
-        Long projectId = Long.parseLong(event.getParameterMap().get("projectId"));
-        Project project = projectService.findById(projectId);
+        String id = event.getParameterMap().get("projectId");
+        if (id != null) {
 
-        if (project != null) {
+            Long projectId = Long.parseLong(id);
+            Project project = projectService.findById(projectId);
 
-            titleLabel.setValue(project.getName());
-            descriptionLabel.setValue(project.getDescription());
-            phaseLabel.setValue(project.getPhase().toString());
-            startDateLabel.setValue(project.getStartTime().toLocalDate().toString());
-            deadlineLabel.setValue(project.getDeadline().toLocalDate().toString());
+            if (project != null) {
 
-            initializeTeamLinks(project);
-            initializeIssuesLinks(project);
-            initializeMilestonesLinks(project);
+                titleLabel.setValue(project.getName());
+                descriptionLabel.setValue(project.getDescription());
+                phaseLabel.setValue(project.getPhase().toString());
+                startDateLabel.setValue(project.getStartTime().toLocalDate().toString());
+                deadlineLabel.setValue(project.getDeadline().toLocalDate().toString());
+
+                initializeTeamLinks(project);
+                initializeIssuesLinks(project);
+                initializeMilestonesLinks(project);
+            } else {
+                Notification.show(
+                        "Can not find a project with given ID.",
+                        Notification.Type.ERROR_MESSAGE
+                );
+            }
         } else {
             Notification.show(
-                    "Can not find a project with given ID.",
+                    "No project ID has been provided.",
                     Notification.Type.ERROR_MESSAGE
             );
         }
