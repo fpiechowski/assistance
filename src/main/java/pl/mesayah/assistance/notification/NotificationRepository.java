@@ -10,6 +10,4 @@ import java.util.List;
 public interface NotificationRepository extends CrudRepository<Notification, Long> {
 
     List<Notification> findByType(Notification.NotificationType type);
-
-
 }

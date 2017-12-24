@@ -136,7 +136,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param milestones a list of milestones for this task to be a part of
      */
     public void setMilestones(List<Milestone> milestones) {
@@ -171,7 +170,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a set of tasks being subtasks of this task
      */
     public Set<Task> getSubtasks() {
@@ -180,7 +178,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param subtasks a set of tasks to be a subtasks for this task
      */
     public void setSubtasks(Set<Task> subtasks) {
@@ -189,7 +186,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a project this task is defined for
      */
     public Project getProject() {
@@ -198,7 +194,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param project a project this task is to be defined for
      */
     public void setProject(Project project) {
@@ -207,7 +202,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return an unique identifier of this task
      */
     public long getId() {
@@ -216,7 +210,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param id an unique identifier for this task
      */
     public void setId(long id) {
@@ -225,7 +218,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return the name of this task
      */
     public String getName() {
@@ -234,7 +226,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param name a name for this task
      */
     public void setName(String name) {
@@ -243,7 +234,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return set of users responsible for completing this task
      */
     public Set<User> getAssigneeUsers() {
@@ -252,7 +242,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param assigneeUsers a set of users to be responsible for completing this task
      */
     public void setAssigneeUsers(Set<User> assigneeUsers) {
@@ -261,7 +250,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a progress status of this task
      */
     public Status getStatus() {
@@ -270,7 +258,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param status a progress status for this task
      */
     public void setStatus(Status status) {
@@ -279,7 +266,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a priority of this task
      */
     public Priority getPriority() {
@@ -288,7 +274,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param priority a priority for this task
      */
     public void setPriority(Priority priority) {
@@ -297,7 +282,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a deadline date of this task
      */
     public Date getDeadline() {
@@ -306,7 +290,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param deadline a deadline date for this task
      */
     public void setDeadline(Date deadline) {
@@ -315,7 +298,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a description of this task
      */
     public String getDescription() {
@@ -324,7 +306,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param description a description for this task
      */
     public void setDescription(String description) {
@@ -333,7 +314,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a parent task of this task
      */
     public Task getParentTask() {
@@ -342,7 +322,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param parentTask a parent task for this task
      */
     public void setParentTask(Task parentTask) {
@@ -351,7 +330,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @return a type of this task
      */
     public Type getType() {
@@ -360,7 +338,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param type a type for this task
      */
     public void setType(Type type) {
@@ -375,7 +352,6 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     *
      * @param channel a channel where this task is discussed
      */
     public void setChannel(Channel channel) {

@@ -57,6 +57,16 @@ public class ProjectService {
     }
 
     /**
+     * Finds all existing projects.
+     *
+     * @return list of all existing projects
+     */
+    public List<Project> findAll() {
+
+        return (List<Project>) projectRepository.findAll();
+    }
+
+    /**
      * Deletes the project entity with the given id.
      *
      * @param id given id.

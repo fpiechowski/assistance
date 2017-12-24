@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author Lukasz Jaworski
- *
+ * <p>
  * Service for managing tasks.
  */
 @Service
