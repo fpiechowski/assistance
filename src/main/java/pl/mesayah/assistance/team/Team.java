@@ -23,7 +23,7 @@ public class Team implements Serializable {
     private long id;
 
     /**
-     * A name of this team.
+     * A NAME of this team.
      */
     @NotNull
     private String name;
@@ -61,7 +61,7 @@ public class Team implements Serializable {
     }
 
     /**
-     * @return the name of this team
+     * @return the NAME of this team
      */
     public String getName() {
 
@@ -69,7 +69,7 @@ public class Team implements Serializable {
     }
 
     /**
-     * @param name a name for this team
+     * @param name a NAME for this team
      */
     public void setName(String name) {
 

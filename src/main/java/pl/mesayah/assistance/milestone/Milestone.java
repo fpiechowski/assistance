@@ -28,7 +28,7 @@ public class Milestone implements Serializable, Discussable {
     private long id;
 
     /**
-     * The name of this milestone.
+     * The NAME of this milestone.
      */
     @NotNull
     private String name;
@@ -107,7 +107,7 @@ public class Milestone implements Serializable, Discussable {
     }
 
     /**
-     * @return the name of this milestone
+     * @return the NAME of this milestone
      */
     public String getName() {
 
@@ -115,7 +115,7 @@ public class Milestone implements Serializable, Discussable {
     }
 
     /**
-     * @param name a name for this milestone
+     * @param name a NAME for this milestone
      */
     public void setName(String name) {
 

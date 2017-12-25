@@ -20,7 +20,7 @@ public class CrudTest {
     private NotificationService notificationService;
 
     /**
-     * Test for CRUD operations.
+     * Test for Notification CRUD operations.
      * <p>
      * It starts with creating test notification object, then It saves and checks if it exists in the repository.
      * Then it fetches it from the database.

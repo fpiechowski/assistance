@@ -2,9 +2,10 @@ package pl.mesayah.assistance.project;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.AssistanceUi;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.task.Task;
@@ -13,10 +14,11 @@ import pl.mesayah.assistance.team.Team;
 /**
  * A view of project details. It presents parameters of a given project.
  */
+@SpringView(name = ProjectDetailsView.VIEW_NAME)
 public class ProjectDetailsView extends VerticalLayout implements View {
 
     /**
-     * A view name used to navigate between views.
+     * A view NAME used to navigate between views.
      */
     public static final String VIEW_NAME = "project";
 
@@ -24,7 +26,7 @@ public class ProjectDetailsView extends VerticalLayout implements View {
      * A reference to main user interface class.
      */
     @Autowired
-    private AssistanceUi assistanceUi;
+    private SpringNavigator navigator;
 
     /**
      * A project service to fetch project data.
@@ -158,30 +160,40 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
-        String id = event.getParameterMap().get("projectId");
-        if (id != null) {
+        // try to get project ID parameter from url
+        String idParameter = event.getParameterMap().get("id");
+        // if ID has been passed as a parameter
+        if (idParameter != null && !idParameter.equals("")) {
 
-            Long projectId = Long.parseLong(id);
+            // parse string ID to long
+            Long projectId = Long.parseLong(idParameter);
+            System.out.println(projectId);
+            // fetch project with passed ID from the repository
             Project project = projectService.findById(projectId);
 
+            // if project has been found in repository
             if (project != null) {
 
+                // set controls values to fetched project properties
                 titleLabel.setValue(project.getName());
                 descriptionLabel.setValue(project.getDescription());
                 phaseLabel.setValue(project.getPhase().toString());
                 startDateLabel.setValue(project.getStartTime().toLocalDate().toString());
                 deadlineLabel.setValue(project.getDeadline().toLocalDate().toString());
 
+                // set fetched project's teams, issues and milestones links
                 initializeTeamLinks(project);
                 initializeIssuesLinks(project);
                 initializeMilestonesLinks(project);
             } else {
+                // if project not found in repository
                 Notification.show(
-                        "Can not find a project with given ID.",
+                        "Can not find a project with a given ID.",
                         Notification.Type.ERROR_MESSAGE
                 );
             }
         } else {
+            // if ID hasn't been passed in the url as a parameter
             Notification.show(
                     "No project ID has been provided.",
                     Notification.Type.ERROR_MESSAGE
@@ -199,13 +211,10 @@ public class ProjectDetailsView extends VerticalLayout implements View {
         for (Milestone m : project.getMilestones()) {
             // TODO: get URL for team details view for a link to a corresponding team
             Button milestoneLink = new Button(m.getName());
-            milestoneLink.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent clickEvent) {
-
-                    assistanceUi.getNavigator().navigateTo("milestone/" + m.getId());
-                }
-            });
+            milestoneLink.addClickListener(
+                    // TODO : set nav state
+                    (Button.ClickListener) clickEvent ->
+                            navigator.navigateTo(""));
             milestonesLayout.addComponent(milestoneLink);
         }
     }
@@ -221,12 +230,13 @@ public class ProjectDetailsView extends VerticalLayout implements View {
             if (t instanceof Issue) {
                 Button issueLink = new Button(t.getName());
                 issueLink.addClickListener(
-                        (Button.ClickListener) clickEvent -> assistanceUi.getNavigator().navigateTo("issue/" + t.getId()));
+                        // TODO: set nav state for issues and tasks details
+                        (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
                 issuesLayout.addComponent(issueLink);
             } else {
                 Button taskLink = new Button(t.getName());
                 taskLink.addClickListener(
-                        (Button.ClickListener) clickEvent -> assistanceUi.getNavigator().navigateTo("task/" + t.getId()));
+                        (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
                 tasksLayout.addComponent(taskLink);
             }
         }
@@ -242,7 +252,8 @@ public class ProjectDetailsView extends VerticalLayout implements View {
         for (Team t : project.getTeams()) {
             Button teamLink = new Button(t.getName());
             teamLink.addClickListener(
-                    (Button.ClickListener) clickEvent -> assistanceUi.getNavigator().navigateTo("team/" + t.getId()));
+                    // TODO : set navigation state for team details
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
             teamsLayout.addComponent(teamLink);
         }
     }

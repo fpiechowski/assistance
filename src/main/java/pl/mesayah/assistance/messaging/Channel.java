@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * A place where {@link Message}s are sent to.
  * <p>
- * Channels can be created as custom channels with a custom name or be automatically created based on a
+ * Channels can be created as custom channels with a custom NAME or be automatically created based on a
  * {@link Discussable} object. When a discussable object is created there is also a channel created for that object.
  * {@link User}s can subscribe to channels to be notified about new messages there.
  */
@@ -27,9 +27,9 @@ public class Channel implements Serializable {
     private long id;
 
     /**
-     * The name of this channel.
+     * The NAME of this channel.
      * <p>
-     * If a channel is made for a discussable object the name is generated based on the discussable object's name.
+     * If a channel is made for a discussable object the NAME is generated based on the discussable object's NAME.
      */
     @NotNull
     private String name;
@@ -94,7 +94,7 @@ public class Channel implements Serializable {
     }
 
     /**
-     * @return the name of this channel
+     * @return the NAME of this channel
      */
     public String getName() {
 
@@ -102,7 +102,7 @@ public class Channel implements Serializable {
     }
 
     /**
-     * @param name a name for this channel
+     * @param name a NAME for this channel
      */
     public void setName(String name) {
 

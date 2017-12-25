@@ -1,14 +1,27 @@
 package pl.mesayah.assistance;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewDisplay;
+import com.vaadin.server.DefaultErrorHandler;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
+import com.vaadin.shared.communication.PushMode;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.SpringViewDisplay;
+import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import pl.mesayah.assistance.project.ProjectDetailsView;
-import pl.mesayah.assistance.project.ProjectListView;
+import pl.mesayah.assistance.security.LoginForm;
+import pl.mesayah.assistance.security.SecurityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +30,20 @@ import java.util.List;
  * Main user interface class of the application.
  */
 @SpringUI
-public class AssistanceUi extends UI {
+@SpringViewDisplay
+public class AssistanceUi extends UI implements ViewDisplay {
+
+    /**
+     * A manager for authentication processes.
+     */
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /**
      * A navigator which manages views and navigates between them.
      */
-    private Navigator navigator;
+    @Autowired
+    private SpringNavigator navigator;
 
     /**
      * A top bar with user information and navigation links.
@@ -32,62 +53,97 @@ public class AssistanceUi extends UI {
     /**
      * A container for views presenting different parts of the application.
      */
-    private VerticalLayout viewContainerLayout;
+    private VerticalLayout viewDisplay;
 
     /**
      * A container for the whole user interface.
      */
-    private VerticalLayout contentLayout;
-
-    @Override
-    public Navigator getNavigator() {
-
-        return navigator;
-    }
+    private VerticalLayout rootLayout;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-        initializeTopBarLayout();
-        initializeViewContainerLayout();
-        initializeContentLayout();
-        initializeNavigator();
-
-        setContent(contentLayout);
+        // Show login form or application main user interface
+        getPage().setTitle(AssistanceApplication.NAME);
+        if (!SecurityUtils.isLoggedIn()) {
+            showLoginForm();
+        } else {
+            showApplicationUi();
+        }
     }
 
-    /**
-     * Initializes the navigator and sets all view that can be presented in the view container layout.
-     */
-    private void initializeNavigator() {
+    private void showApplicationUi() {
 
-        navigator = new Navigator(this, viewContainerLayout);
+        initializeTopBarLayout();
+        initializeViewDisplay();
+        initializeRootLayout();
 
-        // Add new views here so they can be navigated to.
-        navigator.addView(ProjectListView.VIEW_NAME, new ProjectListView());
-        navigator.addView(ProjectDetailsView.VIEW_NAME, new ProjectDetailsView());
+        setContent(rootLayout);
+    }
+
+    private void showLoginForm() {
+
+        setContent(new LoginForm(this::login));
+    }
+
+    private boolean login(String username, String password) {
+
+        try {
+            Authentication token = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            // Reinitialize the session to protect against session fixation attacks. This does not work
+            // with websocket communication.
+            VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
+            SecurityContextHolder.getContext().setAuthentication(token);
+            // Now when the session is reinitialized, we can enable websocket communication. Or we could have just
+            // used WEBSOCKET_XHR and skipped this step completely.
+            getPushConfiguration().setTransport(Transport.WEBSOCKET);
+            getPushConfiguration().setPushMode(PushMode.AUTOMATIC);
+            // Show the main UI
+            showApplicationUi();
+            return true;
+        } catch (AuthenticationException ex) {
+            return false;
+        }
+    }
+
+    private void logout() {
+
+        getPage().reload();
+        getSession().close();
+    }
+
+    private void handleError(com.vaadin.server.ErrorEvent event) {
+
+        Throwable t = DefaultErrorHandler.findRelevantThrowable(event.getThrowable());
+        if (t instanceof AccessDeniedException) {
+            Notification.show("You do not have permission to perform this operation",
+                    Notification.Type.WARNING_MESSAGE);
+        } else {
+            DefaultErrorHandler.doDefault(event);
+        }
     }
 
     /**
      * Initializes a container for the whole user interface.
      */
-    private void initializeContentLayout() {
+    private void initializeRootLayout() {
 
-        contentLayout = new VerticalLayout();
-        contentLayout.setMargin(false);
-        contentLayout.addComponents(topBarLayout, viewContainerLayout);
-        contentLayout.setSizeFull();
-        contentLayout.setExpandRatio(viewContainerLayout, 1.0f);
+        rootLayout = new VerticalLayout();
+        rootLayout.setMargin(false);
+        rootLayout.addComponents(topBarLayout, viewDisplay);
+        rootLayout.setSizeFull();
+        rootLayout.setExpandRatio(viewDisplay, 1.0f);
     }
 
     /**
      * Initializes a layout for showing different application views.
      */
-    private void initializeViewContainerLayout() {
+    private void initializeViewDisplay() {
 
-        viewContainerLayout = new VerticalLayout();
-        viewContainerLayout.setMargin(false);
-        viewContainerLayout.setSizeFull();
+        viewDisplay = new VerticalLayout();
+        viewDisplay.setSizeFull();
+        viewDisplay.setMargin(false);
     }
 
     /**
@@ -102,6 +158,13 @@ public class AssistanceUi extends UI {
         Layout userInfoLayout = new UserInfoLayout();
         topBarLayout.addComponents(userInfoLayout, navigationLayout);
         topBarLayout.setExpandRatio(navigationLayout, 1.0f);
+    }
+
+    @Override
+    public void showView(View view) {
+
+        viewDisplay.removeAllComponents();
+        viewDisplay.addComponent((Component) view);
     }
 
     /**
@@ -178,13 +241,13 @@ public class AssistanceUi extends UI {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             userNameLink = new Button(username);
             userNameLink.setStyleName("link");
-            // TODO: set navigation state to user profile view name with user ID parameter
+            // TODO: set navigation state to user profile view NAME with user ID parameter
             userNameLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
 
             settingLink = new Button("Settings", VaadinIcons.COG);
             settingLink.setStyleName("link");
-            // TODO: set navigation state to setting view name
+            // TODO: set navigation state to setting view NAME
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
 

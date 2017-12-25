@@ -44,10 +44,10 @@ public class ChannelService {
     }
 
     /**
-     * Finds channel with given channel name.
+     * Finds channel with given channel NAME.
      *
-     * @param name name of channels to find
-     * @return a list of channels with given name
+     * @param name NAME of channels to find
+     * @return a list of channels with given NAME
      */
     public List<Channel> findByName(String name) {
 

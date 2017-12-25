@@ -5,14 +5,13 @@ import pl.mesayah.assistance.messaging.Discussable;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
+import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A planned piece of work that has a particular aim like achieving a goal or developing a product.
@@ -31,7 +30,7 @@ public class Project implements Serializable, Discussable {
     private long id;
 
     /**
-     * A name of this project.
+     * A NAME of this project.
      */
     @NotNull
     private String name;
@@ -53,10 +52,16 @@ public class Project implements Serializable, Discussable {
     private LocalDateTime startTime;
 
     /**
+     * A user who started a project.
+     */
+    @NotNull
+    private User master;
+
+    /**
      * Things to do to develop and realize this project.
      */
     @OneToMany(mappedBy = "project")
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     /**
      * A stage and progress indicator of this project.
@@ -74,13 +79,13 @@ public class Project implements Serializable, Discussable {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
-    private Set<Team> teams;
+    private Set<Team> teams = new HashSet<>();
 
     /**
      * Significant events and achievements that indicates stages of progress of this project.
      */
     @OneToMany(mappedBy = "project")
-    private List<Milestone> milestones;
+    private List<Milestone> milestones = new ArrayList<>();
 
     /**
      * A place where this project is discussed by using a chat.
@@ -115,7 +120,7 @@ public class Project implements Serializable, Discussable {
     }
 
     /**
-     * @return the name of this project
+     * @return the NAME of this project
      */
     public String getName() {
 
@@ -123,7 +128,7 @@ public class Project implements Serializable, Discussable {
     }
 
     /**
-     * @param name a name for this project
+     * @param name a NAME for this project
      */
     public void setName(String name) {
 
@@ -280,7 +285,7 @@ public class Project implements Serializable, Discussable {
         return Objects.hash(id, name, description, deadline, startTime, tasks, phase, teams, milestones, channel);
     }
 
-    enum Phase {
+    public enum Phase {
 
         PLANNING("Planning"),
         DESIGNING("Designing"),

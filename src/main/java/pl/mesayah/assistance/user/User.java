@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.user;
 
 import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.security.auth.Role;
 import pl.mesayah.assistance.todo.PersonalNote;
 
 import javax.persistence.*;
@@ -37,9 +36,7 @@ public class User implements Serializable {
      * A role of this user.
      */
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    private String role;
 
     /**
      * First name of this user.
@@ -163,7 +160,7 @@ public class User implements Serializable {
     /**
      * @return a role of this user
      */
-    public Role getRole() {
+    public String getRole() {
 
         return role;
     }
@@ -171,7 +168,7 @@ public class User implements Serializable {
     /**
      * @param role a role for this user
      */
-    public void setRole(Role role) {
+    public void setRole(String role) {
 
         this.role = role;
     }

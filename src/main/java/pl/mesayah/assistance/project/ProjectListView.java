@@ -3,6 +3,7 @@ package pl.mesayah.assistance.project;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
@@ -11,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * A view containing list of all projects created in the application.
  */
+@SpringView(name = ProjectListView.VIEW_NAME)
 public class ProjectListView extends VerticalLayout implements View {
 
     /**
-     * A name used to navigate between views.
+     * A NAME used to navigate between views.
      */
     public static final String VIEW_NAME = "projects";
 
@@ -62,6 +64,7 @@ public class ProjectListView extends VerticalLayout implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
         // TODO: implement fetching projects from the database and showing them in grid layout
+
     }
 
     /**

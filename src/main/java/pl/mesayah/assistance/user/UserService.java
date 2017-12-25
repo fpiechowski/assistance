@@ -2,7 +2,6 @@ package pl.mesayah.assistance.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mesayah.assistance.security.auth.Role;
 
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class UserService {
      * @param role given role entity.
      * @return the entity with the given role or null if none found.
      */
-    public List<User> findAllByRole(Role role) {
+    public List<User> findAllByRole(String role) {
 
         return userRepository.findAllByRole(role);
     }

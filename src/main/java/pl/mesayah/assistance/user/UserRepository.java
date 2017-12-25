@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.user;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.mesayah.assistance.security.auth.Role;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  */
 public interface UserRepository extends CrudRepository<User, Long> {
 
-    List<User> findAllByRole(Role role);
+    List<User> findAllByRole(String role);
 
     User findByUsername(String username);
 }

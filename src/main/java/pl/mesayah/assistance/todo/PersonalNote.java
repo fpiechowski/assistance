@@ -30,7 +30,7 @@ public class PersonalNote implements Serializable {
     private PersonalNote parent;
 
     /**
-     * The name of this personal task which describes its subject.
+     * The NAME of this personal task which describes its subject.
      */
     @NotNull
     private String name;
@@ -89,7 +89,7 @@ public class PersonalNote implements Serializable {
     }
 
     /**
-     * @return the name of this personal task
+     * @return the NAME of this personal task
      */
     public String getName() {
 
@@ -97,7 +97,7 @@ public class PersonalNote implements Serializable {
     }
 
     /**
-     * @param name a name for this personal task
+     * @param name a NAME for this personal task
      */
     public void setName(String name) {
 

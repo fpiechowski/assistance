@@ -32,7 +32,7 @@ public class Task implements Serializable, Discussable {
     private long id;
 
     /**
-     * A name of this task.
+     * A NAME of this task.
      */
     @NotNull
     private String name;
@@ -218,7 +218,7 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     * @return the name of this task
+     * @return the NAME of this task
      */
     public String getName() {
 
@@ -226,7 +226,7 @@ public class Task implements Serializable, Discussable {
     }
 
     /**
-     * @param name a name for this task
+     * @param name a NAME for this task
      */
     public void setName(String name) {
 

@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.project;
 
+import com.vaadin.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * Service for managing projects.
  */
 @Service
+@SpringComponent
 public class ProjectService {
 
     /**
@@ -29,9 +31,9 @@ public class ProjectService {
      *
      * @param chatMessage chat massage entity to save.
      */
-    public void save(Project chatMessage) {
+    public Project save(Project chatMessage) {
 
-        projectRepository.save(chatMessage);
+        return projectRepository.save(chatMessage);
     }
 
     /**
