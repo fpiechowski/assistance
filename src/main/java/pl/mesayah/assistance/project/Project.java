@@ -10,7 +10,7 @@ import pl.mesayah.assistance.user.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -43,13 +43,13 @@ public class Project implements Serializable, Discussable {
     /**
      * A date when this project ends.
      */
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
     /**
      * A date when this project starts.
      */
     @NotNull
-    private LocalDateTime startTime;
+    private LocalDate startDate;
 
     /**
      * A user who started a project.
@@ -138,7 +138,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @return a deadline date of this project
      */
-    public LocalDateTime getDeadline() {
+    public LocalDate getDeadline() {
 
         return deadline;
     }
@@ -146,7 +146,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @param deadline a deadline date for this project
      */
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(LocalDate deadline) {
 
         this.deadline = deadline;
     }
@@ -154,17 +154,17 @@ public class Project implements Serializable, Discussable {
     /**
      * @return a date this project starts
      */
-    public LocalDateTime getStartTime() {
+    public LocalDate getStartDate() {
 
-        return startTime;
+        return startDate;
     }
 
     /**
-     * @param startTime a date for this project to start
+     * @param startDate a date for this project to start
      */
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartDate(LocalDate startDate) {
 
-        this.startTime = startTime;
+        this.startDate = startDate;
     }
 
     /**
@@ -262,6 +262,12 @@ public class Project implements Serializable, Discussable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, description, deadline, startDate, tasks, phase, teams, milestones, channel);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -271,18 +277,12 @@ public class Project implements Serializable, Discussable {
                 Objects.equals(name, project.name) &&
                 Objects.equals(description, project.description) &&
                 Objects.equals(deadline, project.deadline) &&
-                Objects.equals(startTime, project.startTime) &&
+                Objects.equals(startDate, project.startDate) &&
                 Objects.equals(tasks, project.tasks) &&
                 phase == project.phase &&
                 Objects.equals(teams, project.teams) &&
                 Objects.equals(milestones, project.milestones) &&
                 Objects.equals(channel, project.channel);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, description, deadline, startTime, tasks, phase, teams, milestones, channel);
     }
 
     public enum Phase {

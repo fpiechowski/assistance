@@ -44,6 +44,12 @@ public class Notification {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, title, sendDateTime, type);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -53,12 +59,6 @@ public class Notification {
                 Objects.equals(title, that.title) &&
                 Objects.equals(sendDateTime, that.sendDateTime) &&
                 type == that.type;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, title, sendDateTime, type);
     }
 
     public Long getId() {

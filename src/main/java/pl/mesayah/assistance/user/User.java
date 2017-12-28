@@ -73,6 +73,12 @@ public class User implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, username, role, firstName, lastName, personalNotes, subscribedChannels);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -85,12 +91,6 @@ public class User implements Serializable {
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(personalNotes, user.personalNotes) &&
                 Objects.equals(subscribedChannels, user.subscribedChannels);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, username, role, firstName, lastName, personalNotes, subscribedChannels);
     }
 
     /**

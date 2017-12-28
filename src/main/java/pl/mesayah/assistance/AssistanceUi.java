@@ -72,6 +72,11 @@ public class AssistanceUi extends UI implements ViewDisplay {
         }
     }
 
+    private void showLoginForm() {
+
+        setContent(new LoginForm(this::login));
+    }
+
     private void showApplicationUi() {
 
         initializeTopBarLayout();
@@ -81,9 +86,40 @@ public class AssistanceUi extends UI implements ViewDisplay {
         setContent(rootLayout);
     }
 
-    private void showLoginForm() {
+    /**
+     * Initializes top bar with user information and navigation links.
+     */
+    private void initializeTopBarLayout() {
 
-        setContent(new LoginForm(this::login));
+        topBarLayout = new HorizontalLayout();
+        topBarLayout.setWidth("100%");
+        topBarLayout.setHeight("-1px");
+        Layout navigationLayout = new NavigationLayout();
+        Layout userInfoLayout = new UserInfoLayout();
+        topBarLayout.addComponents(userInfoLayout, navigationLayout);
+        topBarLayout.setExpandRatio(navigationLayout, 1.0f);
+    }
+
+    /**
+     * Initializes a layout for showing different application views.
+     */
+    private void initializeViewDisplay() {
+
+        viewDisplay = new VerticalLayout();
+        viewDisplay.setSizeFull();
+        viewDisplay.setMargin(false);
+    }
+
+    /**
+     * Initializes a container for the whole user interface.
+     */
+    private void initializeRootLayout() {
+
+        rootLayout = new VerticalLayout();
+        rootLayout.setMargin(false);
+        rootLayout.addComponents(topBarLayout, viewDisplay);
+        rootLayout.setSizeFull();
+        rootLayout.setExpandRatio(viewDisplay, 1.0f);
     }
 
     private boolean login(String username, String password) {
@@ -122,42 +158,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
         } else {
             DefaultErrorHandler.doDefault(event);
         }
-    }
-
-    /**
-     * Initializes a container for the whole user interface.
-     */
-    private void initializeRootLayout() {
-
-        rootLayout = new VerticalLayout();
-        rootLayout.setMargin(false);
-        rootLayout.addComponents(topBarLayout, viewDisplay);
-        rootLayout.setSizeFull();
-        rootLayout.setExpandRatio(viewDisplay, 1.0f);
-    }
-
-    /**
-     * Initializes a layout for showing different application views.
-     */
-    private void initializeViewDisplay() {
-
-        viewDisplay = new VerticalLayout();
-        viewDisplay.setSizeFull();
-        viewDisplay.setMargin(false);
-    }
-
-    /**
-     * Initializes top bar with user information and navigation links.
-     */
-    private void initializeTopBarLayout() {
-
-        topBarLayout = new HorizontalLayout();
-        topBarLayout.setWidth("100%");
-        topBarLayout.setHeight("-1px");
-        Layout navigationLayout = new NavigationLayout();
-        Layout userInfoLayout = new UserInfoLayout();
-        topBarLayout.addComponents(userInfoLayout, navigationLayout);
-        topBarLayout.setExpandRatio(navigationLayout, 1.0f);
     }
 
     @Override

@@ -144,6 +144,12 @@ public class Task implements Serializable, Discussable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, assigneeUsers, status, priority, deadline, description, parentTask, subtasks, type, channel, project);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -161,12 +167,6 @@ public class Task implements Serializable, Discussable {
                 type == task.type &&
                 Objects.equals(channel, task.channel) &&
                 Objects.equals(project, task.project);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, assigneeUsers, status, priority, deadline, description, parentTask, subtasks, type, channel, project);
     }
 
     /**

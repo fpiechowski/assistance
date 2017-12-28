@@ -7,6 +7,12 @@ import org.springframework.security.core.context.SecurityContextImpl;
 
 public class VaadinSessionSecurityContextHolderStrategy implements SecurityContextHolderStrategy {
 
+    @Override
+    public void clearContext() {
+
+        getSession().setAttribute(SecurityContext.class, null);
+    }
+
     private static VaadinSession getSession() {
 
         VaadinSession session = VaadinSession.getCurrent();
@@ -14,12 +20,6 @@ public class VaadinSessionSecurityContextHolderStrategy implements SecurityConte
             throw new IllegalStateException("No VaadinSession bound to current thread.");
         }
         return session;
-    }
-
-    @Override
-    public void clearContext() {
-
-        getSession().setAttribute(SecurityContext.class, null);
     }
 
     @Override

@@ -93,6 +93,12 @@ public class Team implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, members);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -101,11 +107,5 @@ public class Team implements Serializable {
         return id == team.id &&
                 Objects.equals(name, team.name) &&
                 Objects.equals(members, team.members);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, members);
     }
 }

@@ -138,6 +138,12 @@ public class Message implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, author, sendDateTime, textBody, channel);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -148,11 +154,5 @@ public class Message implements Serializable {
                 Objects.equals(sendDateTime, that.sendDateTime) &&
                 Objects.equals(textBody, that.textBody) &&
                 Objects.equals(channel, that.channel);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, author, sendDateTime, textBody, channel);
     }
 }

@@ -22,6 +22,17 @@ public class AssistanceApplication {
 
     public static final String NAME = "Assistance";
 
+    /**
+     * Starting point of this application.
+     *
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
+
+        // Start Spring Boot application and the contained server.
+        SpringApplication.run(AssistanceApplication.class, args);
+    }
+
     @Configuration
     @EnableGlobalMethodSecurity(securedEnabled = true)
     public static class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
@@ -45,17 +56,6 @@ public class AssistanceApplication {
 
             return authenticationManager();
         }
-    }
-
-    /**
-     * Starting point of this application.
-     *
-     * @param args command line arguments
-     */
-    public static void main(String[] args) {
-
-        // Start Spring Boot application and the contained server.
-        SpringApplication.run(AssistanceApplication.class, args);
     }
 }
 

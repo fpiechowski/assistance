@@ -49,6 +49,12 @@ public class Issue extends Task {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), reportingUser);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -56,11 +62,5 @@ public class Issue extends Task {
         if (!super.equals(o)) return false;
         Issue issue = (Issue) o;
         return Objects.equals(reportingUser, issue.reportingUser);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), reportingUser);
     }
 }

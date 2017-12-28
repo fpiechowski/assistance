@@ -60,6 +60,12 @@ public class Channel implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, subscribedUsers, messages);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -69,12 +75,6 @@ public class Channel implements Serializable {
                 Objects.equals(name, channel.name) &&
                 Objects.equals(subscribedUsers, channel.subscribedUsers) &&
                 Objects.equals(messages, channel.messages);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, subscribedUsers, messages);
     }
 
     /**

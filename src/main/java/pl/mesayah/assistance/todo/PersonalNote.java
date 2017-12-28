@@ -137,6 +137,12 @@ public class PersonalNote implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, parent, name, owner, completed);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -147,11 +153,5 @@ public class PersonalNote implements Serializable {
                 Objects.equals(parent, that.parent) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(owner, that.owner);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, parent, name, owner, completed);
     }
 }

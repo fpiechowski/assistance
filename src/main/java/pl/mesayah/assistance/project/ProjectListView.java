@@ -60,13 +60,6 @@ public class ProjectListView extends VerticalLayout implements View {
         addComponents(crudButtonsLayout);
     }
 
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-
-        // TODO: implement fetching projects from the database and showing them in grid layout
-
-    }
-
     /**
      * Initializes add, edit and delete buttons.
      */
@@ -86,5 +79,12 @@ public class ProjectListView extends VerticalLayout implements View {
         deleteProjectButton.addClickListener((Button.ClickListener) clickEvent -> {
             // TODO: implement deleting a project
         });
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+
+        // TODO: implement fetching projects from the database and showing them in grid layout
+
     }
 }

@@ -155,6 +155,12 @@ public class Milestone implements Serializable, Discussable {
     }
 
     @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, tasks, project);
+    }
+
+    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -164,12 +170,6 @@ public class Milestone implements Serializable, Discussable {
                 Objects.equals(name, milestone.name) &&
                 Objects.equals(tasks, milestone.tasks) &&
                 Objects.equals(project, milestone.project);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, tasks, project);
     }
 
     @Override
