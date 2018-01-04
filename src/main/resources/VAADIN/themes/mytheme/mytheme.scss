@@ -1,0 +1,46 @@
+@import '../valo/valo.scss';
+
+@mixin mytheme {
+  @include valo;
+
+
+  .avatar {
+    border-radius: 50%;
+    box-shadow: 1px 1px;
+  }
+
+  .username {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 1px 1px #000000;
+  }
+
+  .editprofile {
+    color: white;
+    text-decoration: none;
+
+  }
+
+
+  .editprofile:hover
+  {
+    color: white;
+    text-decoration: none;
+  }
+  .leftUserNavi {
+    background: gray;
+  }
+
+  .loginBox {
+    background: lightgray;
+    border-radius: 5%;
+  }
+  .loginGeneral {
+    background: gray;
+  }
+  .loginField {
+
+  }
+
+}
