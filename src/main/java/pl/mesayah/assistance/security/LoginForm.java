@@ -5,16 +5,26 @@ import com.vaadin.ui.*;
 
 public class LoginForm extends VerticalLayout {
 
+    private VerticalLayout formContainer;
+
     public LoginForm(LoginCallback callback) {
 
         setMargin(true);
         setSpacing(true);
 
-        TextField username = new TextField("Username");
-        addComponent(username);
+        setSizeFull();
 
-        PasswordField password = new PasswordField("Password");
-        addComponent(password);
+        formContainer = new VerticalLayout();
+        formContainer.setSizeUndefined();
+
+        TextField username = new TextField("Username:");
+        formContainer.addComponent(username);
+
+        PasswordField password = new PasswordField("Password:");
+        formContainer.addComponent(password);
+
+        username.setWidth("300px");
+        password.setWidth("300px");
 
         Button login = new Button("Login", evt -> {
             String pword = password.getValue();
@@ -24,8 +34,16 @@ public class LoginForm extends VerticalLayout {
                 username.focus();
             }
         });
+
+        formContainer.addComponent(login);
+
+        formContainer.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+
         login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        addComponent(login);
+
+        addComponent(formContainer);
+
+        setComponentAlignment(formContainer, Alignment.MIDDLE_CENTER);
     }
 
     @FunctionalInterface
