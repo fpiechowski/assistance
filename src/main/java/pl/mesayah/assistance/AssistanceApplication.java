@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.core.context.SecurityContextHolder;
+import pl.mesayah.assistance.security.Role;
 import pl.mesayah.assistance.security.VaadinSessionSecurityContextHolderStrategy;
 
 /**
@@ -46,9 +47,12 @@ public class AssistanceApplication {
 
             auth.inMemoryAuthentication()
                     .withUser("admin").password("admin")
-                    .roles("SUPER_USER", "PROJECT_MASTER", "DEVELOPER", "CLIENT")
+                    .roles(Role.ADMIN.toString(),
+                            Role.CLIENT.toString(),
+                            Role.DEVELOPER.toString(),
+                            Role.PROJECT_MANAGER.toString())
                     .and()
-                    .withUser("user").password("user").roles("DEVELOPER");
+                    .withUser("user").password("user").roles(Role.DEVELOPER.toString());
         }
 
         @Bean

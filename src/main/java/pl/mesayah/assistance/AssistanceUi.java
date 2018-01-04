@@ -63,24 +63,34 @@ public class AssistanceUi extends UI implements ViewDisplay {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
+        navigator.setErrorView(new ErrorView());
+
+        initializeViewDisplay();
+
         // Show login form or application main user interface
         getPage().setTitle(AssistanceApplication.NAME);
         if (!SecurityUtils.isLoggedIn()) {
             showLoginForm();
         } else {
+
             showApplicationUi();
         }
     }
 
+    /**
+     * Sets content of this UI to login form.
+     */
     private void showLoginForm() {
 
         setContent(new LoginForm(this::login));
     }
 
+    /**
+     * Sets content of this UI to a main application user interface.
+     */
     private void showApplicationUi() {
 
         initializeTopBarLayout();
-        initializeViewDisplay();
         initializeRootLayout();
 
         setContent(rootLayout);

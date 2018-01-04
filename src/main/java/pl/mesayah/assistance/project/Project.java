@@ -8,7 +8,6 @@ import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -32,7 +31,7 @@ public class Project implements Serializable, Discussable {
     /**
      * A NAME of this project.
      */
-    @NotNull
+    //@NotNull
     private String name;
 
     /**
@@ -48,13 +47,13 @@ public class Project implements Serializable, Discussable {
     /**
      * A date when this project starts.
      */
-    @NotNull
+    //@NotNull
     private LocalDate startDate;
 
     /**
      * A user who started a project.
      */
-    @NotNull
+    //@NotNull
     private User master;
 
     /**
@@ -66,7 +65,7 @@ public class Project implements Serializable, Discussable {
     /**
      * A stage and progress indicator of this project.
      */
-    @NotNull
+    //@NotNull
     @Enumerated(EnumType.ORDINAL)
     private Phase phase;
 
@@ -90,7 +89,7 @@ public class Project implements Serializable, Discussable {
     /**
      * A place where this project is discussed by using a chat.
      */
-    @NotNull
+    //@NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "channel_id")
     private Channel channel;

@@ -6,15 +6,12 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.issue.Issue;
-import pl.mesayah.assistance.milestone.Milestone;
-import pl.mesayah.assistance.task.Task;
-import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.utils.YesNoDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 /**
  * A view of project details. It presents parameters of a given project.
@@ -28,9 +25,19 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "project";
 
     /**
-     * A flag that declares if this view is in edit mode.
+     * An url path fragment for entering this view in edit mode to add a new project.
      */
-    private boolean inEditMode;
+    public static final String CREATE_MODE = "new";
+
+    /**
+     * An url path fragment for entering this view in edit mode to modify an existing project.
+     */
+    public static final String EDIT_MODE = "edit";
+
+    /**
+     * An url path fragment for entering this view in read mode to present details of a project.
+     */
+    public static final String READ_MODE = "read";
 
     /**
      * A reference to a user interface navigator.
@@ -47,7 +54,7 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     /**
      * A layout with edit and delete buttons.
      */
-    private HorizontalLayout crudButtonsLayout;
+    private HorizontalLayout buttonsLayout;
 
     /**
      * A button for editing details of the project.
@@ -62,7 +69,7 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     /**
      * A layout containing title and phase of the project.
      */
-    private HorizontalLayout nameAndPhaseLayout;
+    private HorizontalLayout namePhaseLayout;
 
     /**
      * A label showing a title of the project.
@@ -120,46 +127,6 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     private DateField deadlineDateField;
 
     /**
-     * A layout containing links to teams working under this project.
-     */
-    private ListSelect<Team> teamListSelect;
-
-    /**
-     * A twin column selector for selecting teams for the project.
-     */
-    private TwinColSelect<Team> teamsSelector;
-
-    /**
-     * A layout containing links to tasks related with this project.
-     */
-    private ListSelect<Task> taskListSelect;
-
-    /**
-     * A twin column selector for selecting tasks for the project.
-     */
-    private TwinColSelect<Task> tasksSelector;
-
-    /**
-     * A layout containing links to milestones of this project.
-     */
-    private ListSelect<Milestone> milestoneListSelect;
-
-    /**
-     * A twin column selector for selecting milestones for the project.
-     */
-    private TwinColSelect<Milestone> milestonesSelector;
-
-    /**
-     * A layout containing links to issues reported for this project.
-     */
-    private ListSelect<Issue> issueListSelect;
-
-    /**
-     * A twin column selector for selecting issues for this project.
-     */
-    private TwinColSelect<Issue> issuesSelector;
-
-    /**
      * A project which details we show in this view.
      */
     private Project project;
@@ -167,38 +134,38 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     /**
      * A button for confirming modifications made to project details.
      */
-    private Button confirmUpdateButton;
+    private Button confirmButton;
+
+    /**
+     * A unified formatter for start and deadline dates.
+     */
+    private DateTimeFormatter dateTimeFormatter;
 
     /**
      * Constructs a view in a read mode and initializes controls for it.
      */
     public ProjectDetailsView() {
 
-        inEditMode = false;
+        dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd yyyyy");
 
-        setWidth("100%");
-
-        crudButtonsLayout = new HorizontalLayout();
+        buttonsLayout = new HorizontalLayout();
 
         {
             editButton = new Button("Edit", VaadinIcons.PENCIL);
-            editButton.setEnabled(false);
-            editButton.addClickListener((Button.ClickListener) clickEvent -> enterEditMode());
+            editButton.addClickListener((Button.ClickListener) clickEvent ->
+                    navigator.navigateTo(ProjectDetailsView.VIEW_NAME + "/" + project.getId() + "/" +
+                            ProjectDetailsView.EDIT_MODE));
 
-            confirmUpdateButton = new Button("Confirm", VaadinIcons.CHECK);
-            confirmUpdateButton.setEnabled(false);
-            confirmUpdateButton.addClickListener((Button.ClickListener) clickEvent -> updateDetails());
+            confirmButton = new Button("Confirm", VaadinIcons.CHECK);
+            confirmButton.addClickListener((Button.ClickListener) clickEvent -> updateDetails());
 
             deleteButton = new Button("Delete", VaadinIcons.TRASH);
-            deleteButton.setEnabled(false);
-            deleteButton.addClickListener((Button.ClickListener) clickEvent -> deleteProject());
-
-            crudButtonsLayout.addComponents(editButton, deleteButton);
+            deleteButton.addClickListener((Button.ClickListener) clickEvent -> showDeleteWindow());
         }
 
 
-        nameAndPhaseLayout = new HorizontalLayout();
-        nameAndPhaseLayout.setWidth("100%");
+        namePhaseLayout = new HorizontalLayout();
+        namePhaseLayout.setWidth("100%");
 
         {
             nameLabel = new Label();
@@ -211,9 +178,11 @@ public class ProjectDetailsView extends VerticalLayout implements View {
             phaseLabel = new Label();
             phaseLabel.setCaption("Phase:");
 
-            phaseNativeSelect = new NativeSelect<>("Phase:");
-
-            nameAndPhaseLayout.addComponents(nameLabel, phaseLabel);
+            phaseNativeSelect = new NativeSelect<>("Phase:",
+                    Arrays.asList(Project.Phase.values()));
+            phaseNativeSelect.setEmptySelectionAllowed(false);
+            phaseNativeSelect.setSelectedItem(Project.Phase.PLANNING);
+            phaseNativeSelect.setWidth("200px");
         }
 
 
@@ -239,73 +208,10 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
             deadlineDateField = new DateField("Deadline:");
 
-            datesLayout.addComponents(startDateLabel, deadlineLabel);
-        }
-
-
-        teamListSelect = new ListSelect<>();
-        teamListSelect.setCaption("Teams:");
-
-        teamsSelector = new TwinColSelect<>("Teams:");
-
-
-        taskListSelect = new ListSelect<>();
-        taskListSelect.setCaption("Tasks:");
-
-        tasksSelector = new TwinColSelect<>("Tasks:");
-
-
-        milestoneListSelect = new ListSelect<>();
-        milestoneListSelect.setCaption("Milestones:");
-
-        milestonesSelector = new TwinColSelect<>("Milestones:");
-
-
-        issueListSelect = new ListSelect<>();
-        issueListSelect.setCaption("Issues:");
-
-        issuesSelector = new TwinColSelect<>("Issues:");
-
-
-        addComponents(
-                crudButtonsLayout,
-                nameAndPhaseLayout,
-                descriptionLabel,
-                datesLayout,
-                teamListSelect,
-                milestoneListSelect,
-                taskListSelect,
-                issueListSelect
-        );
-    }
-
-    /**
-     * Replaces presentation components with edit components to edit details of the project.
-     */
-    private void enterEditMode() {
-
-        if (!inEditMode) {
-            crudButtonsLayout.replaceComponent(editButton, confirmUpdateButton);
-
-            nameAndPhaseLayout.replaceComponent(nameLabel, nameTextField);
-            nameAndPhaseLayout.replaceComponent(phaseLabel, phaseNativeSelect);
-            nameAndPhaseLayout.setExpandRatio(nameTextField, 1.0f);
-
-            replaceComponent(descriptionLabel, descriptionTextArea);
-
-            datesLayout.replaceComponent(startDateLabel, startDateField);
-            datesLayout.replaceComponent(deadlineLabel, deadlineDateField);
-
-            replaceComponent(taskListSelect, tasksSelector);
-            replaceComponent(teamListSelect, teamsSelector);
-            replaceComponent(milestoneListSelect, milestonesSelector);
-            replaceComponent(issueListSelect, issuesSelector);
-
-            inEditMode = true;
-        } else {
-            throw new IllegalStateException("Entered edit mode while in edit mode!");
         }
     }
+
+
 
     /**
      * Fetches new values for the projects from edit controls, updates project object and saves it to the database.
@@ -319,21 +225,16 @@ public class ProjectDetailsView extends VerticalLayout implements View {
             project.setDescription(descriptionTextArea.getValue());
             project.setStartDate(startDateField.getValue());
             project.setDeadline(deadlineDateField.getValue());
-            project.setTeams(teamListSelect.getValue());
-            project.setMilestones(new ArrayList<>(milestoneListSelect.getValue()));
-            List<Task> tasksAndIssues = new ArrayList<>(taskListSelect.getValue());
-            tasksAndIssues.addAll(issueListSelect.getValue());
-            project.setTasks(tasksAndIssues);
 
-            projectService.save(project);
+            Project saved = projectService.save(project);
 
-            enterReadMode();
+            navigator.navigateTo(ProjectDetailsView.VIEW_NAME + "/" + saved.getId());
         } else {
             throw new IllegalStateException("No project to update!");
         }
     }
 
-    private void deleteProject() {
+    private void showDeleteWindow() {
 
         if (project != null) {
 
@@ -342,57 +243,24 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
                 projectService.delete(project.getId());
                 navigator.navigateTo(ProjectListView.VIEW_NAME);
+
             });
+            getUI().addWindow(confirmDialog);
         } else {
             throw new IllegalStateException("Trying to delete undefined project.");
         }
     }
 
     /**
-     * Replaces edit components with presentation components to show details of the project.
-     */
-    private void enterReadMode() {
-
-        if (inEditMode) {
-            crudButtonsLayout.replaceComponent(confirmUpdateButton, editButton);
-
-            nameAndPhaseLayout.replaceComponent(nameTextField, nameLabel);
-            nameAndPhaseLayout.replaceComponent(phaseNativeSelect, phaseLabel);
-            nameAndPhaseLayout.setExpandRatio(nameLabel, 1.0f);
-
-            replaceComponent(descriptionTextArea, descriptionLabel);
-
-            replaceComponent(startDateField, startDateLabel);
-            replaceComponent(deadlineDateField, deadlineLabel);
-
-            replaceComponent(teamsSelector, teamListSelect);
-            replaceComponent(tasksSelector, taskListSelect);
-            replaceComponent(milestonesSelector, milestoneListSelect);
-            replaceComponent(issuesSelector, issueListSelect);
-
-            inEditMode = false;
-        } else {
-            throw new IllegalStateException("Entered read mode while in read mode!");
-        }
-    }
-
-    public boolean isInEditMode() {
-
-        return inEditMode;
-    }
-
-    public void setInEditMode(boolean inEditMode) {
-
-        this.inEditMode = inEditMode;
-    }
-
-    /**
+     * Method called on view entered.
      * Path schema:
-     * project/{id}/{mode}
-     * eg. project/46/edit, project/23/read
-     * Default mode is 'read'.
+     * #!project/new			CREATE
+     * #!project/{id}			READ
+     * #!project/{id}/edit		UPDATE
+     * <p>
+     * #!project/{id}/{operation}	custom operation for specific project
      *
-     * @param event
+     * @param event an information holder for view change event
      */
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -400,49 +268,155 @@ public class ProjectDetailsView extends VerticalLayout implements View {
         //Read parameters from URL.
         String[] parameters = event.getParameters().split("/");
 
-        if (parameters.length == 1 && parameters[0].equals("")) {
+        if (parameters[0].equals(ProjectDetailsView.CREATE_MODE)) {
 
-            //No ID or mode type passed in url, show error notification
-            Notification.show("No project ID passed!", Notification.Type.ERROR_MESSAGE);
-        } else {
+            // CREATE
+            project = new Project();
+            enterCreateMode();
+        } else if (StringUtils.isNumeric(parameters[0])) {
 
-            //At least ID passed, fetch a project and check for mode parameter
+            System.out.println("Found project ID parameter");
+
+            // 1st parameter is numeric
             Long projectId = Long.parseLong(parameters[0]);
             project = projectService.findById(projectId);
 
-            if (project == null) {
+            bindComponentsToProject();
 
-                // Project not found
-                Notification.show("No project with a given ID in the database!",
-                        Notification.Type.ERROR_MESSAGE);
-            } else {
+            if (parameters.length == 2) {
 
-                // Project fetched properly, enable edit and delete buttons
-                editButton.setEnabled(true);
-                deleteButton.setEnabled(true);
-                confirmUpdateButton.setEnabled(true);
+                System.out.println("Found view mode parameter");
 
-                if (parameters.length > 1) {
+                switch (parameters[1]) {
+                    case ProjectDetailsView.EDIT_MODE: {
 
-                    //Mode passed as a url parameter, identify and enter it
-                    String mode = parameters[1];
-                    if (mode.equals("edit")) {
+                        System.out.println("Recognized view mode parameter as EDIT MODE");
+                        // UPDATE
                         enterEditMode();
-                    } else if (mode.equals("read")) {
-                        enterReadMode();
-                    } else {
-                        //Unknown mode passed, show notification
-                        Notification.show("Unknown mode type passed in URL! Entered read mode by default.",
-                                Notification.Type.WARNING_MESSAGE);
-                        enterReadMode();
+                        break;
                     }
-                } else {
-                    // Only ID passed, enter read mode by default
-                    enterReadMode();
+                    case ProjectDetailsView.READ_MODE: {
+
+                        System.out.println("Recognized view mode parameter as READ MODE");
+                        // READ
+                        enterReadMode();
+                        break;
+                    }
                 }
+            } else {
+                // READ
+                enterReadMode();
             }
         }
     }
 
+    private void enterCreateMode() {
 
+        switchToEditComponents();
+        deleteButton.setVisible(false);
+    }
+
+    private void bindComponentsToProject() {
+
+        nameLabel.setValue(project.getName());
+        nameTextField.setValue(project.getName());
+
+        phaseLabel.setValue(project.getPhase().toString());
+        phaseNativeSelect.setValue(project.getPhase());
+
+        descriptionLabel.setValue(project.getDescription());
+        descriptionTextArea.setValue(project.getDescription());
+
+        startDateLabel.setValue(project.getStartDate().format(dateTimeFormatter));
+        startDateField.setValue(project.getStartDate());
+
+        deadlineLabel.setValue(project.getDeadline().format(dateTimeFormatter));
+        deadlineDateField.setValue(project.getDeadline());
+    }
+
+    private void enterEditMode() {
+
+        System.out.println("Entered EDIT MODE");
+
+        switchToEditComponents();
+        deleteButton.setVisible(true);
+    }
+
+    private void enterReadMode() {
+
+        switchToReadComponents();
+        deleteButton.setVisible(true);
+    }
+
+    /**
+     * Replaces presentation components with edit components to edit details of the project.
+     */
+    private void switchToEditComponents() {
+
+        removeAllComponents();
+
+        buttonsLayout.removeAllComponents();
+        buttonsLayout.addComponents(
+                confirmButton,
+                deleteButton
+        );
+
+        namePhaseLayout.removeAllComponents();
+        namePhaseLayout.addComponents(
+                nameTextField,
+                phaseNativeSelect
+        );
+        namePhaseLayout.setExpandRatio(nameTextField, 1.0f);
+
+        datesLayout.removeAllComponents();
+        datesLayout.addComponents(
+                startDateField,
+                deadlineDateField
+        );
+
+        addComponents(
+                buttonsLayout,
+                namePhaseLayout,
+                descriptionTextArea,
+                datesLayout
+        );
+
+        setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
+    }
+
+    /**
+     * Replaces edit components with presentation components to show details of the project.
+     */
+    private void switchToReadComponents() {
+
+        removeAllComponents();
+
+        buttonsLayout.removeAllComponents();
+        buttonsLayout.addComponents(
+                editButton,
+                deleteButton
+        );
+
+        namePhaseLayout.removeAllComponents();
+        namePhaseLayout.addComponents(
+                nameLabel,
+                phaseLabel
+        );
+        namePhaseLayout.setExpandRatio(nameLabel, 1.0f);
+
+        datesLayout.removeAllComponents();
+        datesLayout.addComponents(
+                startDateLabel,
+                deadlineLabel
+        );
+
+        addComponents(
+                buttonsLayout,
+                namePhaseLayout,
+                descriptionLabel,
+                datesLayout
+        );
+
+        setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
+    }
 }
