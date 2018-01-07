@@ -6,7 +6,6 @@ import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.task.Task;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -30,19 +29,16 @@ public class Milestone implements Serializable, Discussable {
     /**
      * The NAME of this milestone.
      */
-    @NotNull
     private String name;
 
     /**
      * A deadline for this milestone.
      */
-    @NotNull
     private Date deadline;
 
     /**
      * Tasks that have to be completed to achieve this milestone.
      */
-    @NotNull
     @ManyToMany
     @JoinTable(
             name = "milestone_task",
@@ -54,7 +50,6 @@ public class Milestone implements Serializable, Discussable {
     /**
      * A project this milestone indicates progress for.
      */
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
@@ -62,7 +57,6 @@ public class Milestone implements Serializable, Discussable {
     /**
      * A channel for discussing this milestone.
      */
-    @NotNull
     @OneToOne
     @JoinColumn(name = "channel_id")
     private Channel channel;

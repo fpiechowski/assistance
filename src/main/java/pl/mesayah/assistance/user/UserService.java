@@ -3,8 +3,6 @@ package pl.mesayah.assistance.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Service for managing user accounts.
  */
@@ -43,17 +41,6 @@ public class UserService {
     public User findById(Long id) {
 
         return userRepository.findOne(id);
-    }
-
-    /**
-     * Retrieves all user entities with the given role.
-     *
-     * @param role given role entity.
-     * @return the entity with the given role or null if none found.
-     */
-    public List<User> findAllByRole(String role) {
-
-        return userRepository.findAllByRole(role);
     }
 
     /**

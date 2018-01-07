@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.notification;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -20,19 +19,16 @@ public class Notification {
     /**
      * A title of this notification.
      */
-    @NotNull
     private String title;
 
     /**
      * Date and time this notification was sent.
      */
-    @NotNull
     private LocalDateTime sendDateTime;
 
     /**
      * A type of this notification.
      */
-    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private NotificationType type;
 

@@ -3,7 +3,6 @@ package pl.mesayah.assistance.messaging;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +30,6 @@ public class Channel implements Serializable {
      * <p>
      * If a channel is made for a discussable object the NAME is generated based on the discussable object's NAME.
      */
-    @NotNull
     private String name;
 
     /**

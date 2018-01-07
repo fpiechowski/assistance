@@ -4,7 +4,6 @@ import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -25,7 +24,6 @@ public class Team implements Serializable {
     /**
      * A NAME of this team.
      */
-    @NotNull
     private String name;
 
     /**

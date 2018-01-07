@@ -7,7 +7,6 @@ import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -34,7 +33,6 @@ public class Task implements Serializable, Discussable {
     /**
      * A NAME of this task.
      */
-    @NotNull
     private String name;
 
     /**
@@ -51,7 +49,6 @@ public class Task implements Serializable, Discussable {
     /**
      * A stage of progress this task is in.
      */
-    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
@@ -69,7 +66,6 @@ public class Task implements Serializable, Discussable {
     /**
      * Importance of this task.
      */
-    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Priority priority;
 
@@ -99,14 +95,12 @@ public class Task implements Serializable, Discussable {
     /**
      * A type of this task.
      */
-    @NotNull
     @Enumerated(EnumType.ORDINAL)
     private Type type;
 
     /**
      * A channel where this task is discussed.
      */
-    @NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "channel_id")
     private Channel channel;
@@ -114,7 +108,6 @@ public class Task implements Serializable, Discussable {
     /**
      * A project this task involves.
      */
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;

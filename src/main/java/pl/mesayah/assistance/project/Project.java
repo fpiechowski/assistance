@@ -89,7 +89,6 @@ public class Project implements Serializable, Discussable {
     /**
      * A place where this project is discussed by using a chat.
      */
-    //@NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "channel_id")
     private Channel channel;

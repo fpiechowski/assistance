@@ -3,7 +3,6 @@ package pl.mesayah.assistance.todo;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -32,13 +31,11 @@ public class PersonalNote implements Serializable {
     /**
      * The NAME of this personal task which describes its subject.
      */
-    @NotNull
     private String name;
 
     /**
      * A user who created this personal task.
      */
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
@@ -46,7 +43,6 @@ public class PersonalNote implements Serializable {
     /**
      * Indicates whether this personal task is completed.
      */
-    @NotNull
     private boolean completed;
 
     /**

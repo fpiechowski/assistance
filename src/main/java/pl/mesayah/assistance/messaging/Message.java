@@ -3,7 +3,6 @@ package pl.mesayah.assistance.messaging;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -28,13 +27,11 @@ public class Message implements Serializable {
     /**
      * A user who wrote and sent this message.
      */
-    @NotNull
     private User author;
 
     /**
      * A day this message was sent.
      */
-    @NotNull
     private LocalDateTime sendDateTime;
 
     /**
@@ -45,7 +42,6 @@ public class Message implements Serializable {
     /**
      * A channel this message was sent to.
      */
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "channel_id")
     private Channel channel;

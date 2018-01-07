@@ -6,7 +6,6 @@ import pl.mesayah.assistance.user.User;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -20,7 +19,6 @@ public class Issue extends Task {
     /**
      * A user who reported this issue.
      */
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "reporter_id")
     private User reportingUser;

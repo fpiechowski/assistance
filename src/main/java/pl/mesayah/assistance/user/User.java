@@ -1,11 +1,12 @@
 package pl.mesayah.assistance.user;
 
 import pl.mesayah.assistance.messaging.Channel;
+import pl.mesayah.assistance.security.Role;
 import pl.mesayah.assistance.todo.PersonalNote;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -13,9 +14,10 @@ import java.util.Set;
 /**
  * A person who can use this application.
  * <p>
- * Users have a role which defines their privileges to perform certain operations.
+ * Users have a roles which defines their privileges to perform certain operations.
  */
 @Entity
+@Table
 public class User implements Serializable {
 
     /**
@@ -23,20 +25,25 @@ public class User implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
     private long id;
 
     /**
      * A credential this user uses to sign in.
      */
-    @NotNull
+    @Column(nullable = false, unique = true)
     private String username;
 
     /**
-     * A role of this user.
+     * A roles of this user.
      */
-    @NotNull
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles;
+
 
     /**
      * First name of this user.
@@ -65,6 +72,10 @@ public class User implements Serializable {
     )
     private Set<Channel> subscribedChannels;
 
+    private String password;
+
+    private boolean enabled;
+
     /**
      * Constructs a user object with no attributes specified.
      */
@@ -72,10 +83,20 @@ public class User implements Serializable {
 
     }
 
+    public User(String username, Collection<Role> roles, String firstName, String lastName, String password, boolean enabled) {
+
+        this.username = username;
+        this.roles = roles;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.enabled = enabled;
+    }
+
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, username, role, firstName, lastName, personalNotes, subscribedChannels);
+        return Objects.hash(id, username, roles, firstName, lastName, personalNotes, subscribedChannels);
     }
 
     @Override
@@ -86,7 +107,7 @@ public class User implements Serializable {
         User user = (User) o;
         return id == user.id &&
                 Objects.equals(username, user.username) &&
-                Objects.equals(role, user.role) &&
+                Objects.equals(roles, user.roles) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(personalNotes, user.personalNotes) &&
@@ -158,19 +179,19 @@ public class User implements Serializable {
     }
 
     /**
-     * @return a role of this user
+     * @return a roles of this user
      */
-    public String getRole() {
+    public Collection<Role> getRoles() {
 
-        return role;
+        return roles;
     }
 
     /**
-     * @param role a role for this user
+     * @param roles a roles for this user
      */
-    public void setRole(String role) {
+    public void setRoles(Collection<Role> roles) {
 
-        this.role = role;
+        this.roles = roles;
     }
 
     /**
@@ -203,5 +224,25 @@ public class User implements Serializable {
     public void setLastName(String lastName) {
 
         this.lastName = lastName;
+    }
+
+    public String getPassword() {
+
+        return password;
+    }
+
+    public void setPassword(String password) {
+
+        this.password = password;
+    }
+
+    public boolean isEnabled() {
+
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+
+        this.enabled = enabled;
     }
 }

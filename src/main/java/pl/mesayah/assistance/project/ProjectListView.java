@@ -102,7 +102,7 @@ public class ProjectListView extends VerticalLayout implements View {
 
             this.project = project;
 
-            this.setWidth("300px");
+            this.setWidth("20%");
 
             setCaption(project.getName());
 
