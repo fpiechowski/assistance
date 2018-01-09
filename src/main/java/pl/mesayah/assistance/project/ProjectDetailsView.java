@@ -1,5 +1,8 @@
 package pl.mesayah.assistance.project;
 
+import com.vaadin.data.Binder;
+import com.vaadin.data.BinderValidationStatus;
+import com.vaadin.data.ValidationException;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -8,10 +11,19 @@ import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import pl.mesayah.assistance.security.Role;
+import pl.mesayah.assistance.security.RoleService;
+import pl.mesayah.assistance.user.User;
+import pl.mesayah.assistance.user.UserService;
 import pl.mesayah.assistance.utils.YesNoDialog;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
 
 /**
  * A view of project details. It presents parameters of a given project.
@@ -127,6 +139,11 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     private DateField deadlineDateField;
 
     /**
+     * A combo box for selecting project managerComboBox username.
+     */
+    private ComboBox<User> managerComboBox;
+
+    /**
      * A project which details we show in this view.
      */
     private Project project;
@@ -140,6 +157,22 @@ public class ProjectDetailsView extends VerticalLayout implements View {
      * A unified formatter for start and deadline dates.
      */
     private DateTimeFormatter dateTimeFormatter;
+
+    /**
+     * A data binder for binding values of project properties to Vaadin compontent in the UI.
+     */
+    private Binder<Project> dataBinder;
+
+    /**
+     * A user service bean for fetching users from the database.
+     */
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    private Label managerLabel;
 
     /**
      * Constructs a view in a read mode and initializes controls for it.
@@ -174,6 +207,7 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
             nameTextField = new TextField("Name:");
             nameTextField.setWidth("100%");
+            nameTextField.setRequiredIndicatorVisible(true);
 
             phaseLabel = new Label();
             phaseLabel.setCaption("Phase:");
@@ -183,6 +217,7 @@ public class ProjectDetailsView extends VerticalLayout implements View {
             phaseNativeSelect.setEmptySelectionAllowed(false);
             phaseNativeSelect.setSelectedItem(Project.Phase.PLANNING);
             phaseNativeSelect.setWidth("200px");
+            phaseNativeSelect.setRequiredIndicatorVisible(true);
         }
 
 
@@ -202,16 +237,43 @@ public class ProjectDetailsView extends VerticalLayout implements View {
             startDateLabel.setCaption("Started:");
 
             startDateField = new DateField("Start date:");
+            startDateField.setRequiredIndicatorVisible(true);
 
             deadlineLabel = new Label();
             deadlineLabel.setCaption("Deadline:");
 
             deadlineDateField = new DateField("Deadline:");
-
         }
+
+
+        managerLabel = new Label();
+        managerLabel.setCaption("Project Manager");
+
+
+        managerComboBox = new ComboBox<>("Project Manager");
+        managerComboBox.setEmptySelectionAllowed(false);
+        managerComboBox.setItemCaptionGenerator((ItemCaptionGenerator<User>) user -> user.getUsername());
+        managerComboBox.setRequiredIndicatorVisible(true);
+
+
+        dataBinder = new Binder<>(Project.class);
+        dataBinder.forField(nameTextField)
+                .withValidator(name -> name.length() > 0, "Name must not be empty.")
+                .bind(Project::getName, Project::setName);
+        dataBinder.forField(phaseNativeSelect)
+                .bind(Project::getPhase, Project::setPhase);
+        dataBinder.forField(descriptionTextArea)
+                .bind(Project::getDescription, Project::setDescription);
+        dataBinder.forField(startDateField)
+                .withValidator(Objects::nonNull, "Start date must not be empty.")
+                .bind(Project::getStartDate, Project::setStartDate);
+        dataBinder.forField(deadlineDateField)
+                .bind(Project::getDeadline, Project::setDeadline);
+        dataBinder.forField(managerComboBox)
+                .withValidator(Objects::nonNull, "Project must have a manager.")
+                .bind(Project::getManager, Project::setManager);
+        System.out.println(nameTextField.getValue());
     }
-
-
 
     /**
      * Fetches new values for the projects from edit controls, updates project object and saves it to the database.
@@ -220,11 +282,13 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
         if (project != null) {
 
-            project.setName(nameTextField.getValue());
-            project.setPhase(phaseNativeSelect.getValue());
-            project.setDescription(descriptionTextArea.getValue());
-            project.setStartDate(startDateField.getValue());
-            project.setDeadline(deadlineDateField.getValue());
+            try {
+                dataBinder.writeBean(project);
+            } catch (ValidationException e) {
+                e.printStackTrace();
+                BinderValidationStatus<Project> status = dataBinder.validate();
+                return;
+            }
 
             Project saved = projectService.save(project);
 
@@ -243,12 +307,21 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
                 projectService.delete(project.getId());
                 navigator.navigateTo(ProjectListView.VIEW_NAME);
-
             });
             getUI().addWindow(confirmDialog);
         } else {
             throw new IllegalStateException("Trying to delete undefined project.");
         }
+    }
+
+    public ComboBox<User> getManagerComboBox() {
+
+        return managerComboBox;
+    }
+
+    public void setManagerComboBox(ComboBox<User> managerComboBox) {
+
+        this.managerComboBox = managerComboBox;
     }
 
     /**
@@ -265,6 +338,9 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
+        Collection<User> projectManagers = roleService.findByName(Role.PROJECT_MANAGER).getUsers();
+        managerComboBox.setItems(projectManagers);
+
         //Read parameters from URL.
         String[] parameters = event.getParameters().split("/");
 
@@ -272,6 +348,12 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
             // CREATE
             project = new Project();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                String currentUserName = authentication.getName();
+                project.setManager(userService.findByUsername(currentUserName));
+            }
+            bindComponentsToProject();
             enterCreateMode();
         } else if (StringUtils.isNumeric(parameters[0])) {
 
@@ -281,31 +363,33 @@ public class ProjectDetailsView extends VerticalLayout implements View {
             Long projectId = Long.parseLong(parameters[0]);
             project = projectService.findById(projectId);
 
-            bindComponentsToProject();
+            if (project != null) {
+                bindComponentsToProject();
 
-            if (parameters.length == 2) {
+                if (parameters.length == 2) {
 
-                System.out.println("Found view mode parameter");
+                    System.out.println("Found view mode parameter");
 
-                switch (parameters[1]) {
-                    case ProjectDetailsView.EDIT_MODE: {
+                    switch (parameters[1]) {
+                        case ProjectDetailsView.EDIT_MODE: {
 
-                        System.out.println("Recognized view mode parameter as EDIT MODE");
-                        // UPDATE
-                        enterEditMode();
-                        break;
+                            System.out.println("Recognized view mode parameter as EDIT MODE");
+                            // UPDATE
+                            enterEditMode();
+                            break;
+                        }
+                        case ProjectDetailsView.READ_MODE: {
+
+                            System.out.println("Recognized view mode parameter as READ MODE");
+                            // READ
+                            enterReadMode();
+                            break;
+                        }
                     }
-                    case ProjectDetailsView.READ_MODE: {
-
-                        System.out.println("Recognized view mode parameter as READ MODE");
-                        // READ
-                        enterReadMode();
-                        break;
-                    }
+                } else {
+                    // READ
+                    enterReadMode();
                 }
-            } else {
-                // READ
-                enterReadMode();
             }
         }
     }
@@ -318,20 +402,7 @@ public class ProjectDetailsView extends VerticalLayout implements View {
 
     private void bindComponentsToProject() {
 
-        nameLabel.setValue(project.getName());
-        nameTextField.setValue(project.getName());
-
-        phaseLabel.setValue(project.getPhase().toString());
-        phaseNativeSelect.setValue(project.getPhase());
-
-        descriptionLabel.setValue(project.getDescription());
-        descriptionTextArea.setValue(project.getDescription());
-
-        startDateLabel.setValue(project.getStartDate().format(dateTimeFormatter));
-        startDateField.setValue(project.getStartDate());
-
-        deadlineLabel.setValue(project.getDeadline().format(dateTimeFormatter));
-        deadlineDateField.setValue(project.getDeadline());
+        dataBinder.readBean(project);
     }
 
     private void enterEditMode() {
@@ -345,43 +416,10 @@ public class ProjectDetailsView extends VerticalLayout implements View {
     private void enterReadMode() {
 
         switchToReadComponents();
+
+        setReadLabels();
+
         deleteButton.setVisible(true);
-    }
-
-    /**
-     * Replaces presentation components with edit components to edit details of the project.
-     */
-    private void switchToEditComponents() {
-
-        removeAllComponents();
-
-        buttonsLayout.removeAllComponents();
-        buttonsLayout.addComponents(
-                confirmButton,
-                deleteButton
-        );
-
-        namePhaseLayout.removeAllComponents();
-        namePhaseLayout.addComponents(
-                nameTextField,
-                phaseNativeSelect
-        );
-        namePhaseLayout.setExpandRatio(nameTextField, 1.0f);
-
-        datesLayout.removeAllComponents();
-        datesLayout.addComponents(
-                startDateField,
-                deadlineDateField
-        );
-
-        addComponents(
-                buttonsLayout,
-                namePhaseLayout,
-                descriptionTextArea,
-                datesLayout
-        );
-
-        setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
     }
 
     /**
@@ -414,7 +452,67 @@ public class ProjectDetailsView extends VerticalLayout implements View {
                 buttonsLayout,
                 namePhaseLayout,
                 descriptionLabel,
-                datesLayout
+                datesLayout,
+                managerLabel
+        );
+
+        setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);
+    }
+
+    private void setReadLabels() {
+
+        nameLabel.setValue(project.getName());
+        phaseLabel.setValue(project.getPhase().toString());
+        descriptionLabel.setValue(project.getDescription());
+        startDateLabel.setValue(project.getStartDate().format(dateTimeFormatter));
+        String deadline;
+        if (project.getDeadline() == null) {
+            deadline = null;
+        } else {
+            deadline = project.getDeadline().format(dateTimeFormatter);
+        }
+        deadlineLabel.setValue(deadline);
+        String manager;
+        if (project.getManager() == null) {
+            manager = null;
+        } else {
+            manager = project.getManager().getUsername();
+        }
+        managerLabel.setValue(manager);
+    }
+
+    /**
+     * Replaces presentation components with edit components to edit details of the project.
+     */
+    private void switchToEditComponents() {
+
+        removeAllComponents();
+
+        buttonsLayout.removeAllComponents();
+        buttonsLayout.addComponents(
+                confirmButton,
+                deleteButton
+        );
+
+        namePhaseLayout.removeAllComponents();
+        namePhaseLayout.addComponents(
+                nameTextField,
+                phaseNativeSelect
+        );
+        namePhaseLayout.setExpandRatio(nameTextField, 1.0f);
+
+        datesLayout.removeAllComponents();
+        datesLayout.addComponents(
+                startDateField,
+                deadlineDateField
+        );
+
+        addComponents(
+                buttonsLayout,
+                namePhaseLayout,
+                descriptionTextArea,
+                datesLayout,
+                managerComboBox
         );
 
         setComponentAlignment(buttonsLayout, Alignment.MIDDLE_RIGHT);

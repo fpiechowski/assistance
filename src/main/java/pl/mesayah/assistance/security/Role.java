@@ -1,12 +1,15 @@
 package pl.mesayah.assistance.security;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
-public class Role {
+public class Role implements Serializable {
 
     public static final String SUPER_ADMIN = "SUPER_ADMIN";
 
@@ -20,12 +23,15 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany
     @JoinTable(
             name = "role_privilege",
             joinColumns = @JoinColumn(name = "role_id"),
