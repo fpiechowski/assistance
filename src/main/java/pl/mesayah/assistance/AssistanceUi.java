@@ -130,7 +130,8 @@ public class AssistanceUi extends UI implements ViewDisplay {
         rootLayout = new VerticalLayout();
         rootLayout.setMargin(false);
         rootLayout.addComponents(topBarLayout, viewDisplay);
-        rootLayout.setSizeFull();
+        rootLayout.setComponentAlignment(viewDisplay, Alignment.TOP_CENTER);
+        
         rootLayout.setExpandRatio(viewDisplay, 1.0f);
     }
 

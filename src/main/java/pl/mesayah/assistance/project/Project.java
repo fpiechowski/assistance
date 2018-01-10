@@ -8,6 +8,7 @@ import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -31,7 +32,7 @@ public class Project implements Serializable, Discussable {
     /**
      * A NAME of this project.
      */
-    //@NotNull
+    @NotNull
     private String name;
 
     /**
@@ -47,14 +48,17 @@ public class Project implements Serializable, Discussable {
     /**
      * A date when this project starts.
      */
-    //@NotNull
+    @NotNull
     private LocalDate startDate;
 
     /**
      * A user who started a project.
      */
-    //@NotNull
-    private User master;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private User manager;
 
     /**
      * Things to do to develop and realize this project.
@@ -98,7 +102,18 @@ public class Project implements Serializable, Discussable {
      */
     public Project() {
 
+        startDate = LocalDate.now();
+        phase = Phase.PLANNING;
+    }
 
+    public User getManager() {
+
+        return manager;
+    }
+
+    public void setManager(User manager) {
+
+        this.manager = manager;
     }
 
     /**

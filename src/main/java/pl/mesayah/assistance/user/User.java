@@ -1,5 +1,7 @@
 package pl.mesayah.assistance.user;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import pl.mesayah.assistance.messaging.Channel;
 import pl.mesayah.assistance.security.Role;
 import pl.mesayah.assistance.todo.PersonalNote;
@@ -17,7 +19,6 @@ import java.util.Set;
  * Users have a roles which defines their privileges to perform certain operations.
  */
 @Entity
-@Table
 public class User implements Serializable {
 
     /**
@@ -58,12 +59,13 @@ public class User implements Serializable {
     /**
      * A list of this user's personal task.
      */
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<PersonalNote> personalNotes;
 
     /**
      * Channels this user subscribes.
      */
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(
             name = "channel_user",
