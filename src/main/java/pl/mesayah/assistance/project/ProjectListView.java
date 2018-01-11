@@ -9,6 +9,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.mesayah.assistance.ViewMode;
 import pl.mesayah.assistance.utils.YesNoDialog;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class ProjectListView extends VerticalLayout implements View {
 
         addButton = new Button("New Project", VaadinIcons.PLUS);
         addButton.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo(ProjectDetailsView.VIEW_NAME + "/" +
-                ProjectDetailsView.CREATE_MODE));
+                ViewMode.CREATE_MODE.getUrlString()));
 
         projectsTilesLayout = new CssLayout();
 
@@ -134,7 +135,7 @@ public class ProjectListView extends VerticalLayout implements View {
 
                 navigator.navigateTo(ProjectDetailsView.VIEW_NAME + "/" +
                         project.getId() + "/" +
-                        ProjectDetailsView.EDIT_MODE);
+                        ViewMode.EDIT_MODE.getUrlString());
             });
 
             buttonsLayout = new HorizontalLayout(editButton, deleteButton);

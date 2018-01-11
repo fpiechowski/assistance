@@ -20,14 +20,14 @@ import java.util.*;
  * {@link Task}s attached to it.
  */
 @Entity
-public class Project implements Serializable, Discussable {
+public class Project implements Serializable, Discussable, pl.mesayah.assistance.Entity {
 
     /**
      * An unique identifier of this project.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     /**
      * A NAME of this project.
@@ -119,7 +119,8 @@ public class Project implements Serializable, Discussable {
     /**
      * @return an unique identifier of this project
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
     }
@@ -127,7 +128,7 @@ public class Project implements Serializable, Discussable {
     /**
      * @param id an unique identifier for this project
      */
-    public void setId(long id) {
+    public void setId(Long id) {
 
         this.id = id;
     }
@@ -277,7 +278,7 @@ public class Project implements Serializable, Discussable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, description, deadline, startDate, tasks, phase, teams, milestones, channel);
+        return Objects.hash(id, name, description, deadline, startDate, manager, phase, channel);
     }
 
     @Override
@@ -286,15 +287,13 @@ public class Project implements Serializable, Discussable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Project project = (Project) o;
-        return id == project.id &&
+        return Objects.equals(id, project.id) &&
                 Objects.equals(name, project.name) &&
                 Objects.equals(description, project.description) &&
                 Objects.equals(deadline, project.deadline) &&
                 Objects.equals(startDate, project.startDate) &&
-                Objects.equals(tasks, project.tasks) &&
+                Objects.equals(manager, project.manager) &&
                 phase == project.phase &&
-                Objects.equals(teams, project.teams) &&
-                Objects.equals(milestones, project.milestones) &&
                 Objects.equals(channel, project.channel);
     }
 

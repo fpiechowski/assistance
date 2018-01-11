@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.security;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,5 +37,14 @@ public final class SecurityUtils {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
+    }
+
+    public static String getCurrentUserUsername() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken) && auth != null) {
+            return auth.getName();
+        }
+        return null;
     }
 }

@@ -19,14 +19,14 @@ import java.util.Set;
  * Users have a roles which defines their privileges to perform certain operations.
  */
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, pl.mesayah.assistance.Entity {
 
     /**
      * An unique identifier of this user.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     /**
      * A credential this user uses to sign in.
@@ -151,7 +151,8 @@ public class User implements Serializable {
     /**
      * @return an unique identifier of this user
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
     }
@@ -159,7 +160,7 @@ public class User implements Serializable {
     /**
      * @param id an unique identifier for this user
      */
-    public void setId(long id) {
+    public void setId(Long id) {
 
         this.id = id;
     }

@@ -15,6 +15,7 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import pl.mesayah.assistance.security.LoginForm;
 import pl.mesayah.assistance.security.SecurityUtils;
+import pl.mesayah.assistance.utils.RepositoryUtils;
+import pl.mesayah.assistance.utils.ViewUtils;
+import pl.mesayah.assistance.utils.YesNoDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,6 +137,19 @@ public class AssistanceUi extends UI implements ViewDisplay {
         rootLayout.setComponentAlignment(viewDisplay, Alignment.TOP_CENTER);
         
         rootLayout.setExpandRatio(viewDisplay, 1.0f);
+    }
+
+    public <T extends Entity> void showDeleteWindow(T itemToDelete) {
+
+        CrudRepository repository = RepositoryUtils.getRepositoryFor(itemToDelete.getClass());
+
+        YesNoDialog confirmDialog = new YesNoDialog("Delete a project",
+                "Are you sure you want to delete this project?", clickEvent -> {
+
+            repository.delete(itemToDelete);
+            navigator.navigateTo(ViewUtils.getListViewNameFor(itemToDelete));
+        });
+        getUI().addWindow(confirmDialog);
     }
 
     private boolean login(String username, String password) {
