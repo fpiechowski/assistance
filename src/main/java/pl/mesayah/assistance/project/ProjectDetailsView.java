@@ -177,7 +177,6 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         managerComboBox.setItemCaptionGenerator((ItemCaptionGenerator<User>) user -> user.getUsername());
         managerComboBox.setRequiredIndicatorVisible(true);
 
-
         return new ArrayList<>(Arrays.asList(
                 editNamePhaseLayout,
                 descriptionTextArea,

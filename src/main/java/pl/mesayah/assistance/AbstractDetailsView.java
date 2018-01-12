@@ -48,7 +48,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         editButton = initializeEditButton();
         editButton.addClickListener(clickEvent -> navigator.navigateTo(
-                ViewUtils.getDetailsViewNameFor(getEntity()) + "/" + getEntity().getId() + "/" +
+                ViewUtils.getDetailsViewNameFor(getEntity().getClass()) + "/" + getEntity().getId() + "/" +
                         ViewMode.EDIT_MODE.getUrlString()));
 
         buttonsLayout = new HorizontalLayout();
@@ -104,7 +104,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         CrudRepository repository = RepositoryUtils.getRepositoryFor(entity.getClass());
         T saved = (T) repository.save(entity);
 
-        navigator.navigateTo(ViewUtils.getDetailsViewNameFor(entity) + "/" + saved.getId());
+        navigator.navigateTo(ViewUtils.getDetailsViewNameFor(entity.getClass()) + "/" + saved.getId());
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
             } else {
 
                 entity = createEmptyEntity();
-                Notification.show("No such " + ViewUtils.getDetailsViewNameFor(entity) + " in the database.", Notification.Type.ERROR_MESSAGE);
+                Notification.show("No such " + ViewUtils.getDetailsViewNameFor(entity.getClass()) + " in the database.", Notification.Type.ERROR_MESSAGE);
             }
         }
     }

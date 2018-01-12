@@ -21,14 +21,14 @@ import java.util.Set;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Task implements Serializable, Discussable {
+public class Task implements Serializable, Discussable, pl.mesayah.assistance.Entity {
 
     /**
      * An unique identifier of this task.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     /**
      * A NAME of this task.
@@ -197,7 +197,8 @@ public class Task implements Serializable, Discussable {
     /**
      * @return an unique identifier of this task
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
     }
@@ -205,7 +206,7 @@ public class Task implements Serializable, Discussable {
     /**
      * @param id an unique identifier for this task
      */
-    public void setId(long id) {
+    public void setId(Long id) {
 
         this.id = id;
     }

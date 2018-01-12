@@ -147,7 +147,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
                 "Are you sure you want to delete this project?", clickEvent -> {
 
             repository.delete(itemToDelete);
-            navigator.navigateTo(ViewUtils.getListViewNameFor(itemToDelete));
+            navigator.navigateTo(ViewUtils.getListViewNameFor(itemToDelete.getClass()));
         });
         getUI().addWindow(confirmDialog);
     }

@@ -6,17 +6,24 @@ import org.springframework.stereotype.Component;
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectRepository;
+import pl.mesayah.assistance.task.Task;
+import pl.mesayah.assistance.task.TaskRepository;
 
 @Component
 public class RepositoryUtils {
 
     private static ProjectRepository projectRepository;
 
-    public static <T> CrudRepository getRepositoryFor(Class<? extends Entity> entity) {
+    private static TaskRepository taskRepository;
+
+    public static CrudRepository getRepositoryFor(Class<? extends Entity> entity) {
 
         if (entity == Project.class) {
 
             return projectRepository;
+        } else if (entity == Task.class) {
+
+            return taskRepository;
         }
         return null;
     }
@@ -25,5 +32,11 @@ public class RepositoryUtils {
     public void setProjectRepository(ProjectRepository projectRepository) {
 
         RepositoryUtils.projectRepository = projectRepository;
+    }
+
+    @Autowired
+    public void setTaskRepository(TaskRepository taskRepository) {
+
+        RepositoryUtils.taskRepository = taskRepository;
     }
 }
