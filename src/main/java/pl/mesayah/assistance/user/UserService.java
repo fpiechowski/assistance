@@ -3,6 +3,8 @@ package pl.mesayah.assistance.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 /**
  * Service for managing user accounts.
  */
@@ -62,5 +64,12 @@ public class UserService {
     public void delete(Long id) {
 
         userRepository.delete(id);
+    }
+
+
+    public Collection<User> findAll() {
+
+        return (Collection<User>) userRepository.findAll();
+
     }
 }

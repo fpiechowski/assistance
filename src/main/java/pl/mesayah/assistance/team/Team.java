@@ -4,22 +4,23 @@ import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A group of {@link User}s who work together to develop a {@link Project}.
  */
 @Entity
-public class Team implements Serializable {
+public class Team implements Serializable, pl.mesayah.assistance.Entity {
 
     /**
      * An unique identifier of this task.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     /**
      * A NAME of this team.
@@ -33,7 +34,7 @@ public class Team implements Serializable {
     @JoinTable(name = "team_user",
             joinColumns = {@JoinColumn(name = "team_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private Set<User> members;
+    private Collection<User> members;
 
     /**
      * Constructs a team object with no attributes specified.
@@ -45,7 +46,8 @@ public class Team implements Serializable {
     /**
      * @return an unique identifier of this team
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
     }
@@ -53,6 +55,8 @@ public class Team implements Serializable {
     /**
      * @param id an unique identifier for this team
      */
+
+
     public void setId(long id) {
 
         this.id = id;
@@ -75,17 +79,17 @@ public class Team implements Serializable {
     }
 
     /**
-     * @return a set of users being members of this team
+     * @return a collection of users being members of this team
      */
-    public Set<User> getMembers() {
+    public Collection<User> getMembers() {
 
         return members;
     }
 
     /**
-     * @param members a set of users to be members of this team
+     * @param members a collection of users to be members of this team
      */
-    public void setMembers(Set<User> members) {
+    public void setMembers(Collection<User> members) {
 
         this.members = members;
     }
@@ -102,7 +106,7 @@ public class Team implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return id == team.id &&
+        return id.equals(team.id) &&
                 Objects.equals(name, team.name) &&
                 Objects.equals(members, team.members);
     }
