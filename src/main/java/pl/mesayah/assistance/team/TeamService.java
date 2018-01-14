@@ -2,9 +2,8 @@ package pl.mesayah.assistance.team;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.mesayah.assistance.project.Project;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Lukasz Jaworski
@@ -79,5 +78,8 @@ public class TeamService {
         teamRepository.delete(team);
     }
 
+    public Collection<Team> findAll() {
 
+        return (Collection<Team>) teamRepository.findAll();
+    }
 }

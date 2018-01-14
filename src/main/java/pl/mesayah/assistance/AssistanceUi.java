@@ -108,6 +108,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
     private void initializeTopBarLayout() {
 
         topBarLayout = new HorizontalLayout();
+        topBarLayout.setId("top-bar");
         topBarLayout.setWidth("100%");
         topBarLayout.setHeight("-1px");
         Layout navigationLayout = new NavigationLayout();
@@ -122,6 +123,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
     private void initializeViewDisplay() {
 
         viewDisplay = new VerticalLayout();
+        viewDisplay.setId("view-display");
         viewDisplay.setSizeFull();
         viewDisplay.setMargin(false);
     }
@@ -132,10 +134,11 @@ public class AssistanceUi extends UI implements ViewDisplay {
     private void initializeRootLayout() {
 
         rootLayout = new VerticalLayout();
+        rootLayout.setId("root");
         rootLayout.setMargin(false);
         rootLayout.addComponents(topBarLayout, viewDisplay);
         rootLayout.setComponentAlignment(viewDisplay, Alignment.TOP_CENTER);
-        
+        rootLayout.setSizeFull();
         rootLayout.setExpandRatio(viewDisplay, 1.0f);
     }
 

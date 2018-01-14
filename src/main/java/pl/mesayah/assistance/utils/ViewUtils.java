@@ -6,6 +6,7 @@ import pl.mesayah.assistance.project.ProjectDetailsView;
 import pl.mesayah.assistance.project.ProjectListView;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.team.TeamDetailsView;
+import pl.mesayah.assistance.team.TeamListView;
 
 public class ViewUtils {
 
@@ -13,12 +14,14 @@ public class ViewUtils {
 
         if (entity == Project.class) {
             return ProjectListView.VIEW_NAME;
+        } else if (entity == Team.class) {
+            return TeamListView.VIEW_NAME;
         }
 
         return null;
     }
 
-    public static <T> String getDetailsViewNameFor(Class<? extends Entity> entity) {
+    public static String getDetailsViewNameFor(Class<? extends Entity> entity) {
 
         if (entity == Project.class) {
             return ProjectDetailsView.VIEW_NAME;

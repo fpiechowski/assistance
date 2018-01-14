@@ -2,6 +2,7 @@ package pl.mesayah.assistance;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
@@ -33,12 +34,28 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
     private Button editButton;
 
+    private Button toListViewButton;
+
     private HorizontalLayout buttonsLayout;
+
+    private Button cancelButton;
 
     public AbstractDetailsView() {
 
         readComponents = initializeReadComponents();
         editComponents = initializeEditComponents();
+
+        cancelButton = new Button("Cancel", VaadinIcons.ARROWS_CROSS);
+        cancelButton.addClickListener(clickEvent -> {
+            navigator.navigateTo(
+                    ViewUtils.getListViewNameFor(getEntity().getClass()) + "/" + getEntity().getId());
+        });
+
+        toListViewButton = new Button(VaadinIcons.ARROW_LEFT);
+        toListViewButton.addClickListener(clickEvent -> {
+            navigator.navigateTo(
+                    ViewUtils.getListViewNameFor(getEntity().getClass()));
+        });
 
         deleteButton = initializeDeleteButton();
         deleteButton.addClickListener(clickEvent -> ((AssistanceUi) getUI()).showDeleteWindow(entity));
@@ -73,6 +90,14 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
      * @return a list of edit components of this view
      */
     protected abstract List<Component> initializeEditComponents();
+
+    /**
+     * @return an entity this view is showing details of
+     */
+    public T getEntity() {
+
+        return entity;
+    }
 
     /**
      * Creates and initializes the look of the delete button. This method doesn't set a click listener.
@@ -115,19 +140,41 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
     protected abstract Button initializeEditButton();
 
     /**
-     * @return an entity this view is showing details of
-     */
-    public T getEntity() {
-
-        return entity;
-    }
-
-    /**
      * Initializes a data binder and sets bindings and validation for all needed field componenents.
      *
      * @return a binder with validation and bindings set up
      */
     protected abstract Binder<T> initializeDataBinder();
+
+    @Override
+    public void enterCreateMode() {
+
+        switchComponentsToMode(ViewMode.CREATE_MODE);
+
+        confirmButton.setCaption("Add");
+
+        deleteButton.setVisible(false);
+    }
+
+    @Override
+    public void enterReadMode() {
+
+        switchComponentsToMode(ViewMode.READ_MODE);
+
+        setReadComponentsValues();
+
+        deleteButton.setVisible(true);
+    }
+
+    @Override
+    public void enterEditMode() {
+
+        switchComponentsToMode(ViewMode.EDIT_MODE);
+
+        confirmButton.setCaption("Confirm");
+
+        deleteButton.setVisible(true);
+    }
 
     /**
      * Loads data from persistence for populating components. For example if you need to fetch all tasks to put them
@@ -191,16 +238,6 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
      */
     protected abstract T createEmptyEntity();
 
-    @Override
-    public void enterCreateMode() {
-
-        switchComponentsToMode(ViewMode.CREATE_MODE);
-
-        confirmButton.setCaption("Add");
-
-        deleteButton.setVisible(false);
-    }
-
     /**
      * Removes all components in this view and adds only editable components.
      */
@@ -213,11 +250,11 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         if (viewMode == ViewMode.EDIT_MODE || viewMode == ViewMode.CREATE_MODE) {
 
-            buttonsLayout.addComponents(confirmButton, deleteButton);
+            buttonsLayout.addComponents(cancelButton, confirmButton, deleteButton);
             components = editComponents;
         } else {
 
-            buttonsLayout.addComponents(editButton, deleteButton);
+            buttonsLayout.addComponents(toListViewButton, editButton, deleteButton);
             components = readComponents;
         }
 
@@ -232,24 +269,4 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
      * Sets values of all readable components to corresponding properties of the entity.
      */
     protected abstract void setReadComponentsValues();
-
-    @Override
-    public void enterReadMode() {
-
-        switchComponentsToMode(ViewMode.READ_MODE);
-
-        setReadComponentsValues();
-
-        deleteButton.setVisible(true);
-    }
-
-    @Override
-    public void enterEditMode() {
-
-        switchComponentsToMode(ViewMode.EDIT_MODE);
-
-        confirmButton.setCaption("Confirm");
-
-        deleteButton.setVisible(true);
-    }
 }

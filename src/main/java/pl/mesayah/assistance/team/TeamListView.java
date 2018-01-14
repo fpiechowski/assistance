@@ -1,7 +1,7 @@
-package pl.mesayah.assistance.project;
+package pl.mesayah.assistance.team;
 
+import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.shared.ui.grid.ColumnResizeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
@@ -11,21 +11,18 @@ import pl.mesayah.assistance.AbstractListView;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * A view containing list of all projects created in the application.
- */
-@SpringView(name = ProjectListView.VIEW_NAME)
-public class ProjectListView extends AbstractListView<Project> {
+@SpringView(name = TeamListView.VIEW_NAME)
+public class TeamListView extends AbstractListView<Team> {
 
-    public static final String VIEW_NAME = "projects";
+    public static final String VIEW_NAME = "teams";
 
     @Autowired
-    private ProjectService projectService;
+    private TeamService teamService;
 
     @Override
-    protected Project createEmptyEntity() {
+    protected Team createEmptyEntity() {
 
-        return new Project();
+        return new Team();
     }
 
     @Override
@@ -47,18 +44,19 @@ public class ProjectListView extends AbstractListView<Project> {
     }
 
     @Override
-    public Collection<Project> fetchDataSet() {
+    public Collection<Team> fetchDataSet() {
 
-        return projectService.findAll();
+        return teamService.findAll();
     }
 
     @Override
-    public Grid<Project> initializeListing() {
+    public Grid<Team> initializeListing() {
 
-        Grid<Project> grid = new Grid<>(Project.class);
+        Grid<Team> grid = new Grid<>(Team.class);
         grid.setSizeFull();
-        grid.setColumns("id", "name", "phase", "startDate", "deadline", "manager");
-        grid.setColumnResizeMode(ColumnResizeMode.ANIMATED);
+        grid.setColumns("id", "name");
+        grid.addColumn((ValueProvider<Team, Integer>) team -> team.getMembers().size());
+        grid.getColumns().get(2).setCaption("Number of members");
         return grid;
     }
 
