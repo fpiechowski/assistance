@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
-public class Role implements Serializable {
+public class Role implements Serializable, pl.mesayah.assistance.Entity {
 
     public static final String SUPER_ADMIN = "SUPER_ADMIN";
 
@@ -18,6 +18,8 @@ public class Role implements Serializable {
     public static final String DEVELOPER = "DEVELOPER";
 
     public static final String CLIENT = "CLIENT";
+
+    private static final String ENTITY_NAME = "role";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,6 +53,12 @@ public class Role implements Serializable {
     public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     public void setId(Long id) {

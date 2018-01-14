@@ -203,7 +203,6 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         return new Button("Edit", VaadinIcons.PENCIL);
     }
 
-    @Override
     protected Binder<Project> initializeDataBinder() {
 
         Binder<Project> dataBinder = new Binder<>(Project.class);
@@ -235,7 +234,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
     }
 
     @Override
-    protected Project createEmptyEntity() {
+    public Project createEmptyEntity() {
 
         Project empty = new Project();
 

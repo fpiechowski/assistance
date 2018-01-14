@@ -17,7 +17,9 @@ import java.util.Objects;
  * Milestones are part of projects. They are sets of tasks that need to be resolved to achieve a milestone.
  */
 @Entity
-public class Milestone implements Serializable, Discussable {
+public class Milestone implements Serializable, Discussable, pl.mesayah.assistance.Entity {
+
+    private static final String ENTITY_NAME = "milestone";
 
     /**
      * An unique identifier of this milestone.
@@ -87,9 +89,16 @@ public class Milestone implements Serializable, Discussable {
     /**
      * @return an unique identifier of this milestone
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**

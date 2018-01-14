@@ -14,7 +14,7 @@ import pl.mesayah.assistance.utils.ViewUtils;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayout implements DetailsView {
+public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayout implements DetailsView<T> {
 
     @Autowired
     private SpringNavigator navigator;
@@ -91,7 +91,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
     /**
      * Validates an input made in edit components and saves changes made to the entity if no validation errors occurs.
      */
-    private void updateDetails() {
+    public void updateDetails() {
 
         try {
             dataBinder.writeBean(entity);

@@ -4,10 +4,9 @@ import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A group of {@link User}s who work together to develop a {@link Project}.
@@ -27,14 +26,16 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
      */
     private String name;
 
+    private static final String ENTITY_NAME = "team";
+
     /**
      * Users who are members of this team.
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "team_user",
             joinColumns = {@JoinColumn(name = "team_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private Collection<User> members;
+    private Set<User> members;
 
     /**
      * Constructs a team object with no attributes specified.
@@ -50,6 +51,12 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
     public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**
@@ -81,7 +88,7 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
     /**
      * @return a collection of users being members of this team
      */
-    public Collection<User> getMembers() {
+    public Set<User> getMembers() {
 
         return members;
     }
@@ -89,7 +96,7 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
     /**
      * @param members a collection of users to be members of this team
      */
-    public void setMembers(Collection<User> members) {
+    public void setMembers(Set<User> members) {
 
         this.members = members;
     }

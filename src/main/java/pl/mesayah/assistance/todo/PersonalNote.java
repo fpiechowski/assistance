@@ -12,7 +12,9 @@ import java.util.Objects;
  * Personal tasks are managed only by the user who created them.
  */
 @Entity
-public class PersonalNote implements Serializable {
+public class PersonalNote implements Serializable, pl.mesayah.assistance.Entity {
+
+    private static final String ENTITY_NAME = "personal note";
 
     /**
      * An unique identifier of this personal task.
@@ -55,9 +57,16 @@ public class PersonalNote implements Serializable {
     /**
      * @return an unique identifier of this personal task
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**

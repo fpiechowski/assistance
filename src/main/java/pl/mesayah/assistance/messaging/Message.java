@@ -15,7 +15,9 @@ import java.util.Objects;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Message implements Serializable {
+public class Message implements Serializable, pl.mesayah.assistance.Entity {
+
+    private static final String ENTITY_NAME = "message";
 
     /**
      * An unique identifier of this chat message.
@@ -56,9 +58,16 @@ public class Message implements Serializable {
     /**
      * @return an unique identifier of this chat message
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**

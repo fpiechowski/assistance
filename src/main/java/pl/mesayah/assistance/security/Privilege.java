@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
-public class Privilege implements Serializable {
+public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
+
+    private static final String ENTITY_NAME = "privilege";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +31,12 @@ public class Privilege implements Serializable {
     public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     public void setId(Long id) {

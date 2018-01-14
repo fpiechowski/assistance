@@ -21,6 +21,8 @@ import java.util.Set;
 @Entity
 public class User implements Serializable, pl.mesayah.assistance.Entity {
 
+    private static final String ENTITY_NAME = "user";
+
     /**
      * An unique identifier of this user.
      */
@@ -155,6 +157,18 @@ public class User implements Serializable, pl.mesayah.assistance.Entity {
     public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
+    }
+
+    @Override
+    public String toString() {
+
+        return username;
     }
 
     /**

@@ -1,6 +1,7 @@
 package pl.mesayah.assistance.notification;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,7 +11,9 @@ import java.util.Objects;
  * Notifications are simply chat messages with an additional field for a title.
  */
 @Entity
-public class Notification {
+public class Notification implements Serializable, pl.mesayah.assistance.Entity {
+
+    private static final String ENTITY_NAME = "notification";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -57,10 +60,17 @@ public class Notification {
                 type == that.type;
     }
 
+    @Override
     public Long getId() {
 
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     public void setId(Long id) {

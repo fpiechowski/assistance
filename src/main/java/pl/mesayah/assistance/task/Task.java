@@ -23,6 +23,8 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Task implements Serializable, Discussable, pl.mesayah.assistance.Entity {
 
+    private static final String ENTITY_NAME = "task";
+
     /**
      * An unique identifier of this task.
      */
@@ -201,6 +203,12 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**

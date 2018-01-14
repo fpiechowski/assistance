@@ -22,6 +22,8 @@ import java.util.*;
 @Entity
 public class Project implements Serializable, Discussable, pl.mesayah.assistance.Entity {
 
+    private static final String ENTITY_NAME = "project";
+
     /**
      * An unique identifier of this project.
      */
@@ -123,6 +125,12 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
     public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**

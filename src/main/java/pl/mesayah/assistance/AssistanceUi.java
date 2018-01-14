@@ -143,11 +143,17 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
         CrudRepository repository = RepositoryUtils.getRepositoryFor(itemToDelete.getClass());
 
-        YesNoDialog confirmDialog = new YesNoDialog("Delete a project",
-                "Are you sure you want to delete this project?", clickEvent -> {
+        YesNoDialog confirmDialog = new YesNoDialog("Delete a " + itemToDelete.getEntityName(),
+                "Are you sure you want to delete this " + itemToDelete.getEntityName() + "?", clickEvent -> {
 
             repository.delete(itemToDelete);
-            navigator.navigateTo(ViewUtils.getListViewNameFor(itemToDelete.getClass()));
+
+            String listViewState = ViewUtils.getListViewNameFor(itemToDelete.getClass());
+            if (listViewState != null) {
+                navigator.navigateTo(listViewState);
+            } else {
+                navigator.navigateTo("");
+            }
         });
         getUI().addWindow(confirmDialog);
     }
@@ -223,7 +229,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
             Button tasksButton = new Button("Tasks");
             tasksButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo("/task"));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo("task"));
             navigationButtons.add(tasksButton);
 
             Button projectsButton = new Button("Projects");
@@ -231,16 +237,20 @@ public class AssistanceUi extends UI implements ViewDisplay {
                     (Button.ClickListener) clickEvent -> navigator.navigateTo("projects"));
             navigationButtons.add(projectsButton);
 
+            Button teamsButton = new Button("Teams");
+            teamsButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo("teams"));
+            navigationButtons.add(teamsButton);
+
             Button issuesButton = new Button("Issues");
             issuesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo("/issue"));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo("issue"));
             navigationButtons.add(issuesButton);
-
-            this.addComponents(homeButton, tasksButton, projectsButton, issuesButton);
 
             // Sets the style for all navigation links
             for (Button b : navigationButtons) {
                 b.setStyleName("link");
+                addComponent(b);
                 this.setComponentAlignment(b, Alignment.MIDDLE_CENTER);
             }
         }

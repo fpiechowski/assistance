@@ -16,7 +16,9 @@ import java.util.Set;
  * {@link User}s can subscribe to channels to be notified about new messages there.
  */
 @Entity
-public class Channel implements Serializable {
+public class Channel implements Serializable, pl.mesayah.assistance.Entity {
+
+    private static final String ENTITY_NAME = "channel";
 
     /**
      * An unique identifier of this channel.
@@ -78,9 +80,16 @@ public class Channel implements Serializable {
     /**
      * @return an unique identifier of this channel
      */
-    public long getId() {
+    @Override
+    public Long getId() {
 
         return id;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        return ENTITY_NAME;
     }
 
     /**
