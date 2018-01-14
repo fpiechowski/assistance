@@ -1,6 +1,8 @@
 package pl.mesayah.assistance.utils;
 
 import pl.mesayah.assistance.Entity;
+import pl.mesayah.assistance.issue.Issue;
+import pl.mesayah.assistance.issue.IssueListView;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectDetailsView;
 import pl.mesayah.assistance.project.ProjectListView;
@@ -16,6 +18,8 @@ public class ViewUtils {
             return ProjectListView.VIEW_NAME;
         } else if (entity == Team.class) {
             return TeamListView.VIEW_NAME;
+        } else if (entity == Issue.class) {
+            return IssueListView.VIEW_NAME;
         }
 
         return null;

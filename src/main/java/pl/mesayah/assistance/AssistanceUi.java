@@ -22,8 +22,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import pl.mesayah.assistance.issue.Issue;
+import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.LoginForm;
 import pl.mesayah.assistance.security.SecurityUtils;
+import pl.mesayah.assistance.task.Task;
+import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.utils.RepositoryUtils;
 import pl.mesayah.assistance.utils.ViewUtils;
 import pl.mesayah.assistance.utils.YesNoDialog;
@@ -232,22 +236,22 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
             Button tasksButton = new Button("Tasks");
             tasksButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo("task"));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Task().getClass())));
             navigationButtons.add(tasksButton);
 
             Button projectsButton = new Button("Projects");
             projectsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo("projects"));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Project().getClass())));
             navigationButtons.add(projectsButton);
 
             Button teamsButton = new Button("Teams");
             teamsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo("teams"));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Team().getClass())));
             navigationButtons.add(teamsButton);
 
             Button issuesButton = new Button("Issues");
             issuesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo("issue"));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Issue().getClass())));
             navigationButtons.add(issuesButton);
 
             // Sets the style for all navigation links

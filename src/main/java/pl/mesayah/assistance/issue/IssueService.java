@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mesayah.assistance.user.User;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -77,5 +78,10 @@ public class IssueService {
     public void delete(Issue issue) {
 
         issueRepository.delete(issue);
+    }
+
+    public Collection<Issue> findAll() {
+
+        return (Collection<Issue>) issueRepository.findAll();
     }
 }

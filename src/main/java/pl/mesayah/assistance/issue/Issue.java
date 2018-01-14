@@ -6,6 +6,7 @@ import pl.mesayah.assistance.user.User;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -23,11 +24,23 @@ public class Issue extends Task {
     @JoinColumn(name = "reporter_id")
     private User reportingUser;
 
+    private LocalDate reportDate;
+
     /**
      * Constructs a default issue object with no specified attributes.
      */
     public Issue() {
 
+    }
+
+    public LocalDate getReportDate() {
+
+        return reportDate;
+    }
+
+    public void setReportDate(LocalDate reportDate) {
+
+        this.reportDate = reportDate;
     }
 
     /**
