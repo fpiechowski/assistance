@@ -38,6 +38,15 @@ public class TaskService {
 
         taskRepository.save(task);
     }
+    /**
+     * Finds task by unique identifier.
+     *
+     * @return a task with given ID or null if not found
+     */
+    public List<Task> findAll() {
+
+        return (List<Task>) taskRepository.findAll();
+    }
 
     /**
      * Finds task by unique identifier.
