@@ -7,15 +7,16 @@ import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.AbstractDetailsView;
 import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.messaging.ChannelRepository;
+import pl.mesayah.assistance.messaging.ChannelService;
 import pl.mesayah.assistance.project.Project;
-import pl.mesayah.assistance.project.ProjectRepository;
+import pl.mesayah.assistance.project.ProjectService;
 import pl.mesayah.assistance.user.User;
-import pl.mesayah.assistance.user.UserRepository;
+import pl.mesayah.assistance.user.UserService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
     /**
      * A drop down menu to select a priority of the task.
      */
-    private ComboBox<User> assignedUsersNativeSelect;
+    private TwinColSelect<User> assignedUsersListBuilder;
     /**
      * A label showing a priority of the task.
      */
@@ -73,13 +74,13 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
      */
     private ComboBox<Task> parentTaskComboBox;
     /**
-     * A label showing a channel of the task.
+     * A label showing a subtasks of the task.
      */
     private Label subtasksLabel;
     /**
-     * A combo box for selecting task channel.
+     * A list builder for selecting task subtasks.
      */
-    private ComboBox<Task> subtasksComboBox;
+    private TwinColSelect<Task> subtasksListBuilder;
     /**
      * A label showing a channel of the task.
      */
@@ -129,20 +130,17 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
      */
     private DateTimeFormatter dateTimeFormatter;
 
-    //@Autowired
-    //private RoleService roleService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    private ProjectService projectService;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ChannelService channelService;
 
     @Autowired
-    private ChannelRepository channelRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
+    private TaskService taskService;
 
     /**
      * Constructs a view in a read mode and initializes controls for it.
@@ -178,7 +176,22 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         deadlineLabel.setCaption("Deadline:");
 
         assignedUsersLabel = new Label();
-        assignedUsersLabel.setCaption("User");
+        assignedUsersLabel.setCaption("Users: ");
+
+        parentTaskLabel = new Label();
+        parentTaskLabel.setCaption("Parent task: ");
+
+        subtasksLabel = new Label();
+        subtasksLabel.setCaption("Subtask: ");
+
+        channelLabel = new Label();
+        channelLabel.setCaption("Channel: ");
+
+        typeLabel = new Label();
+        typeLabel.setCaption("Type: ");
+
+        projectLabel = new Label();
+        projectLabel.setCaption("Project: ");
 
         HorizontalLayout readDatesLayout = new HorizontalLayout(deadlineLabel,assignedUsersLabel);
         readDatesLayout.setWidth("100%");
@@ -210,7 +223,13 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         priorityNativeSelect.setSelectedItem(Task.Priority.MEDIUM);
         priorityNativeSelect.setWidth("200px");
         priorityNativeSelect.setRequiredIndicatorVisible(true);
-        HorizontalLayout editNameStatusLayout = new HorizontalLayout(nameTextField, statusNativeSelect, priorityNativeSelect);
+
+        typeNativeSelect = new NativeSelect<>("Type:",
+                Arrays.asList(Task.Type.values()));
+        typeNativeSelect.setEmptySelectionAllowed(false);
+        typeNativeSelect.setSelectedItem(null);
+        typeNativeSelect.setWidth("200px");
+        typeNativeSelect.setRequiredIndicatorVisible(true);
 
 
         descriptionTextArea = new TextArea("Description:");
@@ -218,12 +237,51 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
 
         deadlineDateField = new DateField("Deadline:");
 
+        parentTaskComboBox = new ComboBox<>("Parent Task");
+        parentTaskComboBox.setEmptySelectionAllowed(false);
+        parentTaskComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId()+' '+task.getName());
+        parentTaskComboBox.setRequiredIndicatorVisible(false);
+
+        subtasksListBuilder = new TwinColSelect<>("Subtasks");
+        subtasksListBuilder.setRows(6);
+        subtasksListBuilder.setLeftColumnCaption("Available subtasks");
+        subtasksListBuilder.setRightColumnCaption("Selected subtasks");
+        subtasksListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId()+' '+task.getName());
+
+        assignedUsersListBuilder = new TwinColSelect<>("Assigned to:");
+        assignedUsersListBuilder.setRows(6);
+        assignedUsersListBuilder.setLeftColumnCaption("Available users");
+        assignedUsersListBuilder.setRightColumnCaption("Selected users");
+        assignedUsersListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<User>) user -> user.getUsername());
+
+        projectComboBox = new ComboBox<>("Project");
+        projectComboBox.setEmptySelectionAllowed(false);
+        projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getId()+' '+project.getName());
+        projectComboBox.setRequiredIndicatorVisible(false);
+
+        channelComboBox = new ComboBox<>("Channel");
+        channelComboBox.setEmptySelectionAllowed(false);
+        channelComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Channel>) channel -> channel.getName());
+        channelComboBox.setRequiredIndicatorVisible(false);
+        HorizontalLayout editNameStatusLayout = new HorizontalLayout(
+                nameTextField,
+                statusNativeSelect,
+                priorityNativeSelect,
+                typeNativeSelect,
+                parentTaskComboBox,
+                projectComboBox,
+                channelComboBox
+        );
+
         HorizontalLayout editDatesLayout = new HorizontalLayout(deadlineDateField);
+
+        HorizontalLayout listsLayout = new HorizontalLayout(subtasksListBuilder,assignedUsersListBuilder);
 
         return new ArrayList<>(Arrays.asList(
                 editNameStatusLayout,
                 descriptionTextArea,
-                editDatesLayout
+                editDatesLayout,
+                listsLayout
         ));
     }
 
@@ -260,6 +318,18 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
                 .bind(Task::getDescription, Task::setDescription);
         dataBinder.forField(deadlineDateField)
                 .bind(Task::getDeadline, Task::setDeadline);
+        dataBinder.forField(typeNativeSelect)
+                .bind(Task::getType, Task::setType);
+        dataBinder.forField(parentTaskComboBox)
+                .bind(Task::getParentTask, Task::setParentTask);
+        dataBinder.forField(projectComboBox)
+                .bind(Task::getProject, Task::setProject);
+        dataBinder.forField(channelComboBox)
+                .bind(Task::getChannel, Task::setChannel);
+        dataBinder.forField(subtasksListBuilder)
+                .bind(Task::getSubtasks, Task::setSubtasks);
+        dataBinder.forField(assignedUsersListBuilder)
+                .bind(Task::getAssignedUsers, Task::setAssignedUsers);
 
         return dataBinder;
     }
@@ -267,8 +337,14 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
     @Override
     protected void loadData() {
 
-//        Collection<User> projectManagers = roleService.findByName(Role.PROJECT_MANAGER).getUsers();
-//        managerComboBox.setItems(projectManagers);
+        Collection<User> users = userService.findAll();
+        assignedUsersListBuilder.setItems(users);
+        Collection<Task> tasks = taskService.findAll();
+        subtasksListBuilder.setItems(tasks);
+        Collection<Channel> channels = channelService.findAll();
+        channelComboBox.setItems(channels);
+        Collection<Project> projects = projectService.findAll();
+        projectComboBox.setItems(projects);
     }
 
     @Override
