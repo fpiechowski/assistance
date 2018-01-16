@@ -55,6 +55,15 @@ public class ChannelService {
     }
 
     /**
+     * Finds all channels.
+     * @return a list of all channels
+     */
+    public List<Channel> findAll() {
+
+        return (List<Channel>) channelRepository.findAll();
+    }
+
+    /**
      * Deletes a given channel from the repository.
      *
      * @param channel a channel to delete
