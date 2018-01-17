@@ -7,6 +7,7 @@ import pl.mesayah.assistance.user.User;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 public class Role implements Serializable, pl.mesayah.assistance.Entity {
@@ -48,6 +49,23 @@ public class Role implements Serializable, pl.mesayah.assistance.Entity {
     public Role(String name) {
 
         this.name = name;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, privileges);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(id, role.id) &&
+                Objects.equals(name, role.name) &&
+                Objects.equals(privileges, role.privileges);
     }
 
     public Long getId() {

@@ -1,4 +1,4 @@
-package pl.mesayah.assistance;
+package pl.mesayah.assistance.ui;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
@@ -22,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import pl.mesayah.assistance.AssistanceApplication;
+import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.LoginForm;
@@ -32,8 +34,7 @@ import pl.mesayah.assistance.utils.RepositoryUtils;
 import pl.mesayah.assistance.utils.ViewUtils;
 import pl.mesayah.assistance.utils.YesNoDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Main user interface class of the application.
@@ -148,21 +149,42 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
     public <T extends Entity> void showDeleteWindow(T itemToDelete) {
 
-        CrudRepository repository = RepositoryUtils.getRepositoryFor(itemToDelete.getClass());
+        Set<T> set = new HashSet<>();
+        set.add(itemToDelete);
+        showDeleteWindow(set);
+    }
 
-        YesNoDialog confirmDialog = new YesNoDialog("Delete a " + itemToDelete.getEntityName(),
-                "Are you sure you want to delete this " + itemToDelete.getEntityName() + "?", clickEvent -> {
+    public <T extends Entity> void showDeleteWindow(Collection<T> itemsToDelete) {
 
-            repository.delete(itemToDelete);
+        if (itemsToDelete.size() > 0) {
+            T first = itemsToDelete.iterator().next();
+            CrudRepository repository = RepositoryUtils.getRepositoryFor(first.getClass());
 
-            String listViewState = ViewUtils.getListViewNameFor(itemToDelete.getClass());
-            if (listViewState != null) {
-                navigator.navigateTo(listViewState);
+            String caption, message;
+            if (itemsToDelete.size() > 1) {
+                caption = "Delete " + itemsToDelete.size() + " " + first.getEntityName() + "s";
+                message = "Are you sure you want to delete " + itemsToDelete.size() + " " + first.getEntityName() + "s?";
             } else {
-                navigator.navigateTo("");
+                caption = "Delete a " + first.getEntityName();
+                message = "Are you sure you want to delete this " + first.getEntityName() + "?";
             }
-        });
-        getUI().addWindow(confirmDialog);
+
+            YesNoDialog confirmDialog = new YesNoDialog(caption,
+                    message, clickEvent -> {
+
+                for (T item : itemsToDelete) {
+                    repository.delete(item);
+                }
+
+                String listViewState = ViewUtils.getListViewNameFor(first.getClass());
+                if (listViewState != null) {
+                    navigator.navigateTo(listViewState);
+                } else {
+                    navigator.navigateTo("");
+                }
+            });
+            getUI().addWindow(confirmDialog);
+        }
     }
 
     private boolean login(String username, String password) {

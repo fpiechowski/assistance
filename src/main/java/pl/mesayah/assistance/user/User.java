@@ -30,6 +30,26 @@ public class User implements Serializable, pl.mesayah.assistance.Entity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, username, firstName, lastName, password, enabled);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return enabled == user.enabled &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(password, user.password);
+    }
+
     /**
      * A credential this user uses to sign in.
      */
@@ -95,27 +115,6 @@ public class User implements Serializable, pl.mesayah.assistance.Entity {
         this.lastName = lastName;
         this.password = password;
         this.enabled = enabled;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, username, roles, firstName, lastName, personalNotes, subscribedChannels);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(roles, user.roles) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(personalNotes, user.personalNotes) &&
-                Objects.equals(subscribedChannels, user.subscribedChannels);
     }
 
     /**

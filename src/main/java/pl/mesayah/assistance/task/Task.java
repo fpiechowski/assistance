@@ -40,7 +40,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * Users responsible for completing this task.
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_task",
             joinColumns = @JoinColumn(name = "task_id"),
@@ -364,22 +364,73 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * Describes a nature of a task.
      */
-    public static enum Type {
-        TASK, BUG, FEATURE, COSMETICS, USER_STORY
+    public enum Type {
+        TASK("Task"),
+        BUG("Bug"),
+        FEATURE("Feature"),
+        COSMETICS("Cosmetics"),
+        USER_STORY("User Story");
+
+        private final String name;
+
+        Type(String name) {
+
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+
+            return name;
+        }
     }
 
     /**
      * Describes a stage of progress.
      */
-    public static enum Status {
-        WAITING, TO_DO, IN_PROGRESS, COMPLETED, VERIFIED
+    public enum Status {
+        WAITING("Waiting"),
+        TO_DO("To Do"),
+        IN_PROGRESS("In Progress"),
+        COMPLETED("Completed"),
+        VERIFIED("Verified");
+
+        private final String name;
+
+        Status(String name) {
+
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+
+            return name;
+        }
     }
 
     /**
      * Importance of something.
      */
-    public static enum Priority {
-        HIGHEST, HIGH, MEDIUM, LOW, LOWEST;
+    public enum Priority {
+        HIGHEST("Critical"),
+        HIGH("High"),
+        MEDIUM("Normal"),
+        LOW("Minor"),
+        LOWEST("Low");
+
+        private final String name;
+
+        Priority(String name) {
+
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+
+            return name;
+        }
     }
 }
 

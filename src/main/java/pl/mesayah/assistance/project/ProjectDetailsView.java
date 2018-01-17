@@ -5,10 +5,10 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.AbstractDetailsView;
 import pl.mesayah.assistance.security.Role;
 import pl.mesayah.assistance.security.RoleService;
 import pl.mesayah.assistance.security.SecurityUtils;
+import pl.mesayah.assistance.ui.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 
@@ -157,8 +157,14 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         phaseNativeSelect.setWidth("200px");
         phaseNativeSelect.setRequiredIndicatorVisible(true);
 
-        HorizontalLayout editNamePhaseLayout = new HorizontalLayout(nameTextField, phaseNativeSelect);
+        managerComboBox = new ComboBox<>("Project Manager");
+        managerComboBox.setEmptySelectionAllowed(false);
+        managerComboBox.setItemCaptionGenerator((ItemCaptionGenerator<User>) user -> user.getUsername());
+        managerComboBox.setRequiredIndicatorVisible(true);
 
+        HorizontalLayout nameManagerPhaseLayout = new HorizontalLayout(nameTextField, managerComboBox, phaseNativeSelect);
+        nameManagerPhaseLayout.setWidth("100%");
+        nameManagerPhaseLayout.setExpandRatio(nameTextField, 1.0f);
 
         descriptionTextArea = new TextArea("Description:");
         descriptionTextArea.setWidth("100%");
@@ -172,16 +178,12 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         HorizontalLayout editDatesLayout = new HorizontalLayout(startDateField, deadlineDateField);
 
 
-        managerComboBox = new ComboBox<>("Project Manager");
-        managerComboBox.setEmptySelectionAllowed(false);
-        managerComboBox.setItemCaptionGenerator((ItemCaptionGenerator<User>) user -> user.getUsername());
-        managerComboBox.setRequiredIndicatorVisible(true);
+
 
         return new ArrayList<>(Arrays.asList(
-                editNamePhaseLayout,
+                nameManagerPhaseLayout,
                 descriptionTextArea,
-                editDatesLayout,
-                managerComboBox
+                editDatesLayout
         ));
     }
 

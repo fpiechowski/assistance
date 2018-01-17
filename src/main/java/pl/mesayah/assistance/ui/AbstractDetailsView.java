@@ -1,4 +1,4 @@
-package pl.mesayah.assistance;
+package pl.mesayah.assistance.ui;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -9,6 +9,7 @@ import com.vaadin.ui.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.utils.RepositoryUtils;
 import pl.mesayah.assistance.utils.ViewUtils;
 
@@ -54,7 +55,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         toListViewButton = new Button(VaadinIcons.ARROW_LEFT);
         toListViewButton.addClickListener(clickEvent -> {
             navigator.navigateTo(
-                    ViewUtils.getListViewNameFor(getEntity().getClass()));
+                    ViewUtils.getListViewNameFor(getEntity().getClass()) + "/" + getEntity().getId());
         });
 
         deleteButton = initializeDeleteButton();
@@ -176,6 +177,11 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         deleteButton.setVisible(true);
     }
 
+    public SpringNavigator getNavigator() {
+
+        return navigator;
+    }
+
     /**
      * Loads data from persistence for populating components. For example if you need to fetch all tasks to put them
      * into a grid or something you can fetch the data and set grid's items here. The reason why this method exists
@@ -260,9 +266,16 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         addComponent(buttonsLayout);
 
+        VerticalLayout container = new VerticalLayout();
+        container.setMargin(false);
+        container.setSizeFull();
         for (Component c : components) {
-            addComponent(c);
+            container.addComponent(c);
         }
+
+        addComponent(container);
+
+        setExpandRatio(container, 1.0f);
     }
 
     /**

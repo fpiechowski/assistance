@@ -3,6 +3,7 @@ package pl.mesayah.assistance.security;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
@@ -26,6 +27,22 @@ public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
     public Privilege(String name) {
 
         this.name = name;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Privilege privilege = (Privilege) o;
+        return Objects.equals(id, privilege.id) &&
+                Objects.equals(name, privilege.name);
     }
 
     public Long getId() {

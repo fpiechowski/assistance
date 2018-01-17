@@ -1,4 +1,4 @@
-package pl.mesayah.assistance;
+package pl.mesayah.assistance.ui;
 
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.ViewChangeListener;
@@ -8,6 +8,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.utils.ViewUtils;
 
 import javax.annotation.PostConstruct;
@@ -47,7 +48,8 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
         additionalButtons = initializeAdditionalButtons();
 
         listing = initializeListing();
-        listing.setSelectionMode(Grid.SelectionMode.SINGLE);
+        listing.getEditor().setEnabled(isGridEditable());
+        listing.setSelectionMode(Grid.SelectionMode.MULTI);
         listing.addSelectionListener(selectionEvent -> {
 
             if (selectionEvent.getAllSelectedItems().isEmpty()) {
@@ -55,9 +57,15 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
-                detailsButton.setEnabled(true);
-                editButton.setEnabled(true);
-                deleteButton.setEnabled(true);
+                if (selectionEvent.getAllSelectedItems().size() > 1) {
+                    detailsButton.setEnabled(false);
+                    editButton.setEnabled(false);
+                    deleteButton.setEnabled(true);
+                } else {
+                    detailsButton.setEnabled(true);
+                    editButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
+                }
             }
         });
         listing.deselectAll();
@@ -89,8 +97,7 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
         deleteButton.addClickListener(clickEvent -> {
             Set<T> selectedSet = listing.getSelectedItems();
             if (!(selectedSet.isEmpty())) {
-                T selected = selectedSet.iterator().next();
-                ((AssistanceUi) getUI()).showDeleteWindow(selected);
+                ((AssistanceUi) getUI()).showDeleteWindow(selectedSet);
             }
         });
 
@@ -109,8 +116,7 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
 
     protected abstract Button initializeNewButton();
 
-    @Override
-    public abstract Collection<T> fetchDataSet();
+    protected abstract Grid<T> initializeListing();
 
     @PostConstruct
     protected ListDataProvider<T> initializeDataProvider() {
@@ -120,8 +126,7 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
         return dataProvider;
     }
 
-    @Override
-    public abstract Grid<T> initializeListing();
+    protected abstract Collection<T> fetchDataSet();
 
     protected abstract Button initializeEditButton();
 

@@ -35,7 +35,30 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
      * A NAME of this project.
      */
     @NotNull
+
     private String name;
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, description, deadline, startDate, manager, phase, channel);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(id, project.id) &&
+                Objects.equals(name, project.name) &&
+                Objects.equals(description, project.description) &&
+                Objects.equals(deadline, project.deadline) &&
+                Objects.equals(startDate, project.startDate) &&
+                Objects.equals(manager, project.manager) &&
+                phase == project.phase &&
+                Objects.equals(channel, project.channel);
+    }
 
     /**
      * A description of this project.
@@ -275,34 +298,18 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         return channel;
     }
 
+    @Override
+    public String toString() {
+
+        return name;
+    }
+
     /**
      * @param channel a channel where this project is discussed
      */
     public void setChannel(Channel channel) {
 
         this.channel = channel;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, description, deadline, startDate, manager, phase, channel);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
-        return Objects.equals(id, project.id) &&
-                Objects.equals(name, project.name) &&
-                Objects.equals(description, project.description) &&
-                Objects.equals(deadline, project.deadline) &&
-                Objects.equals(startDate, project.startDate) &&
-                Objects.equals(manager, project.manager) &&
-                phase == project.phase &&
-                Objects.equals(channel, project.channel);
     }
 
     public enum Phase {

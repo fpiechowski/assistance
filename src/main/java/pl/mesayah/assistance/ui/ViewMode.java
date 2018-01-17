@@ -1,4 +1,4 @@
-package pl.mesayah.assistance;
+package pl.mesayah.assistance.ui;
 
 public enum ViewMode {
 
