@@ -39,6 +39,7 @@ public class Message implements Serializable, pl.mesayah.assistance.Entity {
     /**
      * Content of this message.
      */
+    @Column(length = 2047)
     private String textBody;
 
     /**

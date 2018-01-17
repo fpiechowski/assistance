@@ -79,6 +79,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * A description of this task, what it is about.
      */
+    @Column(length = 4095)
     private String description;
 
     /**

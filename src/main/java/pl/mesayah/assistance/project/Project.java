@@ -38,31 +38,10 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
     private String name;
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, description, deadline, startDate, manager, phase, channel);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
-        return Objects.equals(id, project.id) &&
-                Objects.equals(name, project.name) &&
-                Objects.equals(description, project.description) &&
-                Objects.equals(deadline, project.deadline) &&
-                Objects.equals(startDate, project.startDate) &&
-                Objects.equals(manager, project.manager) &&
-                phase == project.phase &&
-                Objects.equals(channel, project.channel);
-    }
-
     /**
      * A description of this project.
      */
+    @Column(length = 4095)
     private String description;
 
     /**
@@ -129,6 +108,34 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         startDate = LocalDate.now();
         phase = Phase.PLANNING;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, name, description, deadline, startDate, manager, phase, channel);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(id, project.id) &&
+                Objects.equals(name, project.name) &&
+                Objects.equals(description, project.description) &&
+                Objects.equals(deadline, project.deadline) &&
+                Objects.equals(startDate, project.startDate) &&
+                Objects.equals(manager, project.manager) &&
+                phase == project.phase &&
+                Objects.equals(channel, project.channel);
+    }
+
+    @Override
+    public String toString() {
+
+        return name;
     }
 
     public User getManager() {
@@ -296,12 +303,6 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
     public Channel getChannel() {
 
         return channel;
-    }
-
-    @Override
-    public String toString() {
-
-        return name;
     }
 
     /**

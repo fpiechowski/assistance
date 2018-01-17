@@ -9,6 +9,7 @@ import pl.mesayah.assistance.project.ProjectDetailsView;
 import pl.mesayah.assistance.project.ProjectListView;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.task.TaskDetailsView;
+import pl.mesayah.assistance.task.TaskListView;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.team.TeamDetailsView;
 import pl.mesayah.assistance.team.TeamListView;
@@ -23,6 +24,8 @@ public class ViewUtils {
             return TeamListView.VIEW_NAME;
         } else if (entity == Issue.class) {
             return IssueListView.VIEW_NAME;
+        } else if (entity == Task.class) {
+            return TaskListView.VIEW_NAME;
         }
 
         return null;

@@ -185,7 +185,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
                 .withValidator(Objects::nonNull, "You have to set a status.")
                 .bind(Issue::getStatus, Issue::setStatus);
         binder.forField(assignessTwinColSelect)
-                .bind(Issue::getAssigneeUsers, Issue::setAssigneeUsers);
+                .bind(Issue::getAssignedUsers, Issue::setAssignedUsers);
         binder.forField(priorityNativeSelect)
                 .withValidator(Objects::nonNull, "You have to set a priority.")
                 .bind(Issue::getPriority, Issue::setPriority);
@@ -233,7 +233,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         reportingUserButton.addClickListener(clickEvent -> getNavigator().navigateTo(userUrl));
         reportDateLabel.setValue(getEntity().getReportDate().toString());
         statusLabel.setValue(getEntity().getStatus().name());
-        assigneesListSelect.setItems(getEntity().getAssigneeUsers());
+        assigneesListSelect.setItems(getEntity().getAssignedUsers());
         priorityLabel.setValue(getEntity().getPriority().name());
     }
 }
