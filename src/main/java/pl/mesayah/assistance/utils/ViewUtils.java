@@ -2,10 +2,13 @@ package pl.mesayah.assistance.utils;
 
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
+import pl.mesayah.assistance.issue.IssueDetailsView;
 import pl.mesayah.assistance.issue.IssueListView;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectDetailsView;
 import pl.mesayah.assistance.project.ProjectListView;
+import pl.mesayah.assistance.task.Task;
+import pl.mesayah.assistance.task.TaskDetailsView;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.team.TeamDetailsView;
 import pl.mesayah.assistance.team.TeamListView;
