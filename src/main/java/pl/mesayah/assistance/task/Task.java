@@ -8,7 +8,7 @@ import pl.mesayah.assistance.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -46,7 +46,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> assigneeUsers;
+    private Set<User> assignedUsers;
 
     /**
      * A stage of progress this task is in.
@@ -74,7 +74,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * A date when this task should be completed at the latest.
      */
-    private Date deadline;
+    private LocalDate deadline;
 
     /**
      * A description of this task, what it is about.
@@ -141,7 +141,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, assigneeUsers, status, priority, deadline, description, parentTask, subtasks, type, channel, project);
+        return Objects.hash(id, name, assignedUsers, status, priority, deadline, description, parentTask, subtasks, type, channel, project);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         Task task = (Task) o;
         return id == task.id &&
                 Objects.equals(name, task.name) &&
-                Objects.equals(assigneeUsers, task.assigneeUsers) &&
+                Objects.equals(assignedUsers, task.assignedUsers) &&
                 status == task.status &&
                 priority == task.priority &&
                 Objects.equals(deadline, task.deadline) &&
@@ -238,17 +238,17 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * @return set of users responsible for completing this task
      */
-    public Set<User> getAssigneeUsers() {
+    public Set<User> getAssignedUsers() {
 
-        return assigneeUsers;
+        return assignedUsers;
     }
 
     /**
      * @param assigneeUsers a set of users to be responsible for completing this task
      */
-    public void setAssigneeUsers(Set<User> assigneeUsers) {
+    public void setAssignedUsers(Set<User> assigneeUsers) {
 
-        this.assigneeUsers = assigneeUsers;
+        this.assignedUsers = assigneeUsers;
     }
 
     /**
@@ -286,7 +286,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * @return a deadline date of this task
      */
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
 
         return deadline;
     }
@@ -294,7 +294,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * @param deadline a deadline date for this task
      */
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
 
         this.deadline = deadline;
     }

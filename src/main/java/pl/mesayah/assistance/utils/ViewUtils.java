@@ -2,7 +2,6 @@ package pl.mesayah.assistance.utils;
 
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
-import pl.mesayah.assistance.issue.IssueDetailsView;
 import pl.mesayah.assistance.issue.IssueListView;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectDetailsView;
@@ -32,6 +31,8 @@ public class ViewUtils {
             return ProjectDetailsView.VIEW_NAME;
         } else if (entity == Team.class) {
             return TeamDetailsView.VIEW_NAME;
+        } else if (entity == Task.class) {
+            return TaskDetailsView.VIEW_NAME;
         } else if (entity == Issue.class) {
             return IssueDetailsView.VIEW_NAME;
         }
