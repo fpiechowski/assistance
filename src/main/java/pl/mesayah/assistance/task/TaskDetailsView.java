@@ -5,8 +5,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.messaging.ChannelService;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
 import pl.mesayah.assistance.ui.AbstractDetailsView;
@@ -82,14 +80,6 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
      */
     private TwinColSelect<Task> subtasksListBuilder;
     /**
-     * A label showing a channel of the task.
-     */
-    private Label channelLabel;
-    /**
-     * A combo box for selecting task channel.
-     */
-    private ComboBox<Channel> channelComboBox;
-    /**
      * A label showing a type of the task.
      */
     private Label typeLabel;
@@ -137,9 +127,6 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
     private ProjectService projectService;
 
     @Autowired
-    private ChannelService channelService;
-
-    @Autowired
     private TaskService taskService;
 
     /**
@@ -184,16 +171,13 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         subtasksLabel = new Label();
         subtasksLabel.setCaption("Subtask: ");
 
-        channelLabel = new Label();
-        channelLabel.setCaption("Channel: ");
-
         typeLabel = new Label();
         typeLabel.setCaption("Type: ");
 
         projectLabel = new Label();
         projectLabel.setCaption("Project: ");
 
-        HorizontalLayout readDatesLayout = new HorizontalLayout(deadlineLabel,assignedUsersLabel);
+        HorizontalLayout readDatesLayout = new HorizontalLayout(deadlineLabel, assignedUsersLabel);
         readDatesLayout.setWidth("100%");
 
         return new ArrayList<>(Arrays.asList(
@@ -205,6 +189,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
 
     @Override
     protected List<Component> initializeEditComponents() {
+
 
         nameTextField = new TextField("Name:");
         nameTextField.setWidth("100%");
@@ -239,14 +224,14 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
 
         parentTaskComboBox = new ComboBox<>("Parent Task");
         parentTaskComboBox.setEmptySelectionAllowed(false);
-        parentTaskComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId()+' '+task.getName());
+        parentTaskComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId() + ' ' + task.getName());
         parentTaskComboBox.setRequiredIndicatorVisible(false);
 
         subtasksListBuilder = new TwinColSelect<>("Subtasks");
         subtasksListBuilder.setRows(6);
         subtasksListBuilder.setLeftColumnCaption("Available subtasks");
         subtasksListBuilder.setRightColumnCaption("Selected subtasks");
-        subtasksListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId()+' '+task.getName());
+        subtasksListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId() + ' ' + task.getName());
 
         assignedUsersListBuilder = new TwinColSelect<>("Assigned to:");
         assignedUsersListBuilder.setRows(6);
@@ -256,33 +241,48 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
 
         projectComboBox = new ComboBox<>("Project");
         projectComboBox.setEmptySelectionAllowed(false);
-        projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getId()+' '+project.getName());
+        projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getId() + ' ' + project.getName());
         projectComboBox.setRequiredIndicatorVisible(false);
 
-        channelComboBox = new ComboBox<>("Channel");
-        channelComboBox.setEmptySelectionAllowed(false);
-        channelComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Channel>) channel -> channel.getName());
-        channelComboBox.setRequiredIndicatorVisible(false);
-        HorizontalLayout editNameStatusLayout = new HorizontalLayout(
-                nameTextField,
-                statusNativeSelect,
-                priorityNativeSelect,
-                typeNativeSelect,
-                parentTaskComboBox,
-                projectComboBox,
-                channelComboBox
-        );
+        HorizontalLayout columnLayout = new HorizontalLayout();
+        columnLayout.setMargin(false);
 
-        HorizontalLayout editDatesLayout = new HorizontalLayout(deadlineDateField);
+        VerticalLayout leftSideLayout = getLeftSide();
 
-        HorizontalLayout listsLayout = new HorizontalLayout(subtasksListBuilder,assignedUsersListBuilder);
+        VerticalLayout rightSideLayout = getRightSide();
+
+        columnLayout.addComponents(leftSideLayout, rightSideLayout);
+        columnLayout.setWidth("100%");
 
         return new ArrayList<>(Arrays.asList(
-                editNameStatusLayout,
-                descriptionTextArea,
-                editDatesLayout,
-                listsLayout
+            columnLayout
         ));
+    }
+
+    private VerticalLayout getRightSide() {
+        VerticalLayout rightSideLayout = new VerticalLayout();
+        rightSideLayout.setMargin(false);
+
+        rightSideLayout.addComponents(typeNativeSelect, priorityNativeSelect, deadlineDateField,
+                assignedUsersListBuilder, subtasksListBuilder);
+
+        return rightSideLayout;
+    }
+
+    private VerticalLayout getLeftSide() {
+        VerticalLayout leftSide = new VerticalLayout();
+        leftSide.setMargin(false);
+
+        HorizontalLayout nameStatusLayout = new HorizontalLayout(nameTextField, statusNativeSelect);
+        nameStatusLayout.setMargin(false);
+        nameStatusLayout.setExpandRatio(nameTextField, 1.0f);
+
+        HorizontalLayout parentProjectLayout = new HorizontalLayout(parentTaskComboBox, projectComboBox);
+        parentProjectLayout.setMargin(false);
+
+        leftSide.addComponents(nameStatusLayout, descriptionTextArea, parentProjectLayout);
+
+        return leftSide;
     }
 
     @Override
@@ -324,8 +324,6 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
                 .bind(Task::getParentTask, Task::setParentTask);
         dataBinder.forField(projectComboBox)
                 .bind(Task::getProject, Task::setProject);
-        dataBinder.forField(channelComboBox)
-                .bind(Task::getChannel, Task::setChannel);
         dataBinder.forField(subtasksListBuilder)
                 .bind(Task::getSubtasks, Task::setSubtasks);
         dataBinder.forField(assignedUsersListBuilder)
@@ -341,8 +339,6 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         assignedUsersListBuilder.setItems(users);
         Collection<Task> tasks = taskService.findAll();
         subtasksListBuilder.setItems(tasks);
-        Collection<Channel> channels = channelService.findAll();
-        channelComboBox.setItems(channels);
         Collection<Project> projects = projectService.findAll();
         projectComboBox.setItems(projects);
     }
