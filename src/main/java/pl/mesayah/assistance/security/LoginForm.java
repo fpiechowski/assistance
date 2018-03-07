@@ -1,49 +1,20 @@
 package pl.mesayah.assistance.security;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.AlignmentInfo;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import pl.mesayah.assistance.ui.RelaseNotesView;
 
 public class LoginForm extends VerticalLayout {
 
 
     public LoginForm(LoginCallback callback) {
 
-
-/*
-        TextField username = new TextField("Username:");
-        formContainer.addComponent(username);
-
-        PasswordField password = new PasswordField("Password:");
-        formContainer.addComponent(password);
-
-        username.setWidth("300px");
-        password.setWidth("300px");
-
-        Button login = new Button("Login", evt -> {
-            String pword = password.getValue();
-            password.setValue("");
-            if (!callback.login(username.getValue(), pword)) {
-                Notification.show("Login failed");
-                username.focus();
-            }
-        });
-
-        formContainer.addComponent(login);
-
-        formContainer.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
-
-
-
-        addComponent(formContainer);
-
-        setComponentAlignment(formContainer, Alignment.MIDDLE_CENTER);*/
+        RelaseNotesView relaseNotesView = new RelaseNotesView();
 
         /**
          * Layouts declarations
@@ -73,9 +44,11 @@ public class LoginForm extends VerticalLayout {
         Label welcomeLabel = new Label();
         Label footerMiddleLabel = new Label();
         Label footerLeftLabel = new Label();
-        CheckBox rememberPass = new CheckBox("Remember password");
-        Link footerRightLabel = new Link("Help", new ExternalResource(
-                "http://www.google.com"));
+        Button footerRightLabel = new Button("Help", event -> {
+            removeAllComponents();
+            setStyleName("relaseNotesView");
+            addComponent(new RelaseNotesView());
+        });
 
         /**
          * Components setting
@@ -92,7 +65,7 @@ public class LoginForm extends VerticalLayout {
 
         footerMiddleLabel.setValue("© 2017 Assistance · All rights reserved");
 
-        footerLeftLabel.setValue("Build xxx Mon, Dec 11, 2017, 8:34:35 PM UTC");
+        footerLeftLabel.setValue("Build "+ relaseNotesView.getBuildVersion()+" "+ relaseNotesView.getRelaseDate());
 
         logo.setSource(resource);
         logo.setWidth("40%");
@@ -101,7 +74,7 @@ public class LoginForm extends VerticalLayout {
          */
         footer.addComponents(footerLeftLabel, footerMiddleLabel, footerRightLabel);
         logoBox.addComponent(logo);
-        loginBox.addComponents(welcomeLabel, username, password, rememberPass, logIn);
+        loginBox.addComponents(welcomeLabel, username, password, logIn);
         addComponents(logoBox, loginBox, footer);
         /**
          * Layouts settings
