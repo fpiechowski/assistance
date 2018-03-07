@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mesayah.assistance.project.Project;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -79,5 +80,9 @@ public class MilestoneService {
     public void delete(Milestone milestone) {
 
         milestoneRepository.delete(milestone);
+    }
+    public Collection<Milestone> findAll() {
+
+        return (Collection<Milestone>) milestoneRepository.findAll();
     }
 }
