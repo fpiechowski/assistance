@@ -121,6 +121,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         Layout userInfoLayout = new UserInfoLayout();
         topBarLayout.addComponents(userInfoLayout, navigationLayout);
         topBarLayout.setExpandRatio(navigationLayout, 1.0f);
+        topBarLayout.setStyleName("topbarLayout");
     }
 
     /**
@@ -306,6 +307,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
          * A button for showing current user profile.
          */
         private Button userNameLink;
+        private Button logoutButton;
 
         public UserInfoLayout() {
 
@@ -313,7 +315,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
             this.setHeight("-1px");
             this.setMargin(new MarginInfo(false, true));
             this.setId("userInfoLayout");
-
+            HorizontalLayout setlog = new HorizontalLayout();
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             userNameLink = new Button(username);
             userNameLink.setStyleName("link");
@@ -321,13 +323,17 @@ public class AssistanceUi extends UI implements ViewDisplay {
             userNameLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
 
+            logoutButton = new Button("Logout");
+            logoutButton.setStyleName("link");
+            logoutButton.addClickListener((Button.ClickListener) clickevent -> logout());
+
             settingLink = new Button("Settings", VaadinIcons.COG);
             settingLink.setStyleName("link");
             // TODO: set navigation state to setting view NAME
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
-
-            this.addComponents(userNameLink, settingLink);
+            setlog.addComponents(settingLink,logoutButton);
+            this.addComponents(userNameLink,setlog);
         }
     }
 }
