@@ -8,8 +8,8 @@ import pl.mesayah.assistance.task.Task;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A significant stage or an event in the development.
@@ -47,7 +47,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
             joinColumns = @JoinColumn(name = "milestone_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id")
     )
-    private List<Task> tasks;
+    private Set<Task> tasks;
 
     /**
      * A project this milestone indicates progress for.
@@ -126,17 +126,17 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
     }
 
     /**
-     * @return a list of tasks this milestone requires to be resolved in order to be achieved
+     * @return a set of tasks this milestone requires to be resolved in order to be achieved
      */
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
 
         return tasks;
     }
 
     /**
-     * @param tasks a list of tasks to be resolved in order to achieve this milestone
+     * @param tasks a set of tasks to be resolved in order to achieve this milestone
      */
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
 
         this.tasks = tasks;
     }

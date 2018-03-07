@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
+import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.LoginForm;
 import pl.mesayah.assistance.security.SecurityUtils;
@@ -275,6 +276,12 @@ public class AssistanceUi extends UI implements ViewDisplay {
             issuesButton.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Issue().getClass())));
             navigationButtons.add(issuesButton);
+
+            Button milestonesButton = new Button("Milestones");
+            milestonesButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Milestone().getClass())));
+            navigationButtons.add(milestonesButton);
+
 
             // Sets the style for all navigation links
             for (Button b : navigationButtons) {
