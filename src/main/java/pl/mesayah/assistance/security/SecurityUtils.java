@@ -18,7 +18,6 @@ public final class SecurityUtils {
     }
 
 
-
     /**
      * Checks if there is a signed in user for the session.
      *
@@ -30,8 +29,10 @@ public final class SecurityUtils {
         return authentication != null && authentication.isAuthenticated();
     }
 
+
     /**
      * Checks if a currently signed in user has a given role.
+     *
      * @param role a role to check for a currently signed in user
      * @return true if a currently signed in user has a given role
      */
@@ -40,6 +41,7 @@ public final class SecurityUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
     }
+
 
     public static String getCurrentUserUsername() {
 

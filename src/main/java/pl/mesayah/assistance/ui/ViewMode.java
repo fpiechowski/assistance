@@ -8,10 +8,12 @@ public enum ViewMode {
 
     private String urlString;
 
+
     ViewMode(String urlString) {
 
         this.urlString = urlString;
     }
+
 
     public String getUrlString() {
 

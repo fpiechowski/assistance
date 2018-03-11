@@ -19,12 +19,14 @@ public class TeamService {
     @Autowired
     private TeamRepository teamRepository;
 
+
     /**
      * Constructs a default team service. Needed for JPA to work.
      */
     public TeamService() {
 
     }
+
 
     /**
      * Saves given task in the database.
@@ -35,6 +37,7 @@ public class TeamService {
 
         teamRepository.save(team);
     }
+
 
     /**
      * Finds team by unique identifier.
@@ -47,6 +50,7 @@ public class TeamService {
         return teamRepository.findOne(id);
     }
 
+
     /**
      * Finds all teams for given project.
      *
@@ -58,6 +62,7 @@ public class TeamService {
         return teamRepository.findByName(name);
     }
 
+
     /**
      * Deletes team with given ID.
      *
@@ -68,6 +73,7 @@ public class TeamService {
         teamRepository.delete(id);
     }
 
+
     /**
      * Deletes given team from the database.
      *
@@ -77,6 +83,7 @@ public class TeamService {
 
         teamRepository.delete(team);
     }
+
 
     public Collection<Team> findAll() {
 

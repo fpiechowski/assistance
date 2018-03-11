@@ -18,11 +18,13 @@ public class IssueListView extends AbstractListView<Issue> {
     @Autowired
     private IssueService issueService;
 
+
     @Override
     protected Issue createEmptyEntity() {
 
         return new Issue();
     }
+
 
     @Override
     protected List<Button> initializeAdditionalButtons() {
@@ -30,23 +32,6 @@ public class IssueListView extends AbstractListView<Issue> {
         return null;
     }
 
-    @Override
-    protected Button initializeDetailsButton() {
-
-        return new Button("Details", VaadinIcons.EYE);
-    }
-
-    @Override
-    protected Button initializeNewButton() {
-
-        return new Button("Report", VaadinIcons.PLUS);
-    }
-
-    @Override
-    public Collection<Issue> fetchDataSet() {
-
-        return issueService.findAll();
-    }
 
     @Override
     public Grid<Issue> initializeListing() {
@@ -57,11 +42,34 @@ public class IssueListView extends AbstractListView<Issue> {
         return grid;
     }
 
+
+    @Override
+    protected boolean isGridEditable() {
+
+        return false;
+    }
+
+
+    @Override
+    protected Button initializeDetailsButton() {
+
+        return new Button("Details", VaadinIcons.EYE);
+    }
+
+
+    @Override
+    protected Button initializeNewButton() {
+
+        return new Button("Report", VaadinIcons.PLUS);
+    }
+
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Button initializeDeleteButton() {
@@ -69,9 +77,10 @@ public class IssueListView extends AbstractListView<Issue> {
         return new Button("Delete", VaadinIcons.TRASH);
     }
 
-    @Override
-    protected boolean isGridEditable() {
 
-        return false;
+    @Override
+    public Collection<Issue> fetchDataSet() {
+
+        return issueService.findAll();
     }
 }

@@ -46,6 +46,7 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
      */
     private TwinColSelect<User> userTwinColSelect;
 
+
     @Override
     protected List<Component> initializeReadComponents() {
 
@@ -64,6 +65,7 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
         ));
     }
 
+
     @Override
     protected List<Component> initializeEditComponents() {
 
@@ -79,11 +81,13 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
         ));
     }
 
+
     @Override
     protected Button initializeDeleteButton() {
 
         return new Button("Delete", VaadinIcons.TRASH);
     }
+
 
     @Override
     protected Button initializeConfirmButton() {
@@ -91,11 +95,13 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
         return new Button("Confirm", VaadinIcons.CHECK);
     }
 
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Binder<Team> initializeDataBinder() {
@@ -111,12 +117,14 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
         return dataBinder;
     }
 
+
     @Override
     protected void loadData() {
 
         Collection<User> members = userService.findAll();
         userTwinColSelect.setItems(members);
     }
+
 
     @Override
     protected Team createEmptyEntity() {
@@ -125,6 +133,7 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
 
         return empty;
     }
+
 
     @Override
     protected void setReadComponentsValues() {

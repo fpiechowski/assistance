@@ -1,17 +1,16 @@
 package pl.mesayah.assistance.ui.list;
 
+import com.vaadin.data.HasValue;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.navigator.SpringNavigator;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.Entity;
+import pl.mesayah.assistance.AbstractFilterableEntity;
+import pl.mesayah.assistance.Filterable;
 import pl.mesayah.assistance.ui.AssistanceUi;
-import pl.mesayah.assistance.ui.details.DetailsViews;
 import pl.mesayah.assistance.ui.ViewMode;
+import pl.mesayah.assistance.ui.details.DetailsViews;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractListView<T extends Entity> extends VerticalLayout implements ListView<T> {
+public abstract class AbstractListView<T extends AbstractFilterableEntity> extends VerticalLayout implements ListView<T> {
 
     @Autowired
     private SpringNavigator navigator;
@@ -41,6 +40,9 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
     private Button editButton;
 
     private Button deleteButton;
+
+    private TextField nameFilterTextField;
+
 
     public AbstractListView() {
 
@@ -107,18 +109,36 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
+        nameFilterTextField = new TextField();
+        nameFilterTextField.setPlaceholder("Search...");
+        nameFilterTextField.addValueChangeListener(this::onNameFilterValueChange);
+
         setSizeFull();
     }
+
 
     protected abstract T createEmptyEntity();
 
     protected abstract List<Button> initializeAdditionalButtons();
 
+
+    protected abstract Grid<T> initializeListing();
+
+
+    protected abstract boolean isGridEditable();
+
+
     protected abstract Button initializeDetailsButton();
+
 
     protected abstract Button initializeNewButton();
 
-    protected abstract Grid<T> initializeListing();
+
+    protected abstract Button initializeEditButton();
+
+
+    protected abstract Button initializeDeleteButton();
+
 
     @PostConstruct
     protected ListDataProvider<T> initializeDataProvider() {
@@ -128,13 +148,9 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
         return dataProvider;
     }
 
+
     protected abstract Collection<T> fetchDataSet();
 
-    protected abstract Button initializeEditButton();
-
-    protected abstract Button initializeDeleteButton();
-
-    protected abstract boolean isGridEditable();
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
@@ -146,8 +162,24 @@ public abstract class AbstractListView<T extends Entity> extends VerticalLayout 
             }
         }
 
+        buttonsLayout.addComponent(nameFilterTextField);
+
         addComponents(buttonsLayout, listing);
 
         setExpandRatio(listing, 1.0f);
+    }
+
+
+    @Override
+    public void onNameFilterValueChange(HasValue.ValueChangeEvent<String> stringValueChangeEvent) {
+
+        ListDataProvider<T> dataProvider = (ListDataProvider<T>) listing.getDataProvider();
+        dataProvider.setFilter(Filterable::getTextRepresentation, s -> caseInsensitiveContains(s, stringValueChangeEvent.getValue()));
+    }
+
+
+    private Boolean caseInsensitiveContains(String where, String what) {
+
+        return where.toLowerCase().contains(what.toLowerCase());
     }
 }

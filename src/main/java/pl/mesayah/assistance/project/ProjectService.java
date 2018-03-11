@@ -19,12 +19,14 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+
     /**
      * Default constructor.
      */
     public ProjectService() {
 
     }
+
 
     /**
      * Saves a given project entity in database.
@@ -35,6 +37,7 @@ public class ProjectService {
 
         return projectRepository.save(chatMessage);
     }
+
 
     /**
      * Retrieves a project entity by its id.
@@ -47,6 +50,7 @@ public class ProjectService {
         return projectRepository.findOne(id);
     }
 
+
     /**
      * Retrive project entities with the given status.
      *
@@ -58,6 +62,7 @@ public class ProjectService {
         return projectRepository.findAllByPhase(phase);
     }
 
+
     /**
      * Finds all existing projects.
      *
@@ -67,6 +72,7 @@ public class ProjectService {
 
         return (List<Project>) projectRepository.findAll();
     }
+
 
     /**
      * Deletes the project entity with the given id.

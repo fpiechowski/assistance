@@ -7,9 +7,9 @@ import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
+import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.security.role.RoleService;
-import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.ui.details.DetailsViews;
@@ -61,10 +61,12 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     @Autowired
     private ProjectService projectService;
 
+
     public IssueDetailsView() {
 
         setSizeFull();
     }
+
 
     @Override
     protected List<Component> initializeReadComponents() {
@@ -106,6 +108,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
                 descriptionLabel
         );
     }
+
 
     @Override
     protected List<Component> initializeEditComponents() {
@@ -151,11 +154,13 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         );
     }
 
+
     @Override
     protected Button initializeDeleteButton() {
 
         return new Button("Delete", VaadinIcons.TRASH);
     }
+
 
     @Override
     protected Button initializeConfirmButton() {
@@ -163,11 +168,13 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         return new Button("Confirm", VaadinIcons.CHECK);
     }
 
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Binder<Issue> initializeDataBinder() {
@@ -192,6 +199,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         return binder;
     }
 
+
     @Override
     protected void loadData() {
 
@@ -206,6 +214,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         projectComboBox.setItems(projects);
     }
 
+
     @Override
     protected Issue createEmptyEntity() {
 
@@ -217,6 +226,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         created.setReportDate(LocalDate.now());
         return created;
     }
+
 
     @Override
     protected void setReadComponentsValues() {

@@ -23,12 +23,14 @@ public class MilestoneService {
     @Autowired
     private MilestoneRepository milestoneRepository;
 
+
     /**
      * Constructs a default milestone service. Needed for JPA to work.
      */
     public MilestoneService() {
 
     }
+
 
     /**
      * Saves given milestone in the database.
@@ -39,6 +41,7 @@ public class MilestoneService {
 
         milestoneRepository.save(milestone);
     }
+
 
     /**
      * Finds one milestone by unique identifier.
@@ -51,6 +54,7 @@ public class MilestoneService {
         return milestoneRepository.findOne(id);
     }
 
+
     /**
      * Finds all milestone for given project.
      *
@@ -62,6 +66,7 @@ public class MilestoneService {
         return milestoneRepository.findByProject(project);
     }
 
+
     /**
      * Deletes milestone with given ID.
      *
@@ -72,6 +77,7 @@ public class MilestoneService {
         milestoneRepository.delete(id);
     }
 
+
     /**
      * Deletes given milestone from the database.
      *
@@ -81,6 +87,8 @@ public class MilestoneService {
 
         milestoneRepository.delete(milestone);
     }
+
+
     public Collection<Milestone> findAll() {
 
         return (Collection<Milestone>) milestoneRepository.findAll();

@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.project;
 
-import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.messaging.Discussable;
+import pl.mesayah.assistance.AbstractFilterableEntity;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
@@ -20,7 +19,7 @@ import java.util.*;
  * {@link Task}s attached to it.
  */
 @Entity
-public class Project implements Serializable, Discussable, pl.mesayah.assistance.Entity {
+public class Project extends AbstractFilterableEntity implements Serializable {
 
     private static final String ENTITY_NAME = "project";
 
@@ -94,12 +93,6 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
     @OneToMany(mappedBy = "project")
     private List<Milestone> milestones = new ArrayList<>();
 
-    /**
-     * A place where this project is discussed by using a chat.
-     */
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
 
     /**
      * Constructs a project object with no attributes specified.
@@ -110,11 +103,13 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         phase = Phase.PLANNING;
     }
 
+
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, description, deadline, startDate, manager, phase, channel);
+        return Objects.hash(id, name, description, deadline, startDate, manager, phase);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -128,9 +123,9 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
                 Objects.equals(deadline, project.deadline) &&
                 Objects.equals(startDate, project.startDate) &&
                 Objects.equals(manager, project.manager) &&
-                phase == project.phase &&
-                Objects.equals(channel, project.channel);
+                phase == project.phase;
     }
+
 
     @Override
     public String toString() {
@@ -138,15 +133,18 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         return name;
     }
 
+
     public User getManager() {
 
         return manager;
     }
 
+
     public void setManager(User manager) {
 
         this.manager = manager;
     }
+
 
     /**
      * @return an unique identifier of this project
@@ -157,11 +155,13 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         return id;
     }
 
+
     @Override
     public String getEntityName() {
 
         return ENTITY_NAME;
     }
+
 
     /**
      * @param id an unique identifier for this project
@@ -171,6 +171,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.id = id;
     }
 
+
     /**
      * @return the NAME of this project
      */
@@ -178,6 +179,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return name;
     }
+
 
     /**
      * @param name a NAME for this project
@@ -187,6 +189,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.name = name;
     }
 
+
     /**
      * @return a deadline date of this project
      */
@@ -194,6 +197,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return deadline;
     }
+
 
     /**
      * @param deadline a deadline date for this project
@@ -203,6 +207,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.deadline = deadline;
     }
 
+
     /**
      * @return a date this project starts
      */
@@ -210,6 +215,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return startDate;
     }
+
 
     /**
      * @param startDate a date for this project to start
@@ -219,6 +225,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.startDate = startDate;
     }
 
+
     /**
      * @return a list of tasks defined for this project
      */
@@ -226,6 +233,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return tasks;
     }
+
 
     /**
      * @param tasks a list of task to be completed for this project
@@ -235,6 +243,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.tasks = tasks;
     }
 
+
     /**
      * @return a phase indicator of this project
      */
@@ -242,6 +251,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return phase;
     }
+
 
     /**
      * @param phase a phase indicator for this project
@@ -251,6 +261,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.phase = phase;
     }
 
+
     /**
      * @return a set of teams working on this project
      */
@@ -258,6 +269,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return teams;
     }
+
 
     /**
      * @param teams a set of teams to work on this project
@@ -267,6 +279,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.teams = teams;
     }
 
+
     /**
      * @return a description of this project
      */
@@ -274,6 +287,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return description;
     }
+
 
     /**
      * @param description a description for this project
@@ -283,6 +297,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.description = description;
     }
 
+
     /**
      * @return a list of milestones defined for this project
      */
@@ -290,6 +305,7 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         return milestones;
     }
+
 
     /**
      * @param milestones a list of milestones to be defined for this project
@@ -299,19 +315,13 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
         this.milestones = milestones;
     }
 
+
     @Override
-    public Channel getChannel() {
+    public String getTextRepresentation() {
 
-        return channel;
+        return name;
     }
 
-    /**
-     * @param channel a channel where this project is discussed
-     */
-    public void setChannel(Channel channel) {
-
-        this.channel = channel;
-    }
 
     public enum Phase {
 
@@ -324,16 +334,19 @@ public class Project implements Serializable, Discussable, pl.mesayah.assistance
 
         private String name;
 
+
         Phase(String name) {
 
             this.name = name;
         }
+
 
         @Override
         public String toString() {
 
             return name;
         }
+
 
         public String getName() {
 

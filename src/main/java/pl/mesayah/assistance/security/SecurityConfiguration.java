@@ -28,11 +28,13 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
     @Autowired
     private AssistanceUserDetailsService userDetailsService;
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.authenticationProvider(authenticationProvider());
     }
+
 
     public DaoAuthenticationProvider authenticationProvider() {
 
@@ -41,6 +43,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
 
     /**
      * A password encoder used to encode user passwords before storing them in persistence.
@@ -52,6 +55,7 @@ public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {

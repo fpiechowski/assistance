@@ -20,6 +20,7 @@ public class AssistanceUserDetails implements UserDetails {
 
     private boolean accountNonLocked = true;
 
+
     public AssistanceUserDetails(User user, boolean credentialNonExpired, boolean accountNonExpired, boolean accountNonLocked) {
 
         this.user = user;
@@ -28,20 +29,24 @@ public class AssistanceUserDetails implements UserDetails {
         this.accountNonLocked = accountNonLocked;
     }
 
+
     public AssistanceUserDetails(User user) {
 
         this.user = user;
     }
+
 
     public User getUser() {
 
         return user;
     }
 
+
     public void setUser(User user) {
 
         this.user = user;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -56,11 +61,13 @@ public class AssistanceUserDetails implements UserDetails {
         return authorities;
     }
 
+
     @Override
     public String getPassword() {
 
         return user.getPassword();
     }
+
 
     @Override
     public String getUsername() {
@@ -68,11 +75,13 @@ public class AssistanceUserDetails implements UserDetails {
         return user.getUsername();
     }
 
+
     @Override
     public boolean isAccountNonExpired() {
 
         return accountNonExpired;
     }
+
 
     @Override
     public boolean isAccountNonLocked() {
@@ -80,11 +89,13 @@ public class AssistanceUserDetails implements UserDetails {
         return accountNonLocked;
     }
 
+
     @Override
     public boolean isCredentialsNonExpired() {
 
         return credentialNonExpired;
     }
+
 
     @Override
     public boolean isEnabled() {

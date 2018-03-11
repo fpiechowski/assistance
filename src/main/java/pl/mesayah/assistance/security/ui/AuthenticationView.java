@@ -65,7 +65,7 @@ public class AuthenticationView extends VerticalLayout {
 
         footerMiddleLabel.setValue("© 2017 Assistance · All rights reserved");
 
-        footerLeftLabel.setValue("Build "+ relaseNotesView.getBuildVersion()+" "+ relaseNotesView.getRelaseDate());
+        footerLeftLabel.setValue("Build " + relaseNotesView.getBuildVersion() + " " + relaseNotesView.getRelaseDate());
 
         logo.setSource(resource);
         logo.setWidth("40%");
@@ -118,6 +118,7 @@ public class AuthenticationView extends VerticalLayout {
 
         logIn.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     }
+
 
     @FunctionalInterface
     public interface LoginCallback {

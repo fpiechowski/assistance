@@ -19,17 +19,13 @@ public class TeamListView extends AbstractListView<Team> {
     @Autowired
     private TeamService teamService;
 
+
     @Override
     protected Team createEmptyEntity() {
 
         return new Team();
     }
 
-    @Override
-    protected Button initializeNewButton() {
-
-        return new Button("New", VaadinIcons.PLUS);
-    }
 
     @Override
     protected List<Button> initializeAdditionalButtons() {
@@ -37,17 +33,6 @@ public class TeamListView extends AbstractListView<Team> {
         return null;
     }
 
-    @Override
-    protected Button initializeDetailsButton() {
-
-        return new Button("Details", VaadinIcons.EYE);
-    }
-
-    @Override
-    public Collection<Team> fetchDataSet() {
-
-        return teamService.findAll();
-    }
 
     @Override
     public Grid<Team> initializeListing() {
@@ -60,11 +45,34 @@ public class TeamListView extends AbstractListView<Team> {
         return grid;
     }
 
+
+    @Override
+    protected boolean isGridEditable() {
+
+        return false;
+    }
+
+
+    @Override
+    protected Button initializeDetailsButton() {
+
+        return new Button("Details", VaadinIcons.EYE);
+    }
+
+
+    @Override
+    protected Button initializeNewButton() {
+
+        return new Button("New", VaadinIcons.PLUS);
+    }
+
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Button initializeDeleteButton() {
@@ -72,9 +80,10 @@ public class TeamListView extends AbstractListView<Team> {
         return new Button("Delete", VaadinIcons.TRASH);
     }
 
-    @Override
-    protected boolean isGridEditable() {
 
-        return false;
+    @Override
+    public Collection<Team> fetchDataSet() {
+
+        return teamService.findAll();
     }
 }

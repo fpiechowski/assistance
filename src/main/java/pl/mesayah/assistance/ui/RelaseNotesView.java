@@ -13,7 +13,7 @@ public class RelaseNotesView extends HorizontalLayout {
             {
                     "07.03.2017 Ostry", "- Added specified class name to database connection properties." +
                     "<br />    Add: spring.datasource.driver-class-name=com.mysql.jdbc.Driver to application-database.properties." +
-                    "<br />- Created form for relaseNotes"+
+                    "<br />- Created form for relaseNotes" +
                     "<br />- Created logout button" +
                     "<br />- Set styled for Navigation Bar" +
                     "<br />- Remove Remember Password checkbox" +
@@ -37,7 +37,9 @@ public class RelaseNotesView extends HorizontalLayout {
             }
     };
 
+
     public RelaseNotesView() {
+
         Button back = new Button("Powrót", event ->
                 Page.getCurrent().reload()
         );
@@ -70,14 +72,18 @@ public class RelaseNotesView extends HorizontalLayout {
             knowsbugs.addTab(layout, w[0]);
         }
         setHeight("100%");
-        addComponents(back,notesView, knowsbugs);
+        addComponents(back, notesView, knowsbugs);
     }
 
+
     public String getBuildVersion() {
+
         return buildVersion;
     }
 
+
     public String getRelaseDate() {
+
         return relaseDate;
     }
 }

@@ -37,6 +37,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     @Autowired
     private PrivilegeService privilegeService;
 
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
 
@@ -52,6 +53,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
         alreadySetup = true;
     }
+
 
     private void createTestUsers() {
 

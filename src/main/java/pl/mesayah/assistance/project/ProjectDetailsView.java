@@ -6,9 +6,9 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.milestone.Milestone;
+import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.security.role.RoleService;
-import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
@@ -100,6 +100,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
     @Autowired
     private UserRepository userRepository;
 
+
     /**
      * Constructs a view in a read mode and initializes controls for it.
      */
@@ -107,6 +108,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
 
         dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd yyyyy");
     }
+
 
     @Override
     protected List<Component> initializeReadComponents() {
@@ -148,6 +150,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
                 managerLabel
         ));
     }
+
 
     @Override
     protected List<Component> initializeEditComponents() {
@@ -214,11 +217,13 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         ));
     }
 
+
     @Override
     protected Button initializeDeleteButton() {
 
         return new Button("Delete", VaadinIcons.TRASH);
     }
+
 
     @Override
     protected Button initializeConfirmButton() {
@@ -226,11 +231,13 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         return new Button("Confirm", VaadinIcons.CHECK);
     }
 
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     protected Binder<Project> initializeDataBinder() {
 
@@ -255,12 +262,14 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         return dataBinder;
     }
 
+
     @Override
     protected void loadData() {
 
         Collection<User> projectManagers = roleService.findByName(Role.PROJECT_MANAGER).getUsers();
         managerComboBox.setItems(projectManagers);
     }
+
 
     @Override
     public Project createEmptyEntity() {
@@ -276,6 +285,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
 
         return empty;
     }
+
 
     @Override
     protected void setReadComponentsValues() {

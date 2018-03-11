@@ -22,17 +22,13 @@ public class ProjectListView extends AbstractListView<Project> {
     @Autowired
     private ProjectService projectService;
 
+
     @Override
     protected Project createEmptyEntity() {
 
         return new Project();
     }
 
-    @Override
-    protected Button initializeNewButton() {
-
-        return new Button("New", VaadinIcons.PLUS);
-    }
 
     @Override
     protected List<Button> initializeAdditionalButtons() {
@@ -40,17 +36,6 @@ public class ProjectListView extends AbstractListView<Project> {
         return null;
     }
 
-    @Override
-    protected Button initializeDetailsButton() {
-
-        return new Button("Details", VaadinIcons.EYE);
-    }
-
-    @Override
-    public Collection<Project> fetchDataSet() {
-
-        return projectService.findAll();
-    }
 
     @Override
     public Grid<Project> initializeListing() {
@@ -62,11 +47,34 @@ public class ProjectListView extends AbstractListView<Project> {
         return grid;
     }
 
+
+    @Override
+    protected boolean isGridEditable() {
+
+        return false;
+    }
+
+
+    @Override
+    protected Button initializeDetailsButton() {
+
+        return new Button("Details", VaadinIcons.EYE);
+    }
+
+
+    @Override
+    protected Button initializeNewButton() {
+
+        return new Button("New", VaadinIcons.PLUS);
+    }
+
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Button initializeDeleteButton() {
@@ -74,9 +82,10 @@ public class ProjectListView extends AbstractListView<Project> {
         return new Button("Delete", VaadinIcons.TRASH);
     }
 
-    @Override
-    protected boolean isGridEditable() {
 
-        return false;
+    @Override
+    public Collection<Project> fetchDataSet() {
+
+        return projectService.findAll();
     }
 }

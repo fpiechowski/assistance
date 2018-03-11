@@ -35,6 +35,7 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
     @Enumerated(EnumType.ORDINAL)
     private NotificationType type;
 
+
     /**
      * Constructs notification object with no specified attributes.
      */
@@ -42,11 +43,13 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
     }
 
+
     @Override
     public int hashCode() {
 
         return Objects.hash(id, title, sendDateTime, type);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -60,6 +63,7 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
                 type == that.type;
     }
 
+
     @Override
     public Long getId() {
 
@@ -67,26 +71,31 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         return id;
     }
 
+
     @Override
     public String getEntityName() {
 
         return ENTITY_NAME;
     }
 
+
     public void setId(Long id) {
 
         this.id = id;
     }
+
 
     public LocalDateTime getSendDateTime() {
 
         return sendDateTime;
     }
 
+
     public void setSendDateTime(LocalDateTime sendDateTime) {
 
         this.sendDateTime = sendDateTime;
     }
+
 
     /**
      * @return a title of this notification
@@ -96,6 +105,7 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         return title;
     }
 
+
     /**
      * @param title a title for this notification
      */
@@ -103,6 +113,7 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
         this.title = title;
     }
+
 
     /**
      * @return a type of this notification
@@ -112,6 +123,7 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         return type;
     }
 
+
     /**
      * @param type a type for this notification
      */
@@ -119,6 +131,7 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
         this.type = type;
     }
+
 
     /**
      * Describes a type of a notification.

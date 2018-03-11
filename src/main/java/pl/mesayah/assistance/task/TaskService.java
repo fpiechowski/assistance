@@ -22,12 +22,14 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+
     /**
      * Constructs a default milestone service. Needed for JPA to work.
      */
     public TaskService() {
 
     }
+
 
     /**
      * Saves given task in the database.
@@ -38,6 +40,8 @@ public class TaskService {
 
         taskRepository.save(task);
     }
+
+
     /**
      * Finds task by unique identifier.
      *
@@ -47,6 +51,7 @@ public class TaskService {
 
         return (List<Task>) taskRepository.findAll();
     }
+
 
     /**
      * Finds task by unique identifier.
@@ -59,6 +64,7 @@ public class TaskService {
         return taskRepository.findOne(id);
     }
 
+
     /**
      * Finds all tasks for given project.
      *
@@ -70,6 +76,7 @@ public class TaskService {
         return taskRepository.findByProject(project);
     }
 
+
     /**
      * Deletes task with given ID.
      *
@@ -79,6 +86,7 @@ public class TaskService {
 
         taskRepository.delete(id);
     }
+
 
     /**
      * Deletes given milestone from the database.

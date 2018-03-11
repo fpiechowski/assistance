@@ -26,6 +26,7 @@ public class Issue extends Task {
 
     private LocalDate reportDate;
 
+
     /**
      * Constructs a default issue object with no specified attributes.
      */
@@ -33,15 +34,18 @@ public class Issue extends Task {
 
     }
 
+
     public LocalDate getReportDate() {
 
         return reportDate;
     }
 
+
     public void setReportDate(LocalDate reportDate) {
 
         this.reportDate = reportDate;
     }
+
 
     /**
      * @return a user who reported this issue
@@ -51,6 +55,7 @@ public class Issue extends Task {
         return reportingUser;
     }
 
+
     /**
      * @param reportingUser a user this issue is to be reported by
      */
@@ -59,11 +64,13 @@ public class Issue extends Task {
         this.reportingUser = reportingUser;
     }
 
+
     @Override
     public int hashCode() {
 
         return Objects.hash(super.hashCode(), reportingUser);
     }
+
 
     @Override
     public boolean equals(Object o) {

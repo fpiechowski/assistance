@@ -19,17 +19,13 @@ public class TaskListView extends AbstractListView<Task> {
     @Autowired
     private TaskService taskService;
 
+
     @Override
     protected Task createEmptyEntity() {
 
         return new Task();
     }
 
-    @Override
-    protected Button initializeNewButton() {
-
-        return new Button("New", VaadinIcons.PLUS);
-    }
 
     @Override
     protected List<Button> initializeAdditionalButtons() {
@@ -37,27 +33,38 @@ public class TaskListView extends AbstractListView<Task> {
         return null;
     }
 
-    @Override
-    protected Button initializeDetailsButton() {
-
-        return new Button("Details", VaadinIcons.EYE);
-    }
-
-    @Override
-    public Collection<Task> fetchDataSet() {
-
-        return taskService.findAll();
-    }
 
     @Override
     public Grid<Task> initializeListing() {
 
         Grid<Task> grid = new Grid<>(Task.class);
         grid.setSizeFull();
-        grid.setColumns("id", "name", "status", "priority","deadline","type","project");
+        grid.setColumns("id", "name", "status", "priority", "deadline", "type", "project");
         grid.setColumnResizeMode(ColumnResizeMode.ANIMATED);
         return grid;
     }
+
+
+    @Override
+    protected boolean isGridEditable() {
+
+        return false;
+    }
+
+
+    @Override
+    protected Button initializeDetailsButton() {
+
+        return new Button("Details", VaadinIcons.EYE);
+    }
+
+
+    @Override
+    protected Button initializeNewButton() {
+
+        return new Button("New", VaadinIcons.PLUS);
+    }
+
 
     @Override
     protected Button initializeEditButton() {
@@ -65,15 +72,17 @@ public class TaskListView extends AbstractListView<Task> {
         return new Button("Edit", VaadinIcons.PENCIL);
     }
 
+
     @Override
     protected Button initializeDeleteButton() {
 
         return new Button("Delete", VaadinIcons.TRASH);
     }
 
-    @Override
-    protected boolean isGridEditable() {
 
-        return false;
+    @Override
+    public Collection<Task> fetchDataSet() {
+
+        return taskService.findAll();
     }
 }

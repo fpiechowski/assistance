@@ -21,12 +21,14 @@ public class NotificationService {
     @Autowired
     private NotificationRepository notificationRepository;
 
+
     /**
      * Constructs default nofitication service with no parameters set.
      */
     public NotificationService() {
 
     }
+
 
     /**
      * Saves given notification in the database.
@@ -37,6 +39,7 @@ public class NotificationService {
 
         return notificationRepository.save(notification);
     }
+
 
     /**
      * Checks if notification with given ID exists in the repository.
@@ -49,6 +52,7 @@ public class NotificationService {
         return notificationRepository.exists(id);
     }
 
+
     /**
      * Finds a notification with given ID.
      *
@@ -59,10 +63,12 @@ public class NotificationService {
         return notificationRepository.findOne(id);
     }
 
+
     public List<Notification> findByType(Notification.NotificationType type) {
 
         return notificationRepository.findByType(type);
     }
+
 
     /**
      * Deletes a notification with given ID.
@@ -73,6 +79,7 @@ public class NotificationService {
 
         notificationRepository.delete(id);
     }
+
 
     /**
      * Deletes given notification.

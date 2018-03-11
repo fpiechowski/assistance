@@ -20,12 +20,14 @@ public class IssueService {
     @Autowired
     private IssueRepository issueRepository;
 
+
     /**
      * Constructs a default issue object with no parameters.
      */
     public IssueService() {
 
     }
+
 
     /**
      * Saves a given issue to the repository.
@@ -38,6 +40,7 @@ public class IssueService {
         return issueRepository.save(issue);
     }
 
+
     /**
      * Finds an issue with given ID in the repository.
      *
@@ -48,6 +51,7 @@ public class IssueService {
 
         return issueRepository.findOne(id);
     }
+
 
     /**
      * Finds all issues reported by a given {@link User}.
@@ -60,6 +64,7 @@ public class IssueService {
         return issueRepository.findByReportingUser(reportingUser);
     }
 
+
     /**
      * Deletes an issue with a given ID from the repository.
      *
@@ -70,6 +75,7 @@ public class IssueService {
         issueRepository.delete(id);
     }
 
+
     /**
      * Deletes a given issue from the repository.
      *
@@ -79,6 +85,7 @@ public class IssueService {
 
         issueRepository.delete(issue);
     }
+
 
     public Collection<Issue> findAll() {
 

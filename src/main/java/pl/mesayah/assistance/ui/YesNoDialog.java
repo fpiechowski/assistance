@@ -32,6 +32,7 @@ public class YesNoDialog extends Window {
      */
     private HorizontalLayout buttonsLayout;
 
+
     /**
      * Constructs a dialog with a specific action defined for both buttons.
      *
@@ -46,6 +47,7 @@ public class YesNoDialog extends Window {
 
         noButton.addClickListener(onNoClickListener);
     }
+
 
     /**
      * Constructs a dialog with defined action for only Yes button. No button has default action of closing this window.

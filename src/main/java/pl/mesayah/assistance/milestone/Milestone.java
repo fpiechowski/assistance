@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.milestone;
 
-import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.messaging.Discussable;
+import pl.mesayah.assistance.AbstractFilterableEntity;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.task.Task;
 
@@ -17,7 +16,7 @@ import java.util.Set;
  * Milestones are part of projects. They are sets of tasks that need to be resolved to achieve a milestone.
  */
 @Entity
-public class Milestone implements Serializable, Discussable, pl.mesayah.assistance.Entity {
+public class Milestone extends AbstractFilterableEntity implements Serializable {
 
     private static final String ENTITY_NAME = "milestone";
 
@@ -56,12 +55,6 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
     @JoinColumn(name = "project_id")
     private Project project;
 
-    /**
-     * A channel for discussing this milestone.
-     */
-    @OneToOne
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
 
     /**
      * Constructs a milestone object with no attributes specified.
@@ -69,6 +62,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
     public Milestone() {
 
     }
+
 
     /**
      * @return a deadline date of this milestone
@@ -78,6 +72,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
         return deadline;
     }
 
+
     /**
      * @param deadline a deadline date for this milestone
      */
@@ -85,6 +80,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
 
         this.deadline = deadline;
     }
+
 
     /**
      * @return an unique identifier of this milestone
@@ -95,11 +91,13 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
         return id;
     }
 
+
     @Override
     public String getEntityName() {
 
         return ENTITY_NAME;
     }
+
 
     /**
      * @param id an unique identifier for this milestone
@@ -109,6 +107,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
         this.id = id;
     }
 
+
     /**
      * @return the NAME of this milestone
      */
@@ -116,6 +115,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
 
         return name;
     }
+
 
     /**
      * @param name a NAME for this milestone
@@ -125,6 +125,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
         this.name = name;
     }
 
+
     /**
      * @return a set of tasks this milestone requires to be resolved in order to be achieved
      */
@@ -132,6 +133,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
 
         return tasks;
     }
+
 
     /**
      * @param tasks a set of tasks to be resolved in order to achieve this milestone
@@ -141,6 +143,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
         this.tasks = tasks;
     }
 
+
     /**
      * @return a project this milestone indicates progress for
      */
@@ -148,6 +151,7 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
 
         return project;
     }
+
 
     /**
      * @param project a project this milestone is to indicate progress for
@@ -157,11 +161,13 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
         this.project = project;
     }
 
+
     @Override
     public int hashCode() {
 
         return Objects.hash(id, name, tasks, project);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -175,17 +181,10 @@ public class Milestone implements Serializable, Discussable, pl.mesayah.assistan
                 Objects.equals(project, milestone.project);
     }
 
+
     @Override
-    public Channel getChannel() {
+    public String getTextRepresentation() {
 
-        return channel;
-    }
-
-    /**
-     * @param channel a channel where this milestone is discussed
-     */
-    public void setChannel(Channel channel) {
-
-        this.channel = channel;
+        return name;
     }
 }

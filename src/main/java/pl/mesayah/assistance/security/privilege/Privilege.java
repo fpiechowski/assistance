@@ -21,21 +21,25 @@ public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
     @ManyToMany(mappedBy = "privileges")
     private Collection<Role> roles;
 
+
     public Privilege() {
 
 
     }
+
 
     public Privilege(String name) {
 
         this.name = name;
     }
 
+
     @Override
     public int hashCode() {
 
         return Objects.hash(id, name);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -47,10 +51,12 @@ public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
                 Objects.equals(name, privilege.name);
     }
 
+
     public Long getId() {
 
         return id;
     }
+
 
     @Override
     public String getEntityName() {
@@ -58,25 +64,30 @@ public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
         return ENTITY_NAME;
     }
 
+
     public void setId(Long id) {
 
         this.id = id;
     }
+
 
     public String getName() {
 
         return name;
     }
 
+
     public void setName(String name) {
 
         this.name = name;
     }
 
+
     public Collection<Role> getRoles() {
 
         return roles;
     }
+
 
     public void setRoles(Collection<Role> roles) {
 

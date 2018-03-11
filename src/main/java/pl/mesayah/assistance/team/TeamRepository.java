@@ -1,10 +1,6 @@
 package pl.mesayah.assistance.team;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.mesayah.assistance.project.Project;
-import pl.mesayah.assistance.task.Task;
-
-import java.util.List;
 
 /**
  * Repository for fetching and saving teams in the database. It handles database communication.

@@ -20,17 +20,13 @@ public class MilestoneListView extends AbstractListView<Milestone> {
     @Autowired
     private MilestoneService MilestoneService;
 
+
     @Override
     protected Milestone createEmptyEntity() {
 
         return new Milestone();
     }
 
-    @Override
-    protected Button initializeNewButton() {
-
-        return new Button("New", VaadinIcons.PLUS);
-    }
 
     @Override
     protected List<Button> initializeAdditionalButtons() {
@@ -38,17 +34,6 @@ public class MilestoneListView extends AbstractListView<Milestone> {
         return null;
     }
 
-    @Override
-    protected Button initializeDetailsButton() {
-
-        return new Button("Details", VaadinIcons.EYE);
-    }
-
-    @Override
-    public Collection<Milestone> fetchDataSet() {
-
-        return MilestoneService.findAll();
-    }
 
     @Override
     public Grid<Milestone> initializeListing() {
@@ -63,11 +48,34 @@ public class MilestoneListView extends AbstractListView<Milestone> {
         return grid;
     }
 
+
+    @Override
+    protected boolean isGridEditable() {
+
+        return false;
+    }
+
+
+    @Override
+    protected Button initializeDetailsButton() {
+
+        return new Button("Details", VaadinIcons.EYE);
+    }
+
+
+    @Override
+    protected Button initializeNewButton() {
+
+        return new Button("New", VaadinIcons.PLUS);
+    }
+
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Button initializeDeleteButton() {
@@ -75,9 +83,10 @@ public class MilestoneListView extends AbstractListView<Milestone> {
         return new Button("Delete", VaadinIcons.TRASH);
     }
 
-    @Override
-    protected boolean isGridEditable() {
 
-        return false;
+    @Override
+    public Collection<Milestone> fetchDataSet() {
+
+        return MilestoneService.findAll();
     }
 }

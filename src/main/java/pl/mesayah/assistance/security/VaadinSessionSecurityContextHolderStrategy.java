@@ -13,6 +13,7 @@ public class VaadinSessionSecurityContextHolderStrategy implements SecurityConte
         getSession().setAttribute(SecurityContext.class, null);
     }
 
+
     private static VaadinSession getSession() {
 
         VaadinSession session = VaadinSession.getCurrent();
@@ -21,6 +22,7 @@ public class VaadinSessionSecurityContextHolderStrategy implements SecurityConte
         }
         return session;
     }
+
 
     @Override
     public SecurityContext getContext() {
@@ -34,11 +36,13 @@ public class VaadinSessionSecurityContextHolderStrategy implements SecurityConte
         return context;
     }
 
+
     @Override
     public void setContext(SecurityContext securityContext) {
 
         getSession().setAttribute(SecurityContext.class, securityContext);
     }
+
 
     @Override
     public SecurityContext createEmptyContext() {

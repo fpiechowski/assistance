@@ -21,6 +21,7 @@ public class AccessDeniedView extends VerticalLayout implements View {
         addComponent(lbl);
     }
 
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 

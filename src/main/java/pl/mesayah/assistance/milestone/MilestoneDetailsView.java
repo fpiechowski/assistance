@@ -5,8 +5,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.messaging.ChannelService;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
 import pl.mesayah.assistance.task.Task;
@@ -31,8 +29,7 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
     ProjectService projectService;
     @Autowired
     TaskService taskService;
-    @Autowired
-    ChannelService channelService;
+
 
     /**
      * A label showing a title of the milestone.
@@ -63,13 +60,10 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
      */
     private ComboBox<Project> projectComboBox;
     /**
-     * A ComboBox for selecting channel.
-     */
-    private ComboBox<Channel> channelComboBox;
-    /**
      * A Twin Column Selector for selecting tasks.
      */
     private TwinColSelect<Task> taskTwinColSelect;
+
 
     @Override
     protected List<Component> initializeReadComponents() {
@@ -99,6 +93,7 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
         ));
     }
 
+
     @Override
     protected List<Component> initializeEditComponents() {
 
@@ -113,17 +108,14 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
         projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getName());
         projectComboBox.setRequiredIndicatorVisible(true);
 
-        channelComboBox = new ComboBox<>("Channel");
-        channelComboBox.setEmptySelectionAllowed(false);
-        channelComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Channel>) channel -> channel.getName());
-        channelComboBox.setRequiredIndicatorVisible(true);
+
         return new ArrayList<>(Arrays.asList(
                 nameTextField,
                 projectComboBox,
-                taskTwinColSelect,
-                channelComboBox
+                taskTwinColSelect
         ));
     }
+
 
     @Override
     protected Button initializeDeleteButton() {
@@ -131,17 +123,20 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
         return new Button("Delete", VaadinIcons.TRASH);
     }
 
+
     @Override
     protected Button initializeConfirmButton() {
 
         return new Button("Confirm", VaadinIcons.CHECK);
     }
 
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     @Override
     protected Binder<Milestone> initializeDataBinder() {
@@ -155,10 +150,9 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
                 .bind(Milestone::getTasks, Milestone::setTasks);
         dataBinder.forField(projectComboBox)
                 .bind(Milestone::getProject, Milestone::setProject);
-        dataBinder.forField(channelComboBox)
-                .bind(Milestone::getChannel, Milestone::setChannel);
         return dataBinder;
     }
+
 
     @Override
     protected void loadData() {
@@ -167,9 +161,8 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
         taskTwinColSelect.setItems(tasks);
         Collection<Project> projects = projectService.findAll();
         projectComboBox.setItems(projects);
-        Collection<Channel> channels = channelService.findAll();
-        channelComboBox.setItems(channels);
     }
+
 
     @Override
     protected Milestone createEmptyEntity() {
@@ -178,6 +171,7 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
 
         return empty;
     }
+
 
     @Override
     protected void setReadComponentsValues() {

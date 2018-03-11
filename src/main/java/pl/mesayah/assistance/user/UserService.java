@@ -17,12 +17,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+
     /**
      * Default constructor.
      */
     public UserService() {
 
     }
+
 
     /**
      * Saves a given user entity in database.
@@ -33,6 +35,7 @@ public class UserService {
 
         userRepository.save(user);
     }
+
 
     /**
      * Retrieves an user entity by its id.
@@ -45,6 +48,7 @@ public class UserService {
         return userRepository.findOne(id);
     }
 
+
     /**
      * Retrieves an user entity with the given username.
      *
@@ -55,6 +59,7 @@ public class UserService {
 
         return userRepository.findByUsername(username);
     }
+
 
     /**
      * Deletes the user entity with the given id.

@@ -1,7 +1,7 @@
 package pl.mesayah.assistance.task;
 
-import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.messaging.Discussable;
+import pl.mesayah.assistance.AbstractFilterableEntity;
+import pl.mesayah.assistance.Filterable;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
@@ -21,7 +21,7 @@ import java.util.Set;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Task implements Serializable, Discussable, pl.mesayah.assistance.Entity {
+public class Task extends AbstractFilterableEntity implements Serializable {
 
     private static final String ENTITY_NAME = "task";
 
@@ -101,12 +101,6 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     @Enumerated(EnumType.ORDINAL)
     private Type type;
 
-    /**
-     * A channel where this task is discussed.
-     */
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "channel_id")
-    private Channel channel;
 
     /**
      * A project this task involves.
@@ -115,14 +109,17 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     @JoinColumn(name = "project_id")
     private Project project;
 
+
     /**
      * Constructs a task object with no attributes specified.
      */
     public Task() {
+
         this.status = Status.WAITING;
         this.type = Type.TASK;
         this.priority = Priority.MEDIUM;
     }
+
 
     /**
      * @return a list of milestones this task is a part of
@@ -132,6 +129,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         return milestones;
     }
 
+
     /**
      * @param milestones a list of milestones for this task to be a part of
      */
@@ -140,11 +138,6 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.milestones = milestones;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(id, name, assignedUsers, status, priority, deadline, description, parentTask, subtasks, type, channel, project);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -162,9 +155,9 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
                 Objects.equals(parentTask, task.parentTask) &&
                 Objects.equals(subtasks, task.subtasks) &&
                 type == task.type &&
-                Objects.equals(channel, task.channel) &&
                 Objects.equals(project, task.project);
     }
+
 
     /**
      * @return a set of tasks being subtasks of this task
@@ -174,6 +167,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         return subtasks;
     }
 
+
     /**
      * @param subtasks a set of tasks to be a subtasks for this task
      */
@@ -181,6 +175,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         this.subtasks = subtasks;
     }
+
 
     /**
      * @return a project this task is defined for
@@ -190,6 +185,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         return project;
     }
 
+
     /**
      * @param project a project this task is to be defined for
      */
@@ -197,6 +193,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         this.project = project;
     }
+
 
     /**
      * @return an unique identifier of this task
@@ -207,11 +204,13 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         return id;
     }
 
+
     @Override
     public String getEntityName() {
 
         return ENTITY_NAME;
     }
+
 
     /**
      * @param id an unique identifier for this task
@@ -221,6 +220,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.id = id;
     }
 
+
     /**
      * @return the NAME of this task
      */
@@ -228,6 +228,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return name;
     }
+
 
     /**
      * @param name a NAME for this task
@@ -237,6 +238,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.name = name;
     }
 
+
     /**
      * @return set of users responsible for completing this task
      */
@@ -244,6 +246,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return assignedUsers;
     }
+
 
     /**
      * @param assigneeUsers a set of users to be responsible for completing this task
@@ -253,6 +256,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.assignedUsers = assigneeUsers;
     }
 
+
     /**
      * @return a progress status of this task
      */
@@ -260,6 +264,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return status;
     }
+
 
     /**
      * @param status a progress status for this task
@@ -269,6 +274,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.status = status;
     }
 
+
     /**
      * @return a priority of this task
      */
@@ -276,6 +282,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return priority;
     }
+
 
     /**
      * @param priority a priority for this task
@@ -285,6 +292,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.priority = priority;
     }
 
+
     /**
      * @return a deadline date of this task
      */
@@ -292,6 +300,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return deadline;
     }
+
 
     /**
      * @param deadline a deadline date for this task
@@ -301,6 +310,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.deadline = deadline;
     }
 
+
     /**
      * @return a description of this task
      */
@@ -308,6 +318,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return description;
     }
+
 
     /**
      * @param description a description for this task
@@ -317,6 +328,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.description = description;
     }
 
+
     /**
      * @return a parent task of this task
      */
@@ -324,6 +336,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return parentTask;
     }
+
 
     /**
      * @param parentTask a parent task for this task
@@ -333,6 +346,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.parentTask = parentTask;
     }
 
+
     /**
      * @return a type of this task
      */
@@ -340,6 +354,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         return type;
     }
+
 
     /**
      * @param type a type for this task
@@ -349,19 +364,13 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
         this.type = type;
     }
 
+
     @Override
-    public Channel getChannel() {
+    public String getTextRepresentation() {
 
-        return channel;
+        return name;
     }
 
-    /**
-     * @param channel a channel where this task is discussed
-     */
-    public void setChannel(Channel channel) {
-
-        this.channel = channel;
-    }
 
     /**
      * Describes a nature of a task.
@@ -375,10 +384,12 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         private final String name;
 
+
         Type(String name) {
 
             this.name = name;
         }
+
 
         @Override
         public String toString() {
@@ -399,10 +410,12 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         private final String name;
 
+
         Status(String name) {
 
             this.name = name;
         }
+
 
         @Override
         public String toString() {
@@ -423,10 +436,12 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
 
         private final String name;
 
+
         Priority(String name) {
 
             this.name = name;
         }
+
 
         @Override
         public String toString() {

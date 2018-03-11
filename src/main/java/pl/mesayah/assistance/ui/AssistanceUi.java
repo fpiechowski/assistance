@@ -24,6 +24,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
+import pl.mesayah.assistance.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
@@ -32,7 +33,6 @@ import pl.mesayah.assistance.security.ui.AuthenticationView;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.ui.list.ListViews;
-import pl.mesayah.assistance.Repositories;
 
 import java.util.*;
 
@@ -219,9 +219,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
     }
 
 
-
-
-
     private void handleError(com.vaadin.server.ErrorEvent event) {
 
         Throwable t = DefaultErrorHandler.findRelevantThrowable(event.getThrowable());
@@ -258,11 +255,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
         private Button userNameLink;
         private Button logoutButton;
 
-        private void logout() {
-
-            getPage().reload();
-            getSession().close();
-        }
 
         public UserInfoLayout() {
 
@@ -289,6 +281,13 @@ public class AssistanceUi extends UI implements ViewDisplay {
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
             setlog.addComponents(settingLink, logoutButton);
             this.addComponents(userNameLink, setlog);
+        }
+
+
+        private void logout() {
+
+            getPage().reload();
+            getSession().close();
         }
     }
 

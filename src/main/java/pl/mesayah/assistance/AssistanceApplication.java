@@ -14,6 +14,7 @@ public class AssistanceApplication {
 
     public static final String NAME = "Assistance";
 
+
     /**
      * Starting point of this application.
      *

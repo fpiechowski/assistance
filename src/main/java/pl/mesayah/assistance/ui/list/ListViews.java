@@ -20,6 +20,15 @@ public enum ListViews {
     private Class<? extends Entity> entityClass;
     private String viewName;
 
+
+    ListViews(Class<? extends Entity> entityClass, String viewName) {
+
+        this.entityClass = entityClass;
+        this.viewName = viewName;
+
+    }
+
+
     public static String getListViewNameFor(Class<? extends Entity> entity) {
 
         for (ListViews lv : values()) {
@@ -31,17 +40,15 @@ public enum ListViews {
         return null;
     }
 
-    public String getViewName() {
-        return viewName;
-    }
-
-    ListViews(Class<? extends Entity> entityClass, String viewName) {
-        this.entityClass = entityClass;
-        this.viewName = viewName;
-
-    }
 
     public Class<? extends Entity> getEntityClass() {
+
         return entityClass;
+    }
+
+
+    public String getViewName() {
+
+        return viewName;
     }
 }

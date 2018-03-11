@@ -129,6 +129,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
     @Autowired
     private TaskService taskService;
 
+
     /**
      * Constructs a view in a read mode and initializes controls for it.
      */
@@ -136,6 +137,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
 
         dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd yyyyy");
     }
+
 
     @Override
     protected List<Component> initializeReadComponents() {
@@ -186,6 +188,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
                 readDatesLayout
         ));
     }
+
 
     @Override
     protected List<Component> initializeEditComponents() {
@@ -262,25 +265,13 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         columnLayout.setExpandRatio(leftSideLayout, 1.0f);
 
         return new ArrayList<>(Arrays.asList(
-            columnLayout
+                columnLayout
         ));
     }
 
-    private VerticalLayout getRightSide() {
-        VerticalLayout rightSideLayout = new VerticalLayout();
-        rightSideLayout.setMargin(false);
-
-        rightSideLayout.addComponents(assignedUsersListBuilder, subtasksListBuilder);
-        rightSideLayout.setExpandRatio(assignedUsersListBuilder, 0.5f);
-        rightSideLayout.setExpandRatio(subtasksListBuilder, 0.5f);
-
-        rightSideLayout.setHeight("100%");
-        rightSideLayout.setWidth("-1px");
-
-        return rightSideLayout;
-    }
 
     private VerticalLayout getLeftSide() {
+
         VerticalLayout leftSide = new VerticalLayout();
         leftSide.setMargin(false);
 
@@ -304,11 +295,29 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         return leftSide;
     }
 
+
+    private VerticalLayout getRightSide() {
+
+        VerticalLayout rightSideLayout = new VerticalLayout();
+        rightSideLayout.setMargin(false);
+
+        rightSideLayout.addComponents(assignedUsersListBuilder, subtasksListBuilder);
+        rightSideLayout.setExpandRatio(assignedUsersListBuilder, 0.5f);
+        rightSideLayout.setExpandRatio(subtasksListBuilder, 0.5f);
+
+        rightSideLayout.setHeight("100%");
+        rightSideLayout.setWidth("-1px");
+
+        return rightSideLayout;
+    }
+
+
     @Override
     protected Button initializeDeleteButton() {
 
         return new Button("Delete", VaadinIcons.TRASH);
     }
+
 
     @Override
     protected Button initializeConfirmButton() {
@@ -316,11 +325,13 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         return new Button("Confirm", VaadinIcons.CHECK);
     }
 
+
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
+
 
     protected Binder<Task> initializeDataBinder() {
 
@@ -351,6 +362,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         return dataBinder;
     }
 
+
     @Override
     protected void loadData() {
 
@@ -362,6 +374,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         projectComboBox.setItems(projects);
     }
 
+
     @Override
     public Task createEmptyEntity() {
 
@@ -369,6 +382,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
 
         return empty;
     }
+
 
     @Override
     protected void setReadComponentsValues() {

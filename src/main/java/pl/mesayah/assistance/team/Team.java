@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.team;
 
+import pl.mesayah.assistance.AbstractFilterableEntity;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
 
@@ -12,22 +13,19 @@ import java.util.Set;
  * A group of {@link User}s who work together to develop a {@link Project}.
  */
 @Entity
-public class Team implements Serializable, pl.mesayah.assistance.Entity {
+public class Team extends AbstractFilterableEntity implements Serializable {
 
+    private static final String ENTITY_NAME = "team";
     /**
      * An unique identifier of this task.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     /**
      * A NAME of this team.
      */
     private String name;
-
-    private static final String ENTITY_NAME = "team";
-
     /**
      * Users who are members of this team.
      */
@@ -37,12 +35,14 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<User> members;
 
+
     /**
      * Constructs a team object with no attributes specified.
      */
     public Team() {
 
     }
+
 
     /**
      * @return an unique identifier of this team
@@ -53,11 +53,13 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
         return id;
     }
 
+
     @Override
     public String getEntityName() {
 
         return ENTITY_NAME;
     }
+
 
     /**
      * @param id an unique identifier for this team
@@ -69,6 +71,7 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
         this.id = id;
     }
 
+
     /**
      * @return the NAME of this team
      */
@@ -76,6 +79,7 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
 
         return name;
     }
+
 
     /**
      * @param name a NAME for this team
@@ -85,6 +89,7 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
         this.name = name;
     }
 
+
     /**
      * @return a collection of users being members of this team
      */
@@ -92,6 +97,7 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
 
         return members;
     }
+
 
     /**
      * @param members a collection of users to be members of this team
@@ -101,11 +107,13 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
         this.members = members;
     }
 
+
     @Override
     public int hashCode() {
 
         return Objects.hash(id, name, members);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -116,5 +124,12 @@ public class Team implements Serializable, pl.mesayah.assistance.Entity {
         return id.equals(team.id) &&
                 Objects.equals(name, team.name) &&
                 Objects.equals(members, team.members);
+    }
+
+
+    @Override
+    public String getTextRepresentation() {
+
+        return name;
     }
 }

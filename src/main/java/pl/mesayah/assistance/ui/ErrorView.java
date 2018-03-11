@@ -15,6 +15,7 @@ public class ErrorView extends VerticalLayout implements View {
 
     private Label errorLabel;
 
+
     public ErrorView() {
 
         setMargin(true);
@@ -24,6 +25,7 @@ public class ErrorView extends VerticalLayout implements View {
         addComponent(errorLabel);
         setComponentAlignment(errorLabel, Alignment.MIDDLE_CENTER);
     }
+
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
