@@ -302,9 +302,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
          */
         private List<Button> navigationButtons;
 
-        @Autowired
-        private SpringNavigator navigator;
-
 
         /**
          * Constructs a layout with navigation links and sets their click listeners.
@@ -322,27 +319,27 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
             Button tasksButton = new Button("Tasks");
             tasksButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Task().getClass())));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Task.class)));
             navigationButtons.add(tasksButton);
 
             Button projectsButton = new Button("Projects");
             projectsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Project().getClass())));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Project.class)));
             navigationButtons.add(projectsButton);
 
             Button teamsButton = new Button("Teams");
             teamsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Team().getClass())));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Team.class)));
             navigationButtons.add(teamsButton);
 
             Button issuesButton = new Button("Issues");
             issuesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Issue().getClass())));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Issue.class)));
             navigationButtons.add(issuesButton);
 
             Button milestonesButton = new Button("Milestones");
             milestonesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Milestone().getClass())));
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Milestone.class)));
             navigationButtons.add(milestonesButton);
 
 
