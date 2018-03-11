@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
+import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.LoginForm;
 import pl.mesayah.assistance.security.SecurityUtils;
@@ -120,6 +121,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         Layout userInfoLayout = new UserInfoLayout();
         topBarLayout.addComponents(userInfoLayout, navigationLayout);
         topBarLayout.setExpandRatio(navigationLayout, 1.0f);
+        topBarLayout.setStyleName("topbarLayout");
     }
 
     /**
@@ -276,6 +278,12 @@ public class AssistanceUi extends UI implements ViewDisplay {
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Issue().getClass())));
             navigationButtons.add(issuesButton);
 
+            Button milestonesButton = new Button("Milestones");
+            milestonesButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Milestone().getClass())));
+            navigationButtons.add(milestonesButton);
+
+
             // Sets the style for all navigation links
             for (Button b : navigationButtons) {
                 b.setStyleName("link");
@@ -299,6 +307,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
          * A button for showing current user profile.
          */
         private Button userNameLink;
+        private Button logoutButton;
 
         public UserInfoLayout() {
 
@@ -306,7 +315,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
             this.setHeight("-1px");
             this.setMargin(new MarginInfo(false, true));
             this.setId("userInfoLayout");
-
+            HorizontalLayout setlog = new HorizontalLayout();
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             userNameLink = new Button(username);
             userNameLink.setStyleName("link");
@@ -314,13 +323,17 @@ public class AssistanceUi extends UI implements ViewDisplay {
             userNameLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
 
+            logoutButton = new Button("Logout");
+            logoutButton.setStyleName("link");
+            logoutButton.addClickListener((Button.ClickListener) clickevent -> logout());
+
             settingLink = new Button("Settings", VaadinIcons.COG);
             settingLink.setStyleName("link");
             // TODO: set navigation state to setting view NAME
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
-
-            this.addComponents(userNameLink, settingLink);
+            setlog.addComponents(settingLink,logoutButton);
+            this.addComponents(userNameLink,setlog);
         }
     }
 }

@@ -17,13 +17,19 @@
   }
 
   .editprofile {
-    color: white;
+    color: grey;
     text-decoration: none;
 
   }
 
 
   .editprofile:hover
+  {
+    color: white;
+    text-decoration: none;
+  }
+
+  .link .v-button-caption
   {
     color: white;
     text-decoration: none;
@@ -39,7 +45,10 @@
   .loginGeneral {
     background: gray;
   }
-  .loginField {
-
+  .relaseNotes {
+    background: white;
+  }
+  .topbarLayout{
+    background: dimgrey;
   }
 }
