@@ -1,4 +1,6 @@
-package pl.mesayah.assistance.security;
+package pl.mesayah.assistance.security.privilege;
+
+import pl.mesayah.assistance.security.role.Role;
 
 import javax.persistence.*;
 import java.io.Serializable;

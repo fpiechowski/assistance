@@ -1,6 +1,5 @@
-package pl.mesayah.assistance.ui;
+package pl.mesayah.assistance.ui.list;
 
-import org.apache.commons.lang3.StringUtils;
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.issue.IssueListView;
@@ -20,6 +19,17 @@ public enum ListViews {
 
     private Class<? extends Entity> entityClass;
     private String viewName;
+
+    public static String getListViewNameFor(Class<? extends Entity> entity) {
+
+        for (ListViews lv : values()) {
+            if (lv.getEntityClass() == entity) {
+                return lv.getViewName();
+            }
+        }
+
+        return null;
+    }
 
     public String getViewName() {
         return viewName;

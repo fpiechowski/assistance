@@ -5,7 +5,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.ui.AbstractDetailsView;
+import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserService;
 

@@ -7,7 +7,7 @@ import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
-import pl.mesayah.assistance.ui.AbstractDetailsView;
+import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserService;
 
@@ -199,28 +199,30 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
                 Arrays.asList(Task.Status.values()));
         statusNativeSelect.setEmptySelectionAllowed(false);
         statusNativeSelect.setSelectedItem(Task.Status.WAITING);
-        statusNativeSelect.setWidth("200px");
+        statusNativeSelect.setWidth("120px");
         statusNativeSelect.setRequiredIndicatorVisible(true);
 
         priorityNativeSelect = new NativeSelect<>("Priority:",
                 Arrays.asList(Task.Priority.values()));
         priorityNativeSelect.setEmptySelectionAllowed(false);
         priorityNativeSelect.setSelectedItem(Task.Priority.MEDIUM);
-        priorityNativeSelect.setWidth("200px");
+        priorityNativeSelect.setWidth("100%");
         priorityNativeSelect.setRequiredIndicatorVisible(true);
 
         typeNativeSelect = new NativeSelect<>("Type:",
                 Arrays.asList(Task.Type.values()));
         typeNativeSelect.setEmptySelectionAllowed(false);
         typeNativeSelect.setSelectedItem(null);
-        typeNativeSelect.setWidth("200px");
+        typeNativeSelect.setWidth("100%");
         typeNativeSelect.setRequiredIndicatorVisible(true);
 
 
         descriptionTextArea = new TextArea("Description:");
         descriptionTextArea.setWidth("100%");
+        descriptionTextArea.setHeight("100%");
 
         deadlineDateField = new DateField("Deadline:");
+        deadlineDateField.setWidth("100%");
 
         parentTaskComboBox = new ComboBox<>("Parent Task");
         parentTaskComboBox.setEmptySelectionAllowed(false);
@@ -232,27 +234,32 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         subtasksListBuilder.setLeftColumnCaption("Available subtasks");
         subtasksListBuilder.setRightColumnCaption("Selected subtasks");
         subtasksListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId() + ' ' + task.getName());
+        subtasksListBuilder.setWidth("90%");
+        subtasksListBuilder.setHeight("100%");
 
         assignedUsersListBuilder = new TwinColSelect<>("Assigned to:");
         assignedUsersListBuilder.setRows(6);
         assignedUsersListBuilder.setLeftColumnCaption("Available users");
         assignedUsersListBuilder.setRightColumnCaption("Selected users");
         assignedUsersListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<User>) user -> user.getUsername());
+        assignedUsersListBuilder.setWidth("90%");
+        assignedUsersListBuilder.setHeight("100%");
 
         projectComboBox = new ComboBox<>("Project");
         projectComboBox.setEmptySelectionAllowed(false);
         projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getId() + ' ' + project.getName());
         projectComboBox.setRequiredIndicatorVisible(false);
 
-        HorizontalLayout columnLayout = new HorizontalLayout();
-        columnLayout.setMargin(false);
-
         VerticalLayout leftSideLayout = getLeftSide();
-
         VerticalLayout rightSideLayout = getRightSide();
 
+        HorizontalLayout columnLayout = new HorizontalLayout();
+        columnLayout.setMargin(false);
+        columnLayout.setId("task-columns");
         columnLayout.addComponents(leftSideLayout, rightSideLayout);
         columnLayout.setWidth("100%");
+        columnLayout.setHeight("100%");
+        columnLayout.setExpandRatio(leftSideLayout, 1.0f);
 
         return new ArrayList<>(Arrays.asList(
             columnLayout
@@ -263,8 +270,12 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         VerticalLayout rightSideLayout = new VerticalLayout();
         rightSideLayout.setMargin(false);
 
-        rightSideLayout.addComponents(typeNativeSelect, priorityNativeSelect, deadlineDateField,
-                assignedUsersListBuilder, subtasksListBuilder);
+        rightSideLayout.addComponents(assignedUsersListBuilder, subtasksListBuilder);
+        rightSideLayout.setExpandRatio(assignedUsersListBuilder, 0.5f);
+        rightSideLayout.setExpandRatio(subtasksListBuilder, 0.5f);
+
+        rightSideLayout.setHeight("100%");
+        rightSideLayout.setWidth("-1px");
 
         return rightSideLayout;
     }
@@ -273,14 +284,22 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         VerticalLayout leftSide = new VerticalLayout();
         leftSide.setMargin(false);
 
-        HorizontalLayout nameStatusLayout = new HorizontalLayout(nameTextField, statusNativeSelect);
-        nameStatusLayout.setMargin(false);
-        nameStatusLayout.setExpandRatio(nameTextField, 1.0f);
+        HorizontalLayout projectNameStatus = new HorizontalLayout(projectComboBox, nameTextField, statusNativeSelect);
+        projectNameStatus.setMargin(false);
+        projectNameStatus.setWidth("100%");
+        projectNameStatus.setExpandRatio(nameTextField, 1.0f);
 
-        HorizontalLayout parentProjectLayout = new HorizontalLayout(parentTaskComboBox, projectComboBox);
-        parentProjectLayout.setMargin(false);
+        HorizontalLayout deadlineParent = new HorizontalLayout(deadlineDateField, parentTaskComboBox);
+        deadlineParent.setMargin(false);
 
-        leftSide.addComponents(nameStatusLayout, descriptionTextArea, parentProjectLayout);
+        HorizontalLayout typePriorityDeadline = new HorizontalLayout(typeNativeSelect, priorityNativeSelect, deadlineDateField);
+        typePriorityDeadline.setMargin(false);
+        typePriorityDeadline.setWidth("100%");
+
+        leftSide.addComponents(projectNameStatus, typePriorityDeadline, descriptionTextArea);
+        leftSide.setExpandRatio(descriptionTextArea, 1.0f);
+        leftSide.setHeight("100%");
+        leftSide.setWidth("100%");
 
         return leftSide;
     }

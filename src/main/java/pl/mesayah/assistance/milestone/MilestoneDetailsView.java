@@ -11,7 +11,7 @@ import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.task.TaskService;
-import pl.mesayah.assistance.ui.AbstractDetailsView;
+import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 
 import java.util.ArrayList;
 import java.util.Arrays;

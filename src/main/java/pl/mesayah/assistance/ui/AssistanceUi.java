@@ -27,13 +27,12 @@ import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
-import pl.mesayah.assistance.security.LoginForm;
 import pl.mesayah.assistance.security.SecurityUtils;
+import pl.mesayah.assistance.security.ui.AuthenticationView;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
-import pl.mesayah.assistance.utils.RepositoryUtils;
-import pl.mesayah.assistance.utils.ViewUtils;
-import pl.mesayah.assistance.utils.YesNoDialog;
+import pl.mesayah.assistance.ui.list.ListViews;
+import pl.mesayah.assistance.Repositories;
 
 import java.util.*;
 
@@ -72,6 +71,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
      */
     private VerticalLayout rootLayout;
 
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
@@ -89,13 +89,27 @@ public class AssistanceUi extends UI implements ViewDisplay {
         }
     }
 
+
+    /**
+     * Initializes a layout for showing different application views.
+     */
+    private void initializeViewDisplay() {
+
+        viewDisplay = new VerticalLayout();
+        viewDisplay.setId("view-display");
+        viewDisplay.setSizeFull();
+        viewDisplay.setMargin(false);
+    }
+
+
     /**
      * Sets content of this UI to login form.
      */
     private void showLoginForm() {
 
-        setContent(new LoginForm(this::login));
+        setContent(new AuthenticationView(this::login));
     }
+
 
     /**
      * Sets content of this UI to a main application user interface.
@@ -107,6 +121,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
         setContent(rootLayout);
     }
+
 
     /**
      * Initializes top bar with user information and navigation links.
@@ -124,16 +139,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
         topBarLayout.setStyleName("topbarLayout");
     }
 
-    /**
-     * Initializes a layout for showing different application views.
-     */
-    private void initializeViewDisplay() {
-
-        viewDisplay = new VerticalLayout();
-        viewDisplay.setId("view-display");
-        viewDisplay.setSizeFull();
-        viewDisplay.setMargin(false);
-    }
 
     /**
      * Initializes a container for the whole user interface.
@@ -149,6 +154,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         rootLayout.setExpandRatio(viewDisplay, 1.0f);
     }
 
+
     public <T extends Entity> void showDeleteWindow(T itemToDelete) {
 
         Set<T> set = new HashSet<>();
@@ -156,11 +162,12 @@ public class AssistanceUi extends UI implements ViewDisplay {
         showDeleteWindow(set);
     }
 
+
     public <T extends Entity> void showDeleteWindow(Collection<T> itemsToDelete) {
 
         if (itemsToDelete.size() > 0) {
             T first = itemsToDelete.iterator().next();
-            CrudRepository repository = RepositoryUtils.getRepositoryFor(first.getClass());
+            CrudRepository repository = Repositories.getRepositoryFor(first.getClass());
 
             String caption, message;
             if (itemsToDelete.size() > 1) {
@@ -178,7 +185,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
                     repository.delete(item);
                 }
 
-                String listViewState = ViewUtils.getListViewNameFor(first.getClass());
+                String listViewState = ListViews.getListViewNameFor(first.getClass());
                 if (listViewState != null) {
                     navigator.navigateTo(listViewState);
                 } else {
@@ -188,6 +195,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
             getUI().addWindow(confirmDialog);
         }
     }
+
 
     private boolean login(String username, String password) {
 
@@ -210,11 +218,9 @@ public class AssistanceUi extends UI implements ViewDisplay {
         }
     }
 
-    private void logout() {
 
-        getPage().reload();
-        getSession().close();
-    }
+
+
 
     private void handleError(com.vaadin.server.ErrorEvent event) {
 
@@ -227,6 +233,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         }
     }
 
+
     @Override
     public void showView(View view) {
 
@@ -234,69 +241,11 @@ public class AssistanceUi extends UI implements ViewDisplay {
         viewDisplay.addComponent((Component) view);
     }
 
-    /**
-     * A layout containing navigation links at the top bar of the user interface.
-     */
-    private class NavigationLayout extends HorizontalLayout {
-
-        /**
-         * A list of links composing the application navigation.
-         */
-        private List<Button> navigationButtons;
-
-        /**
-         * Constructs a layout with navigation links and sets their click listeners.
-         */
-        public NavigationLayout() {
-
-            this.setWidth("100%");
-            this.setHeight("100%");
-
-            navigationButtons = new ArrayList<>();
-
-            Button homeButton = new Button("Home");
-            homeButton.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo(""));
-            navigationButtons.add(homeButton);
-
-            Button tasksButton = new Button("Tasks");
-            tasksButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Task().getClass())));
-            navigationButtons.add(tasksButton);
-
-            Button projectsButton = new Button("Projects");
-            projectsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Project().getClass())));
-            navigationButtons.add(projectsButton);
-
-            Button teamsButton = new Button("Teams");
-            teamsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Team().getClass())));
-            navigationButtons.add(teamsButton);
-
-            Button issuesButton = new Button("Issues");
-            issuesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Issue().getClass())));
-            navigationButtons.add(issuesButton);
-
-            Button milestonesButton = new Button("Milestones");
-            milestonesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ViewUtils.getListViewNameFor(new Milestone().getClass())));
-            navigationButtons.add(milestonesButton);
-
-
-            // Sets the style for all navigation links
-            for (Button b : navigationButtons) {
-                b.setStyleName("link");
-                addComponent(b);
-                this.setComponentAlignment(b, Alignment.MIDDLE_CENTER);
-            }
-        }
-    }
 
     /**
      * A layout containing current user information.
      */
-    private class UserInfoLayout extends VerticalLayout {
+    class UserInfoLayout extends VerticalLayout {
 
         /**
          * A button for showing setting view.
@@ -308,6 +257,12 @@ public class AssistanceUi extends UI implements ViewDisplay {
          */
         private Button userNameLink;
         private Button logoutButton;
+
+        private void logout() {
+
+            getPage().reload();
+            getSession().close();
+        }
 
         public UserInfoLayout() {
 
@@ -332,8 +287,72 @@ public class AssistanceUi extends UI implements ViewDisplay {
             // TODO: set navigation state to setting view NAME
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
-            setlog.addComponents(settingLink,logoutButton);
-            this.addComponents(userNameLink,setlog);
+            setlog.addComponents(settingLink, logoutButton);
+            this.addComponents(userNameLink, setlog);
+        }
+    }
+
+    /**
+     * A layout containing navigation links at the top bar of the user interface.
+     */
+    class NavigationLayout extends HorizontalLayout {
+
+        /**
+         * A list of links composing the application navigation.
+         */
+        private List<Button> navigationButtons;
+
+        @Autowired
+        private SpringNavigator navigator;
+
+
+        /**
+         * Constructs a layout with navigation links and sets their click listeners.
+         */
+        public NavigationLayout() {
+
+            this.setWidth("100%");
+            this.setHeight("100%");
+
+            navigationButtons = new ArrayList<>();
+
+            Button homeButton = new Button("Home");
+            homeButton.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo(""));
+            navigationButtons.add(homeButton);
+
+            Button tasksButton = new Button("Tasks");
+            tasksButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Task().getClass())));
+            navigationButtons.add(tasksButton);
+
+            Button projectsButton = new Button("Projects");
+            projectsButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Project().getClass())));
+            navigationButtons.add(projectsButton);
+
+            Button teamsButton = new Button("Teams");
+            teamsButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Team().getClass())));
+            navigationButtons.add(teamsButton);
+
+            Button issuesButton = new Button("Issues");
+            issuesButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Issue().getClass())));
+            navigationButtons.add(issuesButton);
+
+            Button milestonesButton = new Button("Milestones");
+            milestonesButton.addClickListener(
+                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(new Milestone().getClass())));
+            navigationButtons.add(milestonesButton);
+
+
+            // Sets the style for all navigation links
+            for (Button b : navigationButtons) {
+                b.setStyleName("link");
+                addComponent(b);
+                this.setComponentAlignment(b, Alignment.MIDDLE_CENTER);
+            }
         }
     }
 }
+

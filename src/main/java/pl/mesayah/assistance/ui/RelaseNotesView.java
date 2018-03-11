@@ -1,11 +1,7 @@
 package pl.mesayah.assistance.ui;
 
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
-import pl.mesayah.assistance.security.LoginForm;
-
-import java.util.Date;
 
 
 public class RelaseNotesView extends HorizontalLayout {

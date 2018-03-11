@@ -3,7 +3,7 @@ package pl.mesayah.assistance.user;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import pl.mesayah.assistance.messaging.Channel;
-import pl.mesayah.assistance.security.Role;
+import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.todo.PersonalNote;
 
 import javax.persistence.*;

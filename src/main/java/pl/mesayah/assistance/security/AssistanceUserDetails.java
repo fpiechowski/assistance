@@ -3,6 +3,8 @@ package pl.mesayah.assistance.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.mesayah.assistance.security.privilege.Privilege;
+import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.user.User;
 
 import java.util.ArrayList;

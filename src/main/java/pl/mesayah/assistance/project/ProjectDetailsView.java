@@ -5,10 +5,12 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.security.Role;
-import pl.mesayah.assistance.security.RoleService;
+import pl.mesayah.assistance.milestone.Milestone;
+import pl.mesayah.assistance.security.role.Role;
+import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.security.SecurityUtils;
-import pl.mesayah.assistance.ui.AbstractDetailsView;
+import pl.mesayah.assistance.team.Team;
+import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 
@@ -80,6 +82,10 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
      * A combo box for selecting project managerComboBox username.
      */
     private ComboBox<User> managerComboBox;
+
+    private TwinColSelect<Milestone> milestoneListBuilder;
+
+    private TwinColSelect<Team> teamListBuilder;
 
     /**
      * A unified formatter for start and deadline dates.
@@ -168,22 +174,43 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
 
         descriptionTextArea = new TextArea("Description:");
         descriptionTextArea.setWidth("100%");
-
+        descriptionTextArea.setHeight("100%");
 
         startDateField = new DateField("Start date:");
         startDateField.setRequiredIndicatorVisible(true);
+        startDateField.setSizeFull();
 
         deadlineDateField = new DateField("Deadline:");
+        deadlineDateField.setSizeFull();
+
+        milestoneListBuilder = new TwinColSelect<>("Milestones:");
+
+        teamListBuilder = new TwinColSelect<>("Teams:");
 
         HorizontalLayout editDatesLayout = new HorizontalLayout(startDateField, deadlineDateField);
+        editDatesLayout.setWidth("100%");
 
+        HorizontalLayout columns = new HorizontalLayout();
+        columns.setMargin(false);
 
+        VerticalLayout leftColumn = new VerticalLayout(nameManagerPhaseLayout, descriptionTextArea, editDatesLayout);
+        leftColumn.setMargin(false);
+        leftColumn.setSizeFull();
+        leftColumn.setExpandRatio(descriptionTextArea, 1.0f);
+
+        VerticalLayout rightColumn = new VerticalLayout();
+        rightColumn.setMargin(false);
+        rightColumn.setHeight("100%");
+        rightColumn.setWidth("-1px");
+        rightColumn.addComponents(milestoneListBuilder, teamListBuilder);
+
+        columns.addComponents(leftColumn, rightColumn);
+        columns.setSizeFull();
+        columns.setExpandRatio(leftColumn, 1.0f);
 
 
         return new ArrayList<>(Arrays.asList(
-                nameManagerPhaseLayout,
-                descriptionTextArea,
-                editDatesLayout
+                columns
         ));
     }
 

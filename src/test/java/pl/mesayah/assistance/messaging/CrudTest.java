@@ -47,7 +47,6 @@ public class CrudTest {
         Notification fetched = notificationService.findById(sentId);
         // Test if sent and fetched objects are equal.
         Assert.assertEquals(sent, fetched);
-
         // Try to retrieve not existing notification.
         Notification notExisting = notificationService.findById(-1L);
         Assert.assertNull(notExisting);

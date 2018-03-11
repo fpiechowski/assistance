@@ -17,6 +17,8 @@ public final class SecurityUtils {
 
     }
 
+
+
     /**
      * Checks if there is a signed in user for the session.
      *

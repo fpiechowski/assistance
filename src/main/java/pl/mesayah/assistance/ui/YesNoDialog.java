@@ -1,4 +1,4 @@
-package pl.mesayah.assistance.utils;
+package pl.mesayah.assistance.ui;
 
 import com.vaadin.ui.*;
 

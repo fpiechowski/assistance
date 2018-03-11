@@ -1,4 +1,4 @@
-package pl.mesayah.assistance.security;
+package pl.mesayah.assistance.security.ui;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;

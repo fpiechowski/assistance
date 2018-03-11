@@ -7,14 +7,14 @@ import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
-import pl.mesayah.assistance.security.Role;
-import pl.mesayah.assistance.security.RoleService;
+import pl.mesayah.assistance.security.role.Role;
+import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.task.Task;
-import pl.mesayah.assistance.ui.AbstractDetailsView;
+import pl.mesayah.assistance.ui.details.AbstractDetailsView;
+import pl.mesayah.assistance.ui.details.DetailsViews;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserService;
-import pl.mesayah.assistance.utils.ViewUtils;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -224,12 +224,12 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         nameLabel.setValue(getEntity().getName());
         descriptionLabel.setValue(getEntity().getDescription());
         projectButton.setCaption(getEntity().getProject().getName());
-        String projectUrl = ViewUtils.getDetailsViewNameFor(getEntity().getProject().getClass()) + "/" +
+        String projectUrl = DetailsViews.getDetailsViewNameFor(getEntity().getProject().getClass()) + "/" +
                 getEntity().getProject().getId();
         projectButton.addClickListener(clickEvent -> getNavigator().navigateTo(projectUrl));
         reportingUserButton.setCaption(getEntity().getReportingUser().getUsername());
         User reporter = getEntity().getReportingUser();
-        String userUrl = ViewUtils.getDetailsViewNameFor(reporter.getClass()) + "/" + reporter.getId();
+        String userUrl = DetailsViews.getDetailsViewNameFor(reporter.getClass()) + "/" + reporter.getId();
         reportingUserButton.addClickListener(clickEvent -> getNavigator().navigateTo(userUrl));
         reportDateLabel.setValue(getEntity().getReportDate().toString());
         statusLabel.setValue(getEntity().getStatus().name());

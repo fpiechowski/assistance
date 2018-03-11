@@ -1,4 +1,4 @@
-package pl.mesayah.assistance.security;
+package pl.mesayah.assistance.security.ui;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.ThemeResource;
@@ -9,10 +9,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import pl.mesayah.assistance.ui.RelaseNotesView;
 
-public class LoginForm extends VerticalLayout {
+public class AuthenticationView extends VerticalLayout {
 
 
-    public LoginForm(LoginCallback callback) {
+    public AuthenticationView(LoginCallback callback) {
 
         RelaseNotesView relaseNotesView = new RelaseNotesView();
 

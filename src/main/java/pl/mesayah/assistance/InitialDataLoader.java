@@ -5,10 +5,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.mesayah.assistance.security.PrivilegeService;
-import pl.mesayah.assistance.security.Role;
-import pl.mesayah.assistance.security.RoleRepository;
-import pl.mesayah.assistance.security.RoleService;
+import pl.mesayah.assistance.security.privilege.PrivilegeService;
+import pl.mesayah.assistance.security.role.Role;
+import pl.mesayah.assistance.security.role.RoleRepository;
+import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 

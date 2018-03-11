@@ -6,7 +6,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.mesayah.assistance.ui.AbstractListView;
+import pl.mesayah.assistance.ui.list.AbstractListView;
 
 import java.util.Collection;
 import java.util.List;

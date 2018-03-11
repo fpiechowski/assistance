@@ -92,7 +92,7 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
     /**
      * Subtasks of this task.
      */
-    @OneToMany(mappedBy = "parentTask")
+    @OneToMany(mappedBy = "parentTask", fetch = FetchType.EAGER)
     private Set<Task> subtasks;
 
     /**
@@ -119,8 +119,9 @@ public class Task implements Serializable, Discussable, pl.mesayah.assistance.En
      * Constructs a task object with no attributes specified.
      */
     public Task() {
-
-
+        this.status = Status.WAITING;
+        this.type = Type.TASK;
+        this.priority = Priority.MEDIUM;
     }
 
     /**
