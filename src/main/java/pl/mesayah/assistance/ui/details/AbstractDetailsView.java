@@ -27,8 +27,6 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
     private Binder<T> dataBinder;
 
-    private List<Component> readComponents;
-
     private List<Component> editComponents;
 
     private Button deleteButton;
@@ -37,7 +35,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
     private Button editButton;
 
-    private Button toListViewButton;
+    private Button backButton;
 
     private HorizontalLayout buttonsLayout;
 
@@ -50,19 +48,18 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         setHeight("100%");
 
-        readComponents = initializeReadComponents();
         editComponents = initializeEditComponents();
 
         cancelButton = new Button("Cancel", VaadinIcons.ARROWS_CROSS);
         cancelButton.addClickListener(clickEvent -> {
             navigator.navigateTo(
-                    ListViews.getListViewNameFor(getEntity().getClass()) + "/" + getEntity().getId());
+                    DetailsViews.getDetailsViewNameFor(getEntity().getClass()) + "/" + getEntity().getId());
         });
 
-        toListViewButton = new Button(VaadinIcons.ARROW_LEFT);
-        toListViewButton.addClickListener(clickEvent -> {
+        backButton = new Button(VaadinIcons.ARROW_LEFT);
+        backButton.addClickListener(clickEvent -> {
             navigator.navigateTo(
-                    ListViews.getListViewNameFor(getEntity().getClass()) + "/" + getEntity().getId());
+                    ListViews.getListViewNameFor(getEntity().getClass()));
         });
 
         deleteButton = initializeDeleteButton();
@@ -81,15 +78,6 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         dataBinder = initializeDataBinder();
     }
 
-
-    /**
-     * Initializes all read components (eg. labels) and adds them to a list. Components must be added in the order
-     * of appearing in this view. These components will be later put on this view in an order they are present in the
-     * list.
-     *
-     * @return a list of read components of this view
-     */
-    protected abstract List<Component> initializeReadComponents();
 
     /**
      * Initializes all edit components (eg. text fields) and adds them to a list. Components must be added in the order
@@ -116,6 +104,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
      * @return a button object defined for edit action
      */
     protected abstract Button initializeDeleteButton();
+
 
     /**
      * Creates and initializes the look of the confirm button. This method doesn't set a click listener.
@@ -152,6 +141,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
      */
     protected abstract Button initializeEditButton();
 
+
     /**
      * Initializes a data binder and sets bindings and validation for all needed field componenents.
      *
@@ -172,22 +162,20 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
 
     @Override
-    public void enterReadMode() {
+    public void enterEditMode() {
 
-        switchComponentsToMode(ViewMode.READ_MODE);
+        switchComponentsToMode(ViewMode.EDIT_MODE);
 
-        setReadComponentsValues();
+        confirmButton.setCaption("Confirm");
 
         deleteButton.setVisible(true);
     }
 
 
     @Override
-    public void enterEditMode() {
+    public void enterReadMode() {
 
-        switchComponentsToMode(ViewMode.EDIT_MODE);
-
-        confirmButton.setCaption("Confirm");
+        switchComponentsToMode(ViewMode.READ_MODE);
 
         deleteButton.setVisible(true);
     }
@@ -272,16 +260,19 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         removeAllComponents();
         buttonsLayout.removeAllComponents();
 
-        List<Component> components;
 
-        if (viewMode == ViewMode.EDIT_MODE || viewMode == ViewMode.CREATE_MODE) {
+        if (viewMode == ViewMode.CREATE_MODE) {
+
+            buttonsLayout.addComponents(backButton, confirmButton, deleteButton);
+            editComponents.stream().forEach(c -> c.setEnabled(true));
+        } else if (viewMode == ViewMode.EDIT_MODE) {
 
             buttonsLayout.addComponents(cancelButton, confirmButton, deleteButton);
-            components = editComponents;
-        } else {
+            editComponents.stream().forEach(c -> c.setEnabled(true));
+        } else if (viewMode == ViewMode.READ_MODE) {
 
-            buttonsLayout.addComponents(toListViewButton, editButton, deleteButton);
-            components = readComponents;
+            buttonsLayout.addComponents(backButton, editButton, deleteButton);
+            editComponents.stream().forEach(c -> c.setEnabled(false));
         }
 
         addComponent(buttonsLayout);
@@ -289,7 +280,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         VerticalLayout container = new VerticalLayout();
         container.setMargin(false);
         container.setSizeFull();
-        for (Component c : components) {
+        for (Component c : editComponents) {
             container.addComponent(c);
         }
 
@@ -297,10 +288,4 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         setExpandRatio(container, 1.0f);
     }
-
-
-    /**
-     * Sets values of all readable components to corresponding properties of the entity.
-     */
-    protected abstract void setReadComponentsValues();
 }

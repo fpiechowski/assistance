@@ -35,9 +35,9 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
 
     private Button newButton;
 
-    private Button detailsButton;
-
     private Button editButton;
+
+    private Button detailsButton;
 
     private Button deleteButton;
 
@@ -57,16 +57,13 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
         listing.addSelectionListener(selectionEvent -> {
 
             if (selectionEvent.getAllSelectedItems().isEmpty()) {
-                detailsButton.setEnabled(false);
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
                 if (selectionEvent.getAllSelectedItems().size() > 1) {
-                    detailsButton.setEnabled(false);
                     editButton.setEnabled(false);
                     deleteButton.setEnabled(true);
                 } else {
-                    detailsButton.setEnabled(true);
                     editButton.setEnabled(true);
                     deleteButton.setEnabled(true);
                 }
@@ -74,15 +71,6 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
         });
         listing.deselectAll();
 
-        detailsButton = initializeDetailsButton();
-        detailsButton.addClickListener(clickEvent -> {
-            Set<T> selectedSet = listing.getSelectedItems();
-            if (!(selectedSet.isEmpty())) {
-                T selected = selectedSet.iterator().next();
-                navigator.navigateTo(DetailsViews.getDetailsViewNameFor(selected.getClass()) + "/" +
-                        selected.getId());
-            }
-        });
 
         newButton = initializeNewButton();
         newButton.addClickListener(clickEvent -> navigator.navigateTo(DetailsViews.getDetailsViewNameFor(entity.getClass()) + "/" + ViewMode.CREATE_MODE.getUrlString()));
@@ -105,7 +93,16 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
             }
         });
 
-        detailsButton.setEnabled(false);
+        detailsButton = initializeDetailsButton();
+        detailsButton.addClickListener(clickEvent -> {
+            Set<T> selectedSet = listing.getSelectedItems();
+            if (!(selectedSet.isEmpty())) {
+                T selected = selectedSet.iterator().next();
+                navigator.navigateTo(DetailsViews.getDetailsViewNameFor(selected.getClass()) + "/" +
+                        selected.getId() + "/" + ViewMode.READ_MODE.getUrlString());
+            }
+        });
+
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
@@ -128,9 +125,6 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
     protected abstract boolean isGridEditable();
 
 
-    protected abstract Button initializeDetailsButton();
-
-
     protected abstract Button initializeNewButton();
 
 
@@ -138,6 +132,9 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
 
 
     protected abstract Button initializeDeleteButton();
+
+
+    protected abstract Button initializeDetailsButton();
 
 
     @PostConstruct
@@ -155,7 +152,7 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
-        buttonsLayout = new HorizontalLayout(newButton, detailsButton, editButton, deleteButton);
+        buttonsLayout = new HorizontalLayout(newButton, editButton, deleteButton);
         if (additionalButtons != null) {
             for (Button b : additionalButtons) {
                 buttonsLayout.addComponent(b);

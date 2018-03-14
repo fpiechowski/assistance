@@ -65,34 +65,6 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
     private TwinColSelect<Task> taskTwinColSelect;
 
 
-    @Override
-    protected List<Component> initializeReadComponents() {
-
-        nameLabel = new Label();
-        nameLabel.setCaption("Milestone name: ");
-        nameLabel.setWidth("100%");
-
-        projectLabel = new Label();
-        projectLabel.setCaption("Project name: ");
-        projectLabel.setWidth("100%");
-
-        taskLabel = new Label();
-        taskLabel.setCaption("List of tasks: ");
-        taskLabel.setWidth("100%");
-
-        channelLabel = new Label();
-        channelLabel.setCaption("Channel name: ");
-        channelLabel.setWidth("100%");
-
-        return new ArrayList<>(Arrays.asList(
-                nameLabel,
-                projectLabel,
-                taskLabel,
-                channelLabel
-
-        ));
-    }
-
 
     @Override
     protected List<Component> initializeEditComponents() {
@@ -173,10 +145,4 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
     }
 
 
-    @Override
-    protected void setReadComponentsValues() {
-
-        nameLabel.setValue(getEntity().getName());
-        taskLabel.setValue(getEntity().getTasks().toString());
-    }
 }

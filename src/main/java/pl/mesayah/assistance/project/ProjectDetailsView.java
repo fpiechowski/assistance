@@ -110,46 +110,6 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
     }
 
 
-    @Override
-    protected List<Component> initializeReadComponents() {
-
-        nameLabel = new Label();
-        nameLabel.setCaption("Name: ");
-        nameLabel.setWidth("100%");
-
-        phaseLabel = new Label();
-        phaseLabel.setCaption("Phase:");
-
-        HorizontalLayout readNamePhaseLayout = new HorizontalLayout(nameLabel, phaseLabel);
-        readNamePhaseLayout.setWidth("100%");
-
-
-        descriptionLabel = new Label();
-        descriptionLabel.setCaption("Description:");
-        descriptionLabel.setWidth("100%");
-
-
-        startDateLabel = new Label();
-        startDateLabel.setCaption("Started:");
-
-        deadlineLabel = new Label();
-        deadlineLabel.setCaption("Deadline:");
-
-        HorizontalLayout readDatesLayout = new HorizontalLayout(startDateLabel, deadlineLabel);
-        readDatesLayout.setWidth("100%");
-
-
-        managerLabel = new Label();
-        managerLabel.setCaption("Project Manager");
-
-
-        return new ArrayList<>(Arrays.asList(
-                readNamePhaseLayout,
-                descriptionLabel,
-                readDatesLayout,
-                managerLabel
-        ));
-    }
 
 
     @Override
@@ -287,33 +247,4 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
     }
 
 
-    @Override
-    protected void setReadComponentsValues() {
-
-        nameLabel.setValue(getEntity().getName());
-
-        phaseLabel.setValue(getEntity().getPhase().toString());
-
-        descriptionLabel.setValue(getEntity().getDescription());
-
-        startDateLabel.setValue(getEntity().getStartDate().format(dateTimeFormatter));
-
-        // Deadline can be empty (can be null) so we need to check it before setting a label's value.
-        String deadline;
-        if (getEntity().getDeadline() == null) {
-            deadline = null;
-        } else {
-            deadline = getEntity().getDeadline().format(dateTimeFormatter);
-        }
-        deadlineLabel.setValue(deadline);
-
-        // Same as before
-        String manager;
-        if (getEntity().getManager() == null) {
-            manager = null;
-        } else {
-            manager = getEntity().getManager().getUsername();
-        }
-        managerLabel.setValue(manager);
-    }
 }

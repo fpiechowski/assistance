@@ -27,16 +27,6 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
     UserService userService;
 
     /**
-     * A label showing a title of the team.
-     */
-    private Label nameLabel;
-
-    /**
-     * A label showing a title of the TwinCol.
-     */
-    private Label memberLabel;
-
-    /**
      * A Text Field to edit a title of the project.
      */
     private TextField nameTextField;
@@ -47,37 +37,27 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
     private TwinColSelect<User> userTwinColSelect;
 
 
-    @Override
-    protected List<Component> initializeReadComponents() {
-
-        nameLabel = new Label();
-        nameLabel.setCaption("Team name: ");
-        nameLabel.setWidth("100%");
-
-        memberLabel = new Label();
-        memberLabel.setCaption("List of members: ");
-        memberLabel.setWidth("100%");
-
-        return new ArrayList<>(Arrays.asList(
-                nameLabel,
-                memberLabel
-
-        ));
-    }
 
 
     @Override
     protected List<Component> initializeEditComponents() {
+
+        VerticalLayout container = new VerticalLayout();
+        container.setMargin(false);
+        container.setSizeFull();
 
         nameTextField = new TextField("Team name:");
         nameTextField.setWidth("100%");
         nameTextField.setRequiredIndicatorVisible(true);
 
         userTwinColSelect = new TwinColSelect<>("Choose members of the team");
+        userTwinColSelect.setSizeFull();
+
+        container.addComponents(nameTextField, userTwinColSelect);
+        container.setExpandRatio(userTwinColSelect, 1.0f);
 
         return new ArrayList<>(Arrays.asList(
-                nameTextField,
-                userTwinColSelect
+                container
         ));
     }
 
@@ -135,10 +115,4 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
     }
 
 
-    @Override
-    protected void setReadComponentsValues() {
-
-        nameLabel.setValue(getEntity().getName());
-        memberLabel.setValue(getEntity().getMembers().toString());
-    }
 }

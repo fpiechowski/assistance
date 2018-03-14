@@ -68,46 +68,6 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     }
 
 
-    @Override
-    protected List<Component> initializeReadComponents() {
-
-        nameLabel = new Label();
-        nameLabel.setCaption("Name:");
-
-        descriptionLabel = new Label();
-        descriptionLabel.setCaption("Description:");
-
-        projectButton = new Button(VaadinIcons.NOTEBOOK);
-        projectButton.setStyleName("link");
-
-        Layout projectLayout = new HorizontalLayout(projectButton);
-        projectLayout.setCaption("Project:");
-
-        reportingUserButton = new Button(VaadinIcons.USER);
-        reportingUserButton.setStyleName("link");
-        Layout reportingUserLayout = new HorizontalLayout(reportingUserButton);
-        projectLayout.setCaption("Reporting User:");
-
-        reportDateLabel = new Label();
-        reportDateLabel.setCaption("Date:");
-
-        statusLabel = new Label();
-        statusLabel.setCaption("Status:");
-
-        assigneesListSelect = new ListSelect<>("Assignees:");
-
-        priorityLabel = new Label();
-        priorityLabel.setCaption("Priority:");
-
-        HorizontalLayout nameStatusPriorityLabel = new HorizontalLayout(nameLabel, statusLabel, priorityLabel);
-        HorizontalLayout projectUserDateLayout = new HorizontalLayout(projectLayout, reportingUserLayout, reportDateLabel);
-
-        return Arrays.asList(
-                nameStatusPriorityLabel,
-                projectUserDateLayout,
-                descriptionLabel
-        );
-    }
 
 
     @Override
@@ -228,22 +188,4 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     }
 
 
-    @Override
-    protected void setReadComponentsValues() {
-
-        nameLabel.setValue(getEntity().getName());
-        descriptionLabel.setValue(getEntity().getDescription());
-        projectButton.setCaption(getEntity().getProject().getName());
-        String projectUrl = DetailsViews.getDetailsViewNameFor(getEntity().getProject().getClass()) + "/" +
-                getEntity().getProject().getId();
-        projectButton.addClickListener(clickEvent -> getNavigator().navigateTo(projectUrl));
-        reportingUserButton.setCaption(getEntity().getReportingUser().getUsername());
-        User reporter = getEntity().getReportingUser();
-        String userUrl = DetailsViews.getDetailsViewNameFor(reporter.getClass()) + "/" + reporter.getId();
-        reportingUserButton.addClickListener(clickEvent -> getNavigator().navigateTo(userUrl));
-        reportDateLabel.setValue(getEntity().getReportDate().toString());
-        statusLabel.setValue(getEntity().getStatus().name());
-        assigneesListSelect.setItems(getEntity().getAssignedUsers());
-        priorityLabel.setValue(getEntity().getPriority().name());
-    }
 }

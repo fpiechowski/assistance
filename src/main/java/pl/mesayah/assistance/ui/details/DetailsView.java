@@ -9,7 +9,7 @@ public interface DetailsView<T extends Entity> extends View {
 
     void enterCreateMode();
 
-    void enterReadMode();
-
     void enterEditMode();
+
+    void enterReadMode();
 }
