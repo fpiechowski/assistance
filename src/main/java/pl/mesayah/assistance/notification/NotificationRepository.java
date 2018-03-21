@@ -13,7 +13,4 @@ import java.util.stream.Stream;
 public interface NotificationRepository extends CrudRepository<Notification, Long> {
 
     List<Notification> findByType(Notification.NotificationType type);
-
-    List<Notification> findAllByDestinationIs(NotificationDestination destination);
-
 }

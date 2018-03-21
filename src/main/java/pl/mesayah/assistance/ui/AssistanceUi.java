@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.ui;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
@@ -31,7 +30,6 @@ import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
-import pl.mesayah.assistance.notification.NotificationDestination;
 import pl.mesayah.assistance.notification.NotificationRepository;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.SecurityUtils;
@@ -63,11 +61,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
      */
     @Autowired
     private SpringNavigator navigator;
-    /**
-     * A repository for notifcations
-     */
-    @Autowired
-    private NotificationRepository notificationRepository;
 
     /**
      * A top bar with user information and navigation links.
@@ -281,64 +274,14 @@ public class AssistanceUi extends UI implements ViewDisplay {
             // Notification window
             final Window window = new Window("Notifications");
             window.setWidth(300.0f, Unit.PIXELS);
-            pl.mesayah.assistance.notification.Notification not;
-            not = new pl.mesayah.assistance.notification.Notification(
-                    "Test",
-                    "Testowy pushd gas fgdsg fsdg hjs dag asdhfg asgajdhlkf",
-                    pl.mesayah.assistance.notification.Notification.NotificationType.INFO,
-                    NotificationDestination.USER,
-                    username
-            );
-            notificationRepository.save(not);
             VerticalLayout newWindowContent = new VerticalLayout();
             newWindowContent.setMargin(true);
             window.setContent(newWindowContent);
             window.setWidth("30%");
             window.setResizable(false);
             window.setDraggable(false);
-            Timer notifyTimer = new Timer();
-            if (notificationRepository.findAllByDestinationIs(NotificationDestination.USER)
-                    .stream().sorted(Comparator.comparing(notification -> notification.getSendDateTime()))
-                    .filter(notification -> notification.getNotificationTarget().equals(username) && !notification.isReaded()).count() > 0)
-                notifyButton.setIcon(new ThemeResource("img/newnotify.png"));
-            else notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
+            notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
             notifyButton.setStyleName(ValoTheme.BUTTON_LINK);
-            boolean flag = false;
-            notifyTimer.schedule(new TimerTask() {
-                @Transactional
-                @Override
-                public void run() {
-                    newWindowContent.removeAllComponents();
-                    DateTimeFormatter format = DateTimeFormatter.ofPattern("d.MM HH:mm");
-                    AtomicBoolean flag = new AtomicBoolean(false);
-                    notificationRepository
-                            .findAllByDestinationIs(NotificationDestination.USER)
-                            .stream().sorted(Comparator.comparing(notification -> notification.getSendDateTime()))
-                            .filter(notification -> notification.getNotificationTarget().equals(username))
-                            .forEach(n -> {
-                                if (!n.isReaded()) {
-                                    notifyButton.setIcon(new ThemeResource("img/newnotify.png"));
-                                    flag.set(true);
-                                }
-                                if (!flag.get()) notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
-                                HorizontalLayout hor = new HorizontalLayout();
-                                Label date = new Label(n.getSendDateTime().format(format).toString());
-                                Label title = new Label(n.getTitle());
-                                Label desc = new Label(n.getText());
-                                desc.setWidth("70%");
-                                hor.addComponents(date, title, desc);
-                                newWindowContent.addComponent(hor);
-                            });
-                    flag.set(false);
-                }
-            }, 1000, 1000);
-
-            notifyButton.addClickListener((Button.ClickListener) clickEvent -> {
-                this.getUI().addWindow(window);
-
-            });
-
-
             userNameLink = new Button(username);
             userNameLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
             userNameLink.addStyleName("linkButton");

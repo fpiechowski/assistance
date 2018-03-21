@@ -40,12 +40,6 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
     @Enumerated(EnumType.ORDINAL)
     private NotificationType type;
 
-    @Enumerated(EnumType.ORDINAL)
-    private NotificationDestination destination;
-
-    private boolean readed;
-
-    private String NotificationTarget;
 
 
     /**
@@ -53,14 +47,6 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
      */
     public Notification() {
 
-    }
-
-    public NotificationDestination getDestination() {
-        return destination;
-    }
-
-    public void setDestination(NotificationDestination destination) {
-        this.destination = destination;
     }
 
     @Override
@@ -71,14 +57,6 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
     public String getText() {
         return text;
-    }
-
-    public boolean isReaded() {
-        return readed;
-    }
-
-    public void setReaded(boolean readed) {
-        this.readed = readed;
     }
 
     public void setText(String text) {
@@ -118,14 +96,6 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         this.id = id;
     }
 
-    public Notification(String title, String text, NotificationType type, NotificationDestination destination, String notificationTarget) {
-        this.title = title;
-        this.text = text;
-        this.type = type;
-        this.destination = destination;
-        this.sendDateTime = LocalDateTime.now();
-        NotificationTarget = notificationTarget;
-    }
 
     public LocalDateTime getSendDateTime() {
 
@@ -181,14 +151,6 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
     public static enum NotificationType {
 
         INFO, ALERT, WARNING;
-    }
-
-    public String getNotificationTarget() {
-        return NotificationTarget;
-    }
-
-    public void setNotificationTarget(String notificationTarget) {
-        NotificationTarget = notificationTarget;
     }
 
 
