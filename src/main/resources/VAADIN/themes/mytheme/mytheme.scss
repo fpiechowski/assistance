@@ -29,7 +29,16 @@
     text-decoration: none;
   }
 
-  .link .v-button-caption
+  .clickimage{
+    cursor: pointer;
+  }
+
+  .linkButton
+  {
+    color: white;
+    text-decoration: none;
+  }
+  .linkButton .v-button-caption:hover
   {
     color: white;
     text-decoration: none;
@@ -49,6 +58,6 @@
     background: white;
   }
   .topbarLayout{
-    background: dimgrey;
+    background: #696969;
   }
 }

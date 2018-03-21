@@ -30,10 +30,22 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
     private LocalDateTime sendDateTime;
 
     /**
+     * Text in notification
+     */
+    private String text;
+
+    /**
      * A type of this notification.
      */
     @Enumerated(EnumType.ORDINAL)
     private NotificationType type;
+
+    @Enumerated(EnumType.ORDINAL)
+    private NotificationDestination destination;
+
+    private boolean readed;
+
+    private String NotificationTarget;
 
 
     /**
@@ -43,6 +55,13 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
     }
 
+    public NotificationDestination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(NotificationDestination destination) {
+        this.destination = destination;
+    }
 
     @Override
     public int hashCode() {
@@ -50,6 +69,21 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         return Objects.hash(id, title, sendDateTime, type);
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public boolean isReaded() {
+        return readed;
+    }
+
+    public void setReaded(boolean readed) {
+        this.readed = readed;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -84,6 +118,14 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         this.id = id;
     }
 
+    public Notification(String title, String text, NotificationType type, NotificationDestination destination, String notificationTarget) {
+        this.title = title;
+        this.text = text;
+        this.type = type;
+        this.destination = destination;
+        this.sendDateTime = LocalDateTime.now();
+        NotificationTarget = notificationTarget;
+    }
 
     public LocalDateTime getSendDateTime() {
 
@@ -140,4 +182,14 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
         INFO, ALERT, WARNING;
     }
+
+    public String getNotificationTarget() {
+        return NotificationTarget;
+    }
+
+    public void setNotificationTarget(String notificationTarget) {
+        NotificationTarget = notificationTarget;
+    }
+
+
 }

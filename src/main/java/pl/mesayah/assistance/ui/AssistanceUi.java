@@ -1,10 +1,12 @@
 package pl.mesayah.assistance.ui;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.DefaultErrorHandler;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.communication.PushMode;
@@ -14,6 +16,7 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.AccessDeniedException;
@@ -22,11 +25,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
+import pl.mesayah.assistance.notification.NotificationDestination;
+import pl.mesayah.assistance.notification.NotificationRepository;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.ui.AuthenticationView;
@@ -34,7 +40,9 @@ import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.ui.list.ListViews;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Main user interface class of the application.
@@ -55,6 +63,11 @@ public class AssistanceUi extends UI implements ViewDisplay {
      */
     @Autowired
     private SpringNavigator navigator;
+    /**
+     * A repository for notifcations
+     */
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     /**
      * A top bar with user information and navigation links.
@@ -70,7 +83,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
      * A container for the whole user interface.
      */
     private VerticalLayout rootLayout;
-
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -242,6 +254,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
     /**
      * A layout containing current user information.
      */
+    @Transactional
     class UserInfoLayout extends VerticalLayout {
 
         /**
@@ -257,30 +270,96 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
 
         public UserInfoLayout() {
-
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
             this.setWidth("-1px");
             this.setHeight("-1px");
             this.setMargin(new MarginInfo(false, true));
             this.setId("userInfoLayout");
             HorizontalLayout setlog = new HorizontalLayout();
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            HorizontalLayout userAndNotify = new HorizontalLayout();
+            Button notifyButton = new Button();
+            // Notification window
+            final Window window = new Window("Notifications");
+            window.setWidth(300.0f, Unit.PIXELS);
+            pl.mesayah.assistance.notification.Notification not;
+            not = new pl.mesayah.assistance.notification.Notification(
+                    "Test",
+                    "Testowy pushd gas fgdsg fsdg hjs dag asdhfg asgajdhlkf",
+                    pl.mesayah.assistance.notification.Notification.NotificationType.INFO,
+                    NotificationDestination.USER,
+                    username
+            );
+            notificationRepository.save(not);
+            VerticalLayout newWindowContent = new VerticalLayout();
+            newWindowContent.setMargin(true);
+            window.setContent(newWindowContent);
+            window.setWidth("30%");
+            window.setResizable(false);
+            window.setDraggable(false);
+            Timer notifyTimer = new Timer();
+            if (notificationRepository.findAllByDestinationIs(NotificationDestination.USER)
+                    .stream().sorted(Comparator.comparing(notification -> notification.getSendDateTime()))
+                    .filter(notification -> notification.getNotificationTarget().equals(username) && !notification.isReaded()).count() > 0)
+                notifyButton.setIcon(new ThemeResource("img/newnotify.png"));
+            else notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
+            notifyButton.setStyleName(ValoTheme.BUTTON_LINK);
+            boolean flag = false;
+            notifyTimer.schedule(new TimerTask() {
+                @Transactional
+                @Override
+                public void run() {
+                    newWindowContent.removeAllComponents();
+                    DateTimeFormatter format = DateTimeFormatter.ofPattern("d.MM HH:mm");
+                    AtomicBoolean flag = new AtomicBoolean(false);
+                    notificationRepository
+                            .findAllByDestinationIs(NotificationDestination.USER)
+                            .stream().sorted(Comparator.comparing(notification -> notification.getSendDateTime()))
+                            .filter(notification -> notification.getNotificationTarget().equals(username))
+                            .forEach(n -> {
+                                if (!n.isReaded()) {
+                                    notifyButton.setIcon(new ThemeResource("img/newnotify.png"));
+                                    flag.set(true);
+                                }
+                                if (!flag.get()) notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
+                                HorizontalLayout hor = new HorizontalLayout();
+                                Label date = new Label(n.getSendDateTime().format(format).toString());
+                                Label title = new Label(n.getTitle());
+                                Label desc = new Label(n.getText());
+                                desc.setWidth("70%");
+                                hor.addComponents(date, title, desc);
+                                newWindowContent.addComponent(hor);
+                            });
+                    flag.set(false);
+                }
+            }, 1000, 1000);
+
+            notifyButton.addClickListener((Button.ClickListener) clickEvent -> {
+                this.getUI().addWindow(window);
+
+            });
+
+
             userNameLink = new Button(username);
-            userNameLink.setStyleName("link");
+            userNameLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+            userNameLink.addStyleName("linkButton");
             // TODO: set navigation state to user profile view NAME with user ID parameter
             userNameLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
 
             logoutButton = new Button("Logout");
-            logoutButton.setStyleName("link");
+            logoutButton.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+            logoutButton.addStyleName("linkButton");
             logoutButton.addClickListener((Button.ClickListener) clickevent -> logout());
 
             settingLink = new Button("Settings", VaadinIcons.COG);
-            settingLink.setStyleName("link");
+            settingLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+            settingLink.addStyleName("linkButton");
             // TODO: set navigation state to setting view NAME
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
             setlog.addComponents(settingLink, logoutButton);
-            this.addComponents(userNameLink, setlog);
+            userAndNotify.addComponents(userNameLink, notifyButton);
+            this.addComponents(userAndNotify, setlog);
         }
 
 
@@ -344,7 +423,8 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
             // Sets the style for all navigation links
             for (Button b : navigationButtons) {
-                b.setStyleName("link");
+                b.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+                b.addStyleName("linkButton");
                 addComponent(b);
                 this.setComponentAlignment(b, Alignment.MIDDLE_CENTER);
             }
