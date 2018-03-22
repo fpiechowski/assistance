@@ -63,28 +63,41 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
      * A Twin Column Selector for selecting tasks.
      */
     private TwinColSelect<Task> taskTwinColSelect;
-
-
-
+    /**
+     * A box for input deadline date.
+     */
+    private DateField deadlineBox;
     @Override
     protected List<Component> initializeEditComponents() {
+
+        HorizontalLayout container = new HorizontalLayout();
+        VerticalLayout secondContainer = new VerticalLayout();
+        container.setSizeUndefined();
+        container.setSpacing(false);
+        container.setMargin(false);
 
         nameTextField = new TextField("Milestone name:");
         nameTextField.setWidth("100%");
         nameTextField.setRequiredIndicatorVisible(true);
 
         taskTwinColSelect = new TwinColSelect<>("Choose task for milestone");
+        taskTwinColSelect.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getName());
 
         projectComboBox = new ComboBox<>("Project");
         projectComboBox.setEmptySelectionAllowed(false);
         projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getName());
         projectComboBox.setRequiredIndicatorVisible(true);
 
+        deadlineBox = new DateField();
+        deadlineBox.setRequiredIndicatorVisible(true);
+
+        secondContainer.addComponents(projectComboBox,deadlineBox);
+
+        container.addComponents(taskTwinColSelect, secondContainer);
 
         return new ArrayList<>(Arrays.asList(
                 nameTextField,
-                projectComboBox,
-                taskTwinColSelect
+                container
         ));
     }
 
@@ -122,6 +135,8 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
                 .bind(Milestone::getTasks, Milestone::setTasks);
         dataBinder.forField(projectComboBox)
                 .bind(Milestone::getProject, Milestone::setProject);
+        dataBinder.forField(deadlineBox)
+                .bind(Milestone::getDeadline, Milestone::setDeadline);
         return dataBinder;
     }
 

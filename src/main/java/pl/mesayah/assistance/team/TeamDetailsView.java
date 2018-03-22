@@ -44,7 +44,7 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
 
         VerticalLayout container = new VerticalLayout();
         container.setMargin(false);
-        container.setSizeFull();
+        container.setSizeUndefined();
 
         nameTextField = new TextField("Team name:");
         nameTextField.setWidth("100%");

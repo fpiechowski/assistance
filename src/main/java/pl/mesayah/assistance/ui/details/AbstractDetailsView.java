@@ -279,7 +279,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         VerticalLayout container = new VerticalLayout();
         container.setMargin(false);
-        container.setSizeFull();
+        container.setSizeUndefined();
         for (Component c : editComponents) {
             container.addComponent(c);
         }

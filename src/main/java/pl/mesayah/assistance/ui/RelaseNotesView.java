@@ -24,7 +24,7 @@ public class RelaseNotesView extends HorizontalLayout {
 
     private String[][] bugs = {
             {
-                    "Ostry", "- After click Previous Page on WEB, app redirect to /#!team/1"
+                    "Ostry", ""
             },
             {
                     "Szyku", ""

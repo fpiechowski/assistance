@@ -8,6 +8,7 @@ import com.vaadin.ui.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.ui.list.AbstractListView;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,7 @@ public class MilestoneListView extends AbstractListView<Milestone> {
         grid.setColumns("id", "name");
         grid.addColumn((ValueProvider<Milestone, String>) Milestone -> Milestone.getName());
         grid.getColumns().get(2).setCaption("Project");
-        grid.addColumn((ValueProvider<Milestone, Date>) Milestone -> Milestone.getDeadline());
+        grid.addColumn((ValueProvider<Milestone, LocalDate>) Milestone -> Milestone.getDeadline());
         grid.getColumns().get(3).setCaption("Deadline");
         return grid;
     }

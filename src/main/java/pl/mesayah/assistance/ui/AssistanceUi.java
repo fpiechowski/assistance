@@ -139,7 +139,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         topBarLayout.setHeight("-1px");
         Layout navigationLayout = new NavigationLayout();
         Layout userInfoLayout = new UserInfoLayout();
-        topBarLayout.addComponents(userInfoLayout, navigationLayout);
+        topBarLayout.addComponents(navigationLayout, userInfoLayout);
         topBarLayout.setExpandRatio(navigationLayout, 1.0f);
         topBarLayout.setStyleName("topbarLayout");
     }
@@ -301,7 +301,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
             setlog.addComponents(settingLink, logoutButton);
-            userAndNotify.addComponents(userNameLink, notifyButton);
+            userAndNotify.addComponents(notifyButton,userNameLink);
             this.addComponents(userAndNotify, setlog);
         }
 
