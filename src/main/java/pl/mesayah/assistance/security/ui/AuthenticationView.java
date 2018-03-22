@@ -48,6 +48,7 @@ public class AuthenticationView extends VerticalLayout {
             removeAllComponents();
             setStyleName("relaseNotesView");
             addComponent(new RelaseNotesView());
+            setSizeFull();
         });
 
         /**
