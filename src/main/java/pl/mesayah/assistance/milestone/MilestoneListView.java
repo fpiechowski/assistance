@@ -15,7 +15,7 @@ import java.util.List;
 @SpringView(name = MilestoneListView.VIEW_NAME)
 public class MilestoneListView extends AbstractListView<Milestone> {
 
-    public static final String VIEW_NAME = "Milestones";
+    public static final String VIEW_NAME = "milestones";
 
     @Autowired
     private MilestoneService MilestoneService;
