@@ -144,4 +144,8 @@ public class RoleService {
 
         return roleRepository.findByName(name);
     }
+    public Collection<Role> findAll() {
+
+        return (Collection<Role>)roleRepository.findAll();
+    }
 }

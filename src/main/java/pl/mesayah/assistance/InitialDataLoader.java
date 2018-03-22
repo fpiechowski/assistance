@@ -67,5 +67,15 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
                 true);
 
         userRepository.save(testUserWithAllRoles);
+        Collection<Role> noRoles = null;
+        User testUserWithNoRoles = new User(
+                "user",
+                noRoles,
+                "Test",
+                "User",
+                passwordEncoder.encode("12345"),
+                true);
+
+        userRepository.save(testUserWithNoRoles);
     }
 }

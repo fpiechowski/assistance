@@ -40,7 +40,7 @@ public class Milestone extends AbstractFilterableEntity implements Serializable 
     /**
      * Tasks that have to be completed to achieve this milestone.
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "milestone_task",
             joinColumns = @JoinColumn(name = "milestone_id"),
