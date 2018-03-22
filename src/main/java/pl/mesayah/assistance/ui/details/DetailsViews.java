@@ -3,6 +3,8 @@ package pl.mesayah.assistance.ui.details;
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.issue.IssueDetailsView;
+import pl.mesayah.assistance.milestone.Milestone;
+import pl.mesayah.assistance.milestone.MilestoneDetailsView;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectDetailsView;
 import pl.mesayah.assistance.task.Task;
@@ -14,7 +16,8 @@ public enum DetailsViews {
     PROJECT(Project.class, ProjectDetailsView.VIEW_NAME),
     TEAM(Team.class, TeamDetailsView.VIEW_NAME),
     ISSUE(Issue.class, IssueDetailsView.VIEW_NAME),
-    TASK(Task.class, TaskDetailsView.VIEW_NAME);
+    TASK(Task.class, TaskDetailsView.VIEW_NAME),
+    MILESTONE(Milestone.class, MilestoneDetailsView.VIEW_NAME);
 
     private Class<? extends Entity> entityClass;
     private String viewName;
