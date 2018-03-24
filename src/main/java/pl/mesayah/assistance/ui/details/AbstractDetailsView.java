@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.ui.details;
 
+import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.icons.VaadinIcons;
@@ -66,6 +67,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         deleteButton.addClickListener(clickEvent -> ((AssistanceUi) getUI()).showDeleteWindow(entity));
 
         confirmButton = initializeConfirmButton();
+        confirmButton.addStyleName(MaterialTheme.BUTTON_FRIENDLY);
         confirmButton.addClickListener(clickEvent -> updateDetails());
 
         editButton = initializeEditButton();

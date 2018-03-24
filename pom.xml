@@ -23,9 +23,16 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <vaadin.version>8.1.0</vaadin.version>
+        <vaadin.plugin.version>8.3.2</vaadin.plugin.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.appreciated</groupId>
+            <artifactId>material</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-java8</artifactId>
@@ -41,6 +48,11 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-push</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
         </dependency>
 
         <dependency>
@@ -85,31 +97,17 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-commons</artifactId>
-        </dependency>
-        <!-- How to write JUnit 5 tests?
-             http://junit.org/junit5/docs/current/user-guide/#writing-tests -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-        </dependency>
-        <!-- What is parametrized test and how to write it?
-             http://junit.org/junit5/docs/current/user-guide/#writing-tests-parameterized-tests -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-        </dependency>
-        <!-- How to write JUnit 4 tests?
-             http://www.vogella.com/tutorials/JUnit/article.html#usingjuni4 -->
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-        </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
+
         <dependencies>
             <dependency>
                 <groupId>com.vaadin</groupId>
@@ -126,6 +124,23 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>resources</goal>
+                            <goal>update-theme</goal>
+                            <goal>update-widgetset</goal>
+                            <goal>compile-theme</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

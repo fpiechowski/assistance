@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.ui;
 
+import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -15,7 +16,6 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,17 +30,17 @@ import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
-import pl.mesayah.assistance.notification.NotificationRepository;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.ui.AuthenticationView;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
+import pl.mesayah.assistance.ui.details.DetailsViews;
 import pl.mesayah.assistance.ui.list.ListViews;
+import pl.mesayah.assistance.user.User;
+import pl.mesayah.assistance.user.UserRepository;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Main user interface class of the application.
@@ -76,6 +76,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
      * A container for the whole user interface.
      */
     private VerticalLayout rootLayout;
+
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -141,7 +142,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
         Layout userInfoLayout = new UserInfoLayout();
         topBarLayout.addComponents(navigationLayout, userInfoLayout);
         topBarLayout.setExpandRatio(navigationLayout, 1.0f);
-        topBarLayout.setStyleName("topbarLayout");
     }
 
 
@@ -261,16 +261,18 @@ public class AssistanceUi extends UI implements ViewDisplay {
         private Button userNameLink;
         private Button logoutButton;
 
+        @Autowired
+        private UserRepository userRepository;
 
         public UserInfoLayout() {
+
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.setWidth("-1px");
-            this.setHeight("-1px");
-            this.setMargin(new MarginInfo(false, true));
+            setSizeUndefined();
+            this.setMargin(true);
             this.setId("userInfoLayout");
             HorizontalLayout setlog = new HorizontalLayout();
             HorizontalLayout userAndNotify = new HorizontalLayout();
-            Button notifyButton = new Button();
+            Button notifyButton = new Button(VaadinIcons.FLAG);
             // Notification window
             final Window window = new Window("Notifications");
             window.setWidth(300.0f, Unit.PIXELS);
@@ -280,28 +282,36 @@ public class AssistanceUi extends UI implements ViewDisplay {
             window.setWidth("30%");
             window.setResizable(false);
             window.setDraggable(false);
-            notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
-            notifyButton.setStyleName(ValoTheme.BUTTON_LINK);
-            userNameLink = new Button(username);
-            userNameLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            userNameLink.addStyleName("linkButton");
+            notifyButton.addStyleName(MaterialTheme.BUTTON_BORDER);
+            notifyButton.addStyleName(MaterialTheme.BUTTON_CUSTOM);
+            notifyButton.addStyleName(MaterialTheme.BUTTON_ROUND);
+            userNameLink = new Button(username, VaadinIcons.USER);
+            userNameLink.addStyleName(MaterialTheme.BUTTON_BORDERLESS);
+            userNameLink.addStyleName(MaterialTheme.BUTTON_CUSTOM);
+            userNameLink.addStyleName(MaterialTheme.BUTTON_ROUND);
             // TODO: set navigation state to user profile view NAME with user ID parameter
             userNameLink.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
+                    (Button.ClickListener) clickEvent -> {
+                        User currentUser = userRepository.findByUsername(SecurityUtils.getCurrentUserUsername());
+                        navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + currentUser.getId());
+                    });
 
-            logoutButton = new Button("Logout");
-            logoutButton.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            logoutButton.addStyleName("linkButton");
+            logoutButton = new Button("Logout", VaadinIcons.EXIT);
+            logoutButton.addStyleName(MaterialTheme.BUTTON_BORDERLESS);
+            logoutButton.addStyleName(MaterialTheme.BUTTON_CUSTOM);
+            logoutButton.addStyleName(MaterialTheme.BUTTON_ROUND);
             logoutButton.addClickListener((Button.ClickListener) clickevent -> logout());
 
             settingLink = new Button("Settings", VaadinIcons.COG);
-            settingLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            settingLink.addStyleName("linkButton");
+            settingLink.addStyleName(MaterialTheme.BUTTON_BORDERLESS);
+            settingLink.addStyleName(MaterialTheme.BUTTON_CUSTOM);
+            settingLink.addStyleName(MaterialTheme.BUTTON_ROUND);
+
             // TODO: set navigation state to setting view NAME
             settingLink.addClickListener(
                     (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
             setlog.addComponents(settingLink, logoutButton);
-            userAndNotify.addComponents(notifyButton,userNameLink);
+            userAndNotify.addComponents(notifyButton, userNameLink);
             this.addComponents(userAndNotify, setlog);
         }
 
@@ -366,8 +376,9 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
             // Sets the style for all navigation links
             for (Button b : navigationButtons) {
-                b.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-                b.addStyleName("linkButton");
+                b.addStyleName(MaterialTheme.BUTTON_BORDERLESS);
+                b.addStyleName(MaterialTheme.BUTTON_CUSTOM);
+                b.addStyleName(MaterialTheme.BUTTON_ROUND);
                 addComponent(b);
                 this.setComponentAlignment(b, Alignment.MIDDLE_CENTER);
             }

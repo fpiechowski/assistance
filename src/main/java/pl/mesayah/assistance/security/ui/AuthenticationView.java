@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.security.ui;
 
+import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.AlignmentInfo;
@@ -20,9 +21,14 @@ public class AuthenticationView extends VerticalLayout {
          * Layouts declarations
          */
         VerticalLayout loginBox = new VerticalLayout();
+        loginBox.setMargin(false);
+        loginBox.addStyleName(MaterialTheme.CARD_1);
         VerticalLayout logoBox = new VerticalLayout();
+        logoBox.setMargin(false);
         HorizontalLayout footer = new HorizontalLayout();
+        footer.setMargin(false);
 
+        setStyleName("auth-screen");
 
         /**
          * Components declaration
@@ -30,7 +36,9 @@ public class AuthenticationView extends VerticalLayout {
         ThemeResource resource = new ThemeResource("img/assistanceprojekt.png");
         Image logo = new Image();
         TextField username = new TextField("Username:");
+        username.setWidth("100%");
         PasswordField password = new PasswordField("Password:");
+        password.setWidth("100%");
 
         Button logIn = new Button("Login", event -> {
             String pword = password.getValue();
@@ -40,6 +48,7 @@ public class AuthenticationView extends VerticalLayout {
                 username.focus();
             }
         });
+        logIn.addStyleName(MaterialTheme.BUTTON_PRIMARY);
 
         Label welcomeLabel = new Label();
         Label footerMiddleLabel = new Label();
@@ -54,12 +63,6 @@ public class AuthenticationView extends VerticalLayout {
         /**
          * Components setting
          */
-        logIn.setStyleName(ValoTheme.BUTTON_PRIMARY);
-
-
-        username.setStyleName("loginField");
-
-        password.setStyleName("loginField");
 
         welcomeLabel.setContentMode(ContentMode.HTML);
         welcomeLabel.setValue("Welcome to Assistance. Please log in.");
@@ -85,9 +88,7 @@ public class AuthenticationView extends VerticalLayout {
         loginBox.setMargin(new MarginInfo(true, true, false, true));
         loginBox.setSizeUndefined();
         loginBox.setSpacing(true);
-        setStyleName("loginGeneral");
         setExpandRatio(footer, 1);
-        loginBox.setStyleName("loginBox");
         /**
          * Set component alignments
          */

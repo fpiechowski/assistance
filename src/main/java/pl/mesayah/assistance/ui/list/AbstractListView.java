@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.ui.list;
 
+import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.ViewChangeListener;
@@ -53,7 +54,7 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
 
         listing = initializeListing();
         listing.getEditor().setEnabled(isGridEditable());
-        listing.setSelectionMode(Grid.SelectionMode.MULTI);
+        listing.setSelectionMode(Grid.SelectionMode.SINGLE);
         listing.addSelectionListener(selectionEvent -> {
 
             if (selectionEvent.getAllSelectedItems().isEmpty()) {
@@ -73,9 +74,11 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
 
 
         newButton = initializeNewButton();
+        newButton.addStyleName(MaterialTheme.BUTTON_FRIENDLY);
         newButton.addClickListener(clickEvent -> navigator.navigateTo(DetailsViews.getDetailsViewNameFor(entity.getClass()) + "/" + ViewMode.CREATE_MODE.getUrlString()));
 
         editButton = initializeEditButton();
+        editButton.addStyleName(MaterialTheme.BUTTON_PRIMARY);
         editButton.addClickListener(clickEvent -> {
             Set<T> selectedSet = listing.getSelectedItems();
             if (!(selectedSet.isEmpty())) {
@@ -86,6 +89,7 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
         });
 
         deleteButton = initializeDeleteButton();
+        deleteButton.addStyleName(MaterialTheme.BUTTON_DANGER);
         deleteButton.addClickListener(clickEvent -> {
             Set<T> selectedSet = listing.getSelectedItems();
             if (!(selectedSet.isEmpty())) {
@@ -108,6 +112,7 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
 
         nameFilterTextField = new TextField();
         nameFilterTextField.setPlaceholder("Search...");
+        nameFilterTextField.setWidth("100%");
         nameFilterTextField.addValueChangeListener(this::onNameFilterValueChange);
 
         setSizeFull();
@@ -160,9 +165,10 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
         }
 
         buttonsLayout.addComponent(nameFilterTextField);
+        buttonsLayout.setWidth("100%");
+        buttonsLayout.setExpandRatio(nameFilterTextField, 1.0f);
 
         addComponents(buttonsLayout, listing);
-
         setExpandRatio(listing, 1.0f);
     }
 
