@@ -64,6 +64,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         });
 
         deleteButton = initializeDeleteButton();
+        deleteButton.addStyleName(MaterialTheme.BUTTON_DANGER);
         deleteButton.addClickListener(clickEvent -> ((AssistanceUi) getUI()).showDeleteWindow(entity));
 
         confirmButton = initializeConfirmButton();
@@ -71,6 +72,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         confirmButton.addClickListener(clickEvent -> updateDetails());
 
         editButton = initializeEditButton();
+        editButton.addStyleName(MaterialTheme.BUTTON_PRIMARY);
         editButton.addClickListener(clickEvent -> navigator.navigateTo(
                 DetailsViews.getDetailsViewNameFor(getEntity().getClass()) + "/" + getEntity().getId() + "/" +
                         ViewMode.EDIT_MODE.getUrlString()));

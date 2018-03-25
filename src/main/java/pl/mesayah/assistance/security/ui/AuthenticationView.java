@@ -16,7 +16,8 @@ public class AuthenticationView extends VerticalLayout {
     public AuthenticationView(LoginCallback callback) {
 
         RelaseNotesView relaseNotesView = new RelaseNotesView();
-
+        setStyleName("wallpaper");
+        setId("auth-screen");
         /**
          * Layouts declarations
          */
@@ -28,7 +29,6 @@ public class AuthenticationView extends VerticalLayout {
         HorizontalLayout footer = new HorizontalLayout();
         footer.setMargin(false);
 
-        setStyleName("auth-screen");
 
         /**
          * Components declaration
@@ -55,7 +55,6 @@ public class AuthenticationView extends VerticalLayout {
         Label footerLeftLabel = new Label();
         Button footerRightLabel = new Button("Help", event -> {
             removeAllComponents();
-            setStyleName("relaseNotesView");
             addComponent(new RelaseNotesView());
             setSizeFull();
         });

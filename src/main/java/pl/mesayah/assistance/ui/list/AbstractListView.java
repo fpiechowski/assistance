@@ -157,7 +157,7 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
-        buttonsLayout = new HorizontalLayout(newButton, editButton, deleteButton);
+        buttonsLayout = new HorizontalLayout(newButton, detailsButton, editButton, deleteButton);
         if (additionalButtons != null) {
             for (Button b : additionalButtons) {
                 buttonsLayout.addComponent(b);

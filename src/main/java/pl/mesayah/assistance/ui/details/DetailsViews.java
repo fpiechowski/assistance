@@ -11,6 +11,7 @@ import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.task.TaskDetailsView;
 import pl.mesayah.assistance.team.Team;
 import pl.mesayah.assistance.team.TeamDetailsView;
+import pl.mesayah.assistance.user.User;
 
 public enum DetailsViews {
     PROJECT(Project.class, ProjectDetailsView.VIEW_NAME),
@@ -18,6 +19,7 @@ public enum DetailsViews {
     ISSUE(Issue.class, IssueDetailsView.VIEW_NAME),
     TASK(Task.class, TaskDetailsView.VIEW_NAME),
     MILESTONE(Milestone.class, MilestoneDetailsView.VIEW_NAME);
+
 
     private Class<? extends Entity> entityClass;
     private String viewName;

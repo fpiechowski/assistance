@@ -1,10 +1,10 @@
-$mat-background-color: #FDFFFC; // #fafafa for a light and #303030 for a dark theme
-$v-focus-color: #FC2F00;
-
-// (You can find colors at materialpalette.com) $v-focus-color is supposed to be your accent color
+$mat-background-color: #fafafa; // #fafafa for a light and #303030 for a dark theme
+$v-focus-color: #00BCD4; // (You can find colors at materialpalette.com) $v-focus-color is supposed to be your accent color
+// Note: " ... Using colors from the Material Design palette is optional. ... "
 @import "../material/material.scss";
 
 @mixin mytheme {
   @include material;
+
   // Insert your own theme rules here
 }
