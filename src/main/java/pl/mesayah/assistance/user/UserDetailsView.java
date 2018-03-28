@@ -120,7 +120,7 @@ public class UserDetailsView extends AbstractDetailsView<User> {
                 .withValidator(p -> p.equals(confirmPasswordTextField.getValue()), "Passwords do not mach")
                 .bind(User::getPassword, (p,a) -> p.setPassword(passwordEncoder.encode(a)));
         dataBinder.forField(roleTwinColSelect)
-                .bind(c -> (Set) c.getRoles(), User::setRoles);
+                .bind(c -> (Set<Role>) c.getRoles(), User::setRoles);
         dataBinder.forField(enabledCheckBox)
                 .bind(User::isEnabled, User::setEnabled);
         return dataBinder;

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A person who can use this application.
@@ -38,7 +39,7 @@ public class User extends AbstractFilterableEntity implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Collection<Role> roles;
+    private Set<Role> roles;
     /**
      * First name of this user.
      */
@@ -60,7 +61,7 @@ public class User extends AbstractFilterableEntity implements Serializable {
     }
 
 
-    public User(String username, Collection<Role> roles, String firstName, String lastName, String password, boolean enabled) {
+    public User(String username, Set<Role> roles, String firstName, String lastName, String password, boolean enabled) {
 
         this.username = username;
         this.roles = roles;
@@ -147,7 +148,7 @@ public class User extends AbstractFilterableEntity implements Serializable {
     /**
      * @return a roles of this user
      */
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
 
         return roles;
     }
@@ -156,7 +157,7 @@ public class User extends AbstractFilterableEntity implements Serializable {
     /**
      * @param roles a roles for this user
      */
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
 
         this.roles = roles;
     }
