@@ -8,6 +8,7 @@ import pl.mesayah.assistance.security.privilege.PrivilegeRepository;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoleService {
@@ -144,8 +145,8 @@ public class RoleService {
 
         return roleRepository.findByName(name);
     }
-    public Collection<Role> findAll() {
+    public Set<Role> findAll() {
 
-        return (Collection<Role>)roleRepository.findAll();
+        return (Set<Role>)roleRepository.findAll();
     }
 }

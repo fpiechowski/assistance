@@ -13,6 +13,7 @@ import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * This class does everything that need to be done on application startup like creating roles and privileges.
@@ -57,7 +58,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     private void createTestUsers() {
 
-        Collection<Role> allRoles = (Collection<Role>) roleRepository.findAll();
+        Set<Role> allRoles = (Set<Role>) roleRepository.findAll();
         User testUserWithAllRoles = new User(
                 "admin",
                 allRoles,
@@ -67,7 +68,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
                 true);
 
         userRepository.save(testUserWithAllRoles);
-        Collection<Role> noRoles = null;
+        Set<Role> noRoles = null;
         User testUserWithNoRoles = new User(
                 "user",
                 noRoles,
