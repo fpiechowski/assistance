@@ -6,7 +6,7 @@ import pl.mesayah.assistance.task.Task;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -35,12 +35,12 @@ public class Milestone extends AbstractFilterableEntity implements Serializable 
     /**
      * A deadline for this milestone.
      */
-    private Date deadline;
+    private LocalDate deadline;
 
     /**
      * Tasks that have to be completed to achieve this milestone.
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name = "milestone_task",
             joinColumns = @JoinColumn(name = "milestone_id"),
@@ -67,7 +67,7 @@ public class Milestone extends AbstractFilterableEntity implements Serializable 
     /**
      * @return a deadline date of this milestone
      */
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
 
         return deadline;
     }
@@ -76,7 +76,7 @@ public class Milestone extends AbstractFilterableEntity implements Serializable 
     /**
      * @param deadline a deadline date for this milestone
      */
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
 
         this.deadline = deadline;
     }

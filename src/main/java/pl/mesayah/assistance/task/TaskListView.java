@@ -39,7 +39,7 @@ public class TaskListView extends AbstractListView<Task> {
 
         Grid<Task> grid = new Grid<>(Task.class);
         grid.setSizeFull();
-        grid.setColumns("id", "name", "status", "priority", "deadline", "type", "project");
+        grid.setColumns("id", "name", "status", "priority", "deadline", "type", "project", "assignedUsers");
         grid.setColumnResizeMode(ColumnResizeMode.ANIMATED);
         return grid;
     }

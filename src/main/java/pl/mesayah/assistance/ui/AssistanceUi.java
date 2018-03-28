@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.ui;
 
+import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -15,7 +16,6 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,17 +30,17 @@ import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
-import pl.mesayah.assistance.notification.NotificationRepository;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.ui.AuthenticationView;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
+import pl.mesayah.assistance.ui.details.DetailsViews;
 import pl.mesayah.assistance.ui.list.ListViews;
+import pl.mesayah.assistance.user.User;
+import pl.mesayah.assistance.user.UserRepository;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Main user interface class of the application.
@@ -76,6 +76,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
      * A container for the whole user interface.
      */
     private VerticalLayout rootLayout;
+
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -139,9 +140,8 @@ public class AssistanceUi extends UI implements ViewDisplay {
         topBarLayout.setHeight("-1px");
         Layout navigationLayout = new NavigationLayout();
         Layout userInfoLayout = new UserInfoLayout();
-        topBarLayout.addComponents(userInfoLayout, navigationLayout);
+        topBarLayout.addComponents(navigationLayout, userInfoLayout);
         topBarLayout.setExpandRatio(navigationLayout, 1.0f);
-        topBarLayout.setStyleName("topbarLayout");
     }
 
 
@@ -248,29 +248,18 @@ public class AssistanceUi extends UI implements ViewDisplay {
      * A layout containing current user information.
      */
     @Transactional
-    class UserInfoLayout extends VerticalLayout {
+    class UserInfoLayout extends HorizontalLayout {
 
-        /**
-         * A button for showing setting view.
-         */
-        private Button settingLink;
-
-        /**
-         * A button for showing current user profile.
-         */
-        private Button userNameLink;
-        private Button logoutButton;
-
+        @Autowired
+        private UserRepository userRepository;
 
         public UserInfoLayout() {
+
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            this.setWidth("-1px");
-            this.setHeight("-1px");
-            this.setMargin(new MarginInfo(false, true));
+            setSizeUndefined();
+            this.setMargin(true);
             this.setId("userInfoLayout");
-            HorizontalLayout setlog = new HorizontalLayout();
-            HorizontalLayout userAndNotify = new HorizontalLayout();
-            Button notifyButton = new Button();
+            Button notifyButton = new Button(VaadinIcons.FLAG);
             // Notification window
             final Window window = new Window("Notifications");
             window.setWidth(300.0f, Unit.PIXELS);
@@ -280,29 +269,17 @@ public class AssistanceUi extends UI implements ViewDisplay {
             window.setWidth("30%");
             window.setResizable(false);
             window.setDraggable(false);
-            notifyButton.setIcon(new ThemeResource("img/nonewnotify.png"));
-            notifyButton.setStyleName(ValoTheme.BUTTON_LINK);
-            userNameLink = new Button(username);
-            userNameLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            userNameLink.addStyleName("linkButton");
-            // TODO: set navigation state to user profile view NAME with user ID parameter
-            userNameLink.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
 
-            logoutButton = new Button("Logout");
-            logoutButton.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            logoutButton.addStyleName("linkButton");
-            logoutButton.addClickListener((Button.ClickListener) clickevent -> logout());
+            MenuBar userMenu = new MenuBar();
+            userMenu.addItem("", VaadinIcons.FLAG, null);
+            userMenu.addItem(username, VaadinIcons.USER, c -> {
+                User currentUser = userRepository.findByUsername(SecurityUtils.getCurrentUserUsername());
+                navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + currentUser.getId());
+            });
+            userMenu.addItem("Settings", VaadinIcons.COG, c -> navigator.navigateTo("settings"));
+            userMenu.addItem("Sign Out", VaadinIcons.SIGN_OUT, c -> logout());
 
-            settingLink = new Button("Settings", VaadinIcons.COG);
-            settingLink.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-            settingLink.addStyleName("linkButton");
-            // TODO: set navigation state to setting view NAME
-            settingLink.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(""));
-            setlog.addComponents(settingLink, logoutButton);
-            userAndNotify.addComponents(userNameLink, notifyButton);
-            this.addComponents(userAndNotify, setlog);
+            this.addComponents(userMenu);
         }
 
 
@@ -319,12 +296,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
     class NavigationLayout extends HorizontalLayout {
 
         /**
-         * A list of links composing the application navigation.
-         */
-        private List<Button> navigationButtons;
-
-
-        /**
          * Constructs a layout with navigation links and sets their click listeners.
          */
         public NavigationLayout() {
@@ -332,45 +303,18 @@ public class AssistanceUi extends UI implements ViewDisplay {
             this.setWidth("100%");
             this.setHeight("100%");
 
-            navigationButtons = new ArrayList<>();
+            setMargin(true);
 
-            Button homeButton = new Button("Home");
-            homeButton.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo(""));
-            navigationButtons.add(homeButton);
+            MenuBar menuBar = new MenuBar();
 
-            Button tasksButton = new Button("Tasks");
-            tasksButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Task.class)));
-            navigationButtons.add(tasksButton);
+            menuBar.addItem("Tasks", c -> navigator.navigateTo(ListViews.getListViewNameFor(Task.class)));
+            menuBar.addItem("Projects", c -> navigator.navigateTo(ListViews.getListViewNameFor(Project.class)));
+            menuBar.addItem("Teams", c -> navigator.navigateTo(ListViews.getListViewNameFor(Team.class)));
+            menuBar.addItem("Issues", c -> navigator.navigateTo(ListViews.getListViewNameFor(Issue.class)));
+            menuBar.addItem("Milestones", c -> navigator.navigateTo(ListViews.getListViewNameFor(Milestone.class)));
+            menuBar.addItem("Users", c -> navigator.navigateTo(ListViews.getListViewNameFor(User.class)));
 
-            Button projectsButton = new Button("Projects");
-            projectsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Project.class)));
-            navigationButtons.add(projectsButton);
-
-            Button teamsButton = new Button("Teams");
-            teamsButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Team.class)));
-            navigationButtons.add(teamsButton);
-
-            Button issuesButton = new Button("Issues");
-            issuesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Issue.class)));
-            navigationButtons.add(issuesButton);
-
-            Button milestonesButton = new Button("Milestones");
-            milestonesButton.addClickListener(
-                    (Button.ClickListener) clickEvent -> navigator.navigateTo(ListViews.getListViewNameFor(Milestone.class)));
-            navigationButtons.add(milestonesButton);
-
-
-            // Sets the style for all navigation links
-            for (Button b : navigationButtons) {
-                b.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-                b.addStyleName("linkButton");
-                addComponent(b);
-                this.setComponentAlignment(b, Alignment.MIDDLE_CENTER);
-            }
+            addComponent(menuBar);
         }
     }
 }

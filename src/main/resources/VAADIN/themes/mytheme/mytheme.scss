@@ -1,63 +1,10 @@
-@import '../valo/valo.scss';
+$mat-background-color: #fafafa; // #fafafa for a light and #303030 for a dark theme
+$v-focus-color: #00BCD4; // (You can find colors at materialpalette.com) $v-focus-color is supposed to be your accent color
+// Note: " ... Using colors from the Material Design palette is optional. ... "
+@import "../material/material.scss";
 
 @mixin mytheme {
-  @include valo;
+  @include material;
 
-
-  .avatar {
-    border-radius: 50%;
-    box-shadow: 1px 1px;
-  }
-
-  .username {
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    text-shadow: 1px 1px #000000;
-  }
-
-  .editprofile {
-    color: grey;
-    text-decoration: none;
-
-  }
-
-
-  .editprofile:hover
-  {
-    color: white;
-    text-decoration: none;
-  }
-
-  .clickimage{
-    cursor: pointer;
-  }
-
-  .linkButton
-  {
-    color: white;
-    text-decoration: none;
-  }
-  .linkButton .v-button-caption:hover
-  {
-    color: white;
-    text-decoration: none;
-  }
-  .leftUserNavi {
-    background: gray;
-  }
-
-  .loginBox {
-    background: lightgray;
-    border-radius: 5%;
-  }
-  .loginGeneral {
-    background: gray;
-  }
-  .relaseNotes {
-    background: white;
-  }
-  .topbarLayout{
-    background: #696969;
-  }
+  // Insert your own theme rules here
 }

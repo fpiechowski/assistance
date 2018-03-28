@@ -1,10 +1,11 @@
 package pl.mesayah.assistance.ui;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 
-
-public class RelaseNotesView extends HorizontalLayout {
+@Theme("mytheme")
+public class RelaseNotesView extends VerticalLayout {
 
     private String buildVersion = "0.1 Alpha";
     private String relaseDate = "Wed, Mar 07, 2018, 10:40:35 PM UTC";
@@ -24,7 +25,7 @@ public class RelaseNotesView extends HorizontalLayout {
 
     private String[][] bugs = {
             {
-                    "Ostry", "- After click Previous Page on WEB, app redirect to /#!team/1"
+                    "Ostry", ""
             },
             {
                     "Szyku", ""
@@ -43,9 +44,18 @@ public class RelaseNotesView extends HorizontalLayout {
         Button back = new Button("Powrót", event ->
                 Page.getCurrent().reload()
         );
+
+
+        VerticalLayout general = new VerticalLayout();
+        HorizontalLayout accordions = new HorizontalLayout();
+
         Accordion notesView = new Accordion();
-        notesView.setHeight(100.0f, Unit.PERCENTAGE);
-        notesView.setWidth(50.0f, Unit.PERCENTAGE);
+        Accordion knowsbugs = new Accordion();
+
+        notesView.setSizeFull();
+        knowsbugs.setSizeFull();
+
+
         for (String[] n : notes) {
             String[] w = n;
             Label label = new Label();
@@ -57,9 +67,6 @@ public class RelaseNotesView extends HorizontalLayout {
             layout.setMargin(true);
             notesView.addTab(layout, w[0]);
         }
-        Accordion knowsbugs = new Accordion();
-        knowsbugs.setHeight(100.0f, Unit.PERCENTAGE);
-        knowsbugs.setWidth(50.0f, Unit.PERCENTAGE);
         for (String[] n : bugs) {
             String[] w = n;
             Label label = new Label();
@@ -71,8 +78,21 @@ public class RelaseNotesView extends HorizontalLayout {
             layout.setMargin(true);
             knowsbugs.addTab(layout, w[0]);
         }
-        setHeight("100%");
-        addComponents(back, notesView, knowsbugs);
+
+
+        setSizeFull();
+        setMargin(false);
+        setSpacing(false);
+        general.setSizeFull();
+        general.setSpacing(false);
+        general.setMargin(false);
+
+        accordions.setSizeFull();
+        back.setHeightUndefined();
+
+        general.addComponents(accordions);
+        accordions.addComponents(notesView, knowsbugs);
+        addComponents(general,back);
     }
 
 

@@ -1,5 +1,6 @@
 package pl.mesayah.assistance.ui.details;
 
+import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.icons.VaadinIcons;
@@ -63,12 +64,15 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
         });
 
         deleteButton = initializeDeleteButton();
+        deleteButton.addStyleName(MaterialTheme.BUTTON_DANGER);
         deleteButton.addClickListener(clickEvent -> ((AssistanceUi) getUI()).showDeleteWindow(entity));
 
         confirmButton = initializeConfirmButton();
+        confirmButton.addStyleName(MaterialTheme.BUTTON_FRIENDLY);
         confirmButton.addClickListener(clickEvent -> updateDetails());
 
         editButton = initializeEditButton();
+        editButton.addStyleName(MaterialTheme.BUTTON_PRIMARY);
         editButton.addClickListener(clickEvent -> navigator.navigateTo(
                 DetailsViews.getDetailsViewNameFor(getEntity().getClass()) + "/" + getEntity().getId() + "/" +
                         ViewMode.EDIT_MODE.getUrlString()));
@@ -279,7 +283,7 @@ public abstract class AbstractDetailsView<T extends Entity> extends VerticalLayo
 
         VerticalLayout container = new VerticalLayout();
         container.setMargin(false);
-        container.setSizeFull();
+        container.setSizeUndefined();
         for (Component c : editComponents) {
             container.addComponent(c);
         }
