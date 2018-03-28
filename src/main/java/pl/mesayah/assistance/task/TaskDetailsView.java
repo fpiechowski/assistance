@@ -12,10 +12,7 @@ import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserService;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * A view of task details. It presents parameters of a given task.

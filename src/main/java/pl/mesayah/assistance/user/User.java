@@ -19,7 +19,6 @@ public class User extends AbstractFilterableEntity implements Serializable {
 
     private static final String ENTITY_NAME = "user";
 
-    private static final String NEW_PASSWORD = "Wprowadź nowe hasło";
 
     /**
      * An unique identifier of this user.
@@ -137,9 +136,6 @@ public class User extends AbstractFilterableEntity implements Serializable {
         return username;
     }
 
-    public static String getNewPassword() {
-        return NEW_PASSWORD;
-    }
 
     /**
      * @param username a username for this user

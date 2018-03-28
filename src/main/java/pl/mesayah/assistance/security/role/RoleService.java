@@ -145,6 +145,7 @@ public class RoleService {
 
         return roleRepository.findByName(name);
     }
+
     public Set<Role> findAll() {
 
         return roleRepository.findAll();

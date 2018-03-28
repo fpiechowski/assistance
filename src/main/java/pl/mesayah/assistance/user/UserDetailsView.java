@@ -120,10 +120,7 @@ public class UserDetailsView extends AbstractDetailsView<User> {
                 .withValidator(p -> p.equals(confirmPasswordTextField.getValue()), "Passwords do not mach")
                 .bind(c -> null, (p,a) -> p.setPassword(passwordEncoder.encode(a)));
         dataBinder.forField(roleTwinColSelect)
-                .bind(u->{
-                    roleTwinColSelect.setItems(u.getRoles());
-                    return u.getRoles();
-                }, User::setRoles);
+                .bind(User::getRoles, User::setRoles);
         dataBinder.forField(enabledCheckBox)
                 .bind(User::isEnabled, User::setEnabled);
         return dataBinder;
@@ -133,7 +130,7 @@ public class UserDetailsView extends AbstractDetailsView<User> {
     @Override
     protected void loadData() {
 
-        Set<Role> roles = roleService.findAll();
+        Collection<Role> roles = (Collection<Role>) roleService.findAll();
         roleTwinColSelect.setItems(roles);
     }
 

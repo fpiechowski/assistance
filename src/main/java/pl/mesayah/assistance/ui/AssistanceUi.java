@@ -5,10 +5,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.server.DefaultErrorHandler;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
+import com.vaadin.server.*;
 import com.vaadin.shared.communication.PushMode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.ui.Transport;
@@ -24,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
@@ -31,6 +29,8 @@ import pl.mesayah.assistance.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
+import pl.mesayah.assistance.security.AssistanceUserDetails;
+import pl.mesayah.assistance.security.AssistanceUserDetailsService;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.ui.AuthenticationView;
 import pl.mesayah.assistance.task.Task;
@@ -39,8 +39,11 @@ import pl.mesayah.assistance.ui.details.DetailsViews;
 import pl.mesayah.assistance.ui.list.ListViews;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
+import pl.mesayah.assistance.user.UserService;
 
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Main user interface class of the application.
@@ -250,12 +253,13 @@ public class AssistanceUi extends UI implements ViewDisplay {
     @Transactional
     class UserInfoLayout extends HorizontalLayout {
 
-        @Autowired
-        private UserRepository userRepository;
+
+        private UserService userService = new UserService();
 
         public UserInfoLayout() {
 
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            //Stream<User> userStream = StreamSupport.stream(userService.findAll().spliterator(), true);
             setSizeUndefined();
             this.setMargin(true);
             this.setId("userInfoLayout");
@@ -269,12 +273,11 @@ public class AssistanceUi extends UI implements ViewDisplay {
             window.setWidth("30%");
             window.setResizable(false);
             window.setDraggable(false);
-
             MenuBar userMenu = new MenuBar();
             userMenu.addItem("", VaadinIcons.FLAG, null);
+            //User user = userStream.filter(u -> u.getUsername().equals(username)).findFirst().get();
             userMenu.addItem(username, VaadinIcons.USER, c -> {
-                User currentUser = userRepository.findByUsername(SecurityUtils.getCurrentUserUsername());
-                navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + currentUser.getId());
+                //navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + user.getId().toString());
             });
             userMenu.addItem("Settings", VaadinIcons.COG, c -> navigator.navigateTo("settings"));
             userMenu.addItem("Sign Out", VaadinIcons.SIGN_OUT, c -> logout());
