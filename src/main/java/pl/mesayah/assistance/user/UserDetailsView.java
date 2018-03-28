@@ -114,7 +114,9 @@ public class UserDetailsView extends AbstractDetailsView<User> {
         Binder<User> dataBinder = new Binder<>(User.class);
 
         dataBinder.forField(usernameTextField)
-                .withValidator(name -> name.length() > 0, "Name must not be empty.")
+                .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
+                .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
+                .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
                 .bind(User::getUsername, User::setUsername);
         dataBinder.forField(passwordTextField)
                 .withValidator(p -> p.equals(confirmPasswordTextField.getValue()), "Passwords do not mach")
