@@ -141,7 +141,9 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
 
         Binder<Issue> binder = new Binder<>(Issue.class);
         binder.forField(nameTextField)
-                .withValidator(name -> name.length() > 0, "Name can't be empty.")
+                .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
+                .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
+                .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
                 .bind(Issue::getName, Issue::setName);
         binder.forField(projectComboBox)
                 .withValidator(Objects::nonNull, "An issue must be reported for a certain project.")

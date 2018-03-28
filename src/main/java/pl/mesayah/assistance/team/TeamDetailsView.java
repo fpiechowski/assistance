@@ -89,7 +89,9 @@ public class TeamDetailsView extends AbstractDetailsView<Team> {
         Binder<Team> dataBinder = new Binder<>(Team.class);
 
         dataBinder.forField(nameTextField)
-                .withValidator(name -> name.length() > 0, "Name must not be empty.")
+                .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
+                .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
+                .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
                 .bind(Team::getName, Team::setName);
         dataBinder.forField(userTwinColSelect)
                 .bind(Team::getMembers, Team::setMembers);

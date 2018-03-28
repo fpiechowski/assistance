@@ -256,7 +256,9 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         Binder<Task> dataBinder = new Binder<>(Task.class);
 
         dataBinder.forField(nameTextField)
-                .withValidator(name -> name.length() > 0, "Name must not be empty.")
+                .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
+                .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
+                .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
                 .bind(Task::getName, Task::setName);
         dataBinder.forField(statusNativeSelect)
                 .bind(Task::getStatus, Task::setStatus);

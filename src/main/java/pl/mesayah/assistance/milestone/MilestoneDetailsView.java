@@ -129,7 +129,9 @@ public class MilestoneDetailsView extends AbstractDetailsView<Milestone> {
         Binder<Milestone> dataBinder = new Binder<>(Milestone.class);
 
         dataBinder.forField(nameTextField)
-                .withValidator(name -> name.length() > 0, "Name must not be empty.")
+                .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
+                .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
+                .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
                 .bind(Milestone::getName, Milestone::setName);
         dataBinder.forField(taskTwinColSelect)
                 .bind(Milestone::getTasks, Milestone::setTasks);

@@ -100,6 +100,9 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
 
     /**
      * Constructs a view in a read mode and initializes controls for it.
@@ -204,7 +207,10 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         Binder<Project> dataBinder = new Binder<>(Project.class);
 
         dataBinder.forField(nameTextField)
-                .withValidator(name -> name.length() > 0, "Name must not be empty.")
+                .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
+                .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
+                .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
+                //.withValidator(name -> name.equals(projectRepository.existsByName(name)),"Project with same name already existing!")
                 .bind(Project::getName, Project::setName);
         dataBinder.forField(phaseNativeSelect)
                 .bind(Project::getPhase, Project::setPhase);
