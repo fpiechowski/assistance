@@ -37,9 +37,19 @@ public class UserDetailsView extends AbstractDetailsView<User> {
     private TwinColSelect<Role> roleTwinColSelect;
 
     /**
-     * A Text Field to edit a title of the project.
+     * A Text Field to edit a password of the user.
      */
     private TextField passwordTextField;
+
+    /**
+     * A Text Field to edit a password of the user.
+     */
+    private TextField confirmPasswordTextField;
+
+    /**
+     * A CheckBox to set if the user is enabled.
+     */
+    private CheckBox enabledCheckBox;
 
 
     @Override
@@ -53,14 +63,22 @@ public class UserDetailsView extends AbstractDetailsView<User> {
         usernameTextField.setWidth("100%");
         usernameTextField.setRequiredIndicatorVisible(true);
 
-        passwordTextField = new TextField("Password:");
+        passwordTextField = new PasswordField("Password:");
         passwordTextField.setWidth("100%");
         passwordTextField.setRequiredIndicatorVisible(true);
+
+        confirmPasswordTextField = new PasswordField("Confirm password:");
+        confirmPasswordTextField.setWidth("100%");
+        confirmPasswordTextField.setRequiredIndicatorVisible(true);
 
         roleTwinColSelect = new TwinColSelect<>("Choose roles of the user");
         roleTwinColSelect.setItemCaptionGenerator((ItemCaptionGenerator<Role>) role -> role.getName());
 
-        container.addComponents(usernameTextField, passwordTextField, roleTwinColSelect);
+        enabledCheckBox = new CheckBox("Enabled");
+        enabledCheckBox.setWidth("100%");
+
+        container.addComponents(usernameTextField, passwordTextField,
+                confirmPasswordTextField, enabledCheckBox, roleTwinColSelect);
         container.setExpandRatio(roleTwinColSelect, 1.0f);
 
         return new ArrayList<>(Arrays.asList(
@@ -99,11 +117,12 @@ public class UserDetailsView extends AbstractDetailsView<User> {
                 .withValidator(name -> name.length() > 0, "Name must not be empty.")
                 .bind(User::getUsername, User::setUsername);
         dataBinder.forField(passwordTextField)
+                .withValidator(p -> p.equals(confirmPasswordTextField.getValue()), "Passwords do not mach")
                 .bind(User::getPassword, (p,a) -> p.setPassword(passwordEncoder.encode(a)));
         dataBinder.forField(roleTwinColSelect)
-                //.withConverter(Converter.from()
                 .bind(c -> (Set) c.getRoles(), User::setRoles);
-        //dataBinder.forField(roleTwinColSelect).
+        dataBinder.forField(enabledCheckBox)
+                .bind(User::isEnabled, User::setEnabled);
         return dataBinder;
     }
 
