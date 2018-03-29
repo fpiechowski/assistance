@@ -19,6 +19,7 @@ public class User extends AbstractFilterableEntity implements Serializable {
 
     private static final String ENTITY_NAME = "user";
 
+
     /**
      * An unique identifier of this user.
      */
