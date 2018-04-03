@@ -26,6 +26,9 @@ public class UserService {
 
     }
 
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     /**
      * Saves a given user entity in database.

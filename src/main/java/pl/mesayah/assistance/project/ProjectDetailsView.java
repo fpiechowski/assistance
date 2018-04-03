@@ -141,6 +141,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
         descriptionTextArea = new TextArea("Description:");
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setHeight("100%");
+        descriptionTextArea.setSizeFull();
 
         startDateField = new DateField("Start date:");
         startDateField.setRequiredIndicatorVisible(true);

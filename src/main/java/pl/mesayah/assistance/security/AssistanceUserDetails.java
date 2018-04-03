@@ -35,6 +35,9 @@ public class AssistanceUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public Long getID(){
+        return user.getId();
+    }
 
     public User getUser() {
 

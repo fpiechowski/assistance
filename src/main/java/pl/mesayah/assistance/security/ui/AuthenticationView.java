@@ -84,7 +84,7 @@ public class AuthenticationView extends VerticalLayout {
          */
         setSizeFull();
         footer.setSizeFull();
-        loginBox.setMargin(new MarginInfo(true, true, false, true));
+        loginBox.setMargin(new MarginInfo(true, true, true, true));
         loginBox.setSizeUndefined();
         loginBox.setSpacing(true);
         setExpandRatio(footer, 1);

@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
@@ -250,16 +251,18 @@ public class AssistanceUi extends UI implements ViewDisplay {
     /**
      * A layout containing current user information.
      */
-    @Transactional
+
     class UserInfoLayout extends HorizontalLayout {
 
 
-        private UserService userService = new UserService();
+
+        @Autowired
+        private AssistanceUserDetails userDetails;
 
         public UserInfoLayout() {
 
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            //Stream<User> userStream = StreamSupport.stream(userService.findAll().spliterator(), true);
+            userDetails = (AssistanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             setSizeUndefined();
             this.setMargin(true);
             this.setId("userInfoLayout");
@@ -275,9 +278,8 @@ public class AssistanceUi extends UI implements ViewDisplay {
             window.setDraggable(false);
             MenuBar userMenu = new MenuBar();
             userMenu.addItem("", VaadinIcons.FLAG, null);
-            //User user = userStream.filter(u -> u.getUsername().equals(username)).findFirst().get();
             userMenu.addItem(username, VaadinIcons.USER, c -> {
-                //navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + user.getId().toString());
+            navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + userDetails.getID().toString());
             });
             userMenu.addItem("Settings", VaadinIcons.COG, c -> navigator.navigateTo("settings"));
             userMenu.addItem("Sign Out", VaadinIcons.SIGN_OUT, c -> logout());
