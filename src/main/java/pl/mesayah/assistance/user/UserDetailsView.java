@@ -122,17 +122,28 @@ public class UserDetailsView extends AbstractDetailsView<User> {
                 .withValidator(p -> p.equals(confirmPasswordTextField.getValue()), "Passwords do not mach")
                 .bind(c -> null, (p,a) -> p.setPassword(passwordEncoder.encode(a)));
         dataBinder.forField(roleTwinColSelect)
-                .bind(User::getRoles, User::setRoles);
+                .bind(c ->
+                {
+                    Set<Role> finalRoles = new HashSet<>();
+                    for (Role r : roles) {
+                        for (Role r2 : c.getRoles()) {
+                            if (r.getName().equals(r2.getName())) {
+                                finalRoles.add(r);
+                            }
+                        }
+                    }
+                    return finalRoles;
+                }, User::setRoles);
         dataBinder.forField(enabledCheckBox)
                 .bind(User::isEnabled, User::setEnabled);
         return dataBinder;
     }
 
-
+    Collection<Role> roles;
     @Override
     protected void loadData() {
 
-        Collection<Role> roles = (Collection<Role>) roleService.findAll();
+        roles = (Collection<Role>) roleService.findAll();
         roleTwinColSelect.setItems(roles);
     }
 
@@ -141,7 +152,7 @@ public class UserDetailsView extends AbstractDetailsView<User> {
     protected User createEmptyEntity() {
 
         User empty = new User();
-
+        empty.setRoles(new HashSet<>());
         return empty;
     }
 
