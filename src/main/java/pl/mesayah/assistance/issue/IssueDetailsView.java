@@ -5,14 +5,15 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.project.ProjectService;
+import pl.mesayah.assistance.security.AssistanceUserDetails;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.ui.details.AbstractDetailsView;
-import pl.mesayah.assistance.ui.details.DetailsViews;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserService;
 
@@ -61,6 +62,8 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     @Autowired
     private ProjectService projectService;
 
+    private AssistanceUserDetails userDetails;
+
 
     public IssueDetailsView() {
 
@@ -72,6 +75,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
 
     @Override
     protected List<Component> initializeEditComponents() {
+        userDetails = (AssistanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         VerticalLayout container = new VerticalLayout();
         container.setSizeFull();
@@ -89,6 +93,15 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         statusNativeSelect.setEmptySelectionAllowed(false);
         statusNativeSelect.setSelectedItem(Task.Status.WAITING);
         statusNativeSelect.setWidth("200px");
+
+        for(Role r : userDetails.getUser().getRoles())
+        {
+            if(r.getName().equals("CLIENT"))
+            {
+                statusNativeSelect.setEnabled(false);
+                break;
+            }
+        }
 
         assignessTwinColSelect = new TwinColSelect<>("Assignees:");
         assignessTwinColSelect.setHeight("100%");
@@ -164,8 +177,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
 
     @Override
     protected void loadData() {
-
-
+        userDetails.getUser().getRoles();
         Set<User> possibleAssignees = new HashSet<>();
         possibleAssignees.addAll(roleService.findByName(Role.PROJECT_MANAGER).getUsers());
         possibleAssignees.addAll(roleService.findByName(Role.DEVELOPER).getUsers());
