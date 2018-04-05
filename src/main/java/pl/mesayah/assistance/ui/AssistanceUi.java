@@ -281,7 +281,6 @@ public class AssistanceUi extends UI implements ViewDisplay {
             userMenu.addItem(username, VaadinIcons.USER, c -> {
             navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + userDetails.getID().toString());
             });
-            userMenu.addItem("Settings", VaadinIcons.COG, c -> navigator.navigateTo("settings"));
             userMenu.addItem("Sign Out", VaadinIcons.SIGN_OUT, c -> logout());
 
             this.addComponents(userMenu);
