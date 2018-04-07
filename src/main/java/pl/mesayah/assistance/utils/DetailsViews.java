@@ -1,4 +1,4 @@
-package pl.mesayah.assistance.ui.details;
+package pl.mesayah.assistance.utils;
 
 import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;

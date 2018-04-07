@@ -1,7 +1,6 @@
 package pl.mesayah.assistance.task;
 
 import pl.mesayah.assistance.AbstractFilterableEntity;
-import pl.mesayah.assistance.Filterable;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.user.User;
@@ -23,7 +22,6 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Task extends AbstractFilterableEntity implements Serializable {
 
-    private static final String ENTITY_NAME = "task";
 
     /**
      * An unique identifier of this task.
@@ -203,14 +201,6 @@ public class Task extends AbstractFilterableEntity implements Serializable {
 
         return id;
     }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
-    }
-
 
     /**
      * @param id an unique identifier for this task

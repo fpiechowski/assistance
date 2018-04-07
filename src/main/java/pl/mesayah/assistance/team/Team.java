@@ -15,7 +15,6 @@ import java.util.Set;
 @Entity
 public class Team extends AbstractFilterableEntity implements Serializable {
 
-    private static final String ENTITY_NAME = "team";
     /**
      * An unique identifier of this task.
      */
@@ -52,14 +51,6 @@ public class Team extends AbstractFilterableEntity implements Serializable {
 
         return id;
     }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
-    }
-
 
     /**
      * @param id an unique identifier for this team

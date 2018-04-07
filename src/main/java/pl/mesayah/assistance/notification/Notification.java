@@ -13,8 +13,6 @@ import java.util.Objects;
 @Entity
 public class Notification implements Serializable, pl.mesayah.assistance.Entity {
 
-    private static final String ENTITY_NAME = "notification";
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -82,14 +80,6 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
 
         return id;
     }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
-    }
-
 
     public void setId(Long id) {
 

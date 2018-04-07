@@ -1,8 +1,9 @@
-package pl.mesayah.assistance;
+package pl.mesayah.assistance.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
+import pl.mesayah.assistance.Entity;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.issue.IssueRepository;
 import pl.mesayah.assistance.milestone.Milestone;

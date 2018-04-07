@@ -21,8 +21,6 @@ public class Role implements Serializable, pl.mesayah.assistance.Entity {
 
     public static final String CLIENT = "CLIENT";
 
-    private static final String ENTITY_NAME = "role";
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -77,13 +75,6 @@ public class Role implements Serializable, pl.mesayah.assistance.Entity {
     public Long getId() {
 
         return id;
-    }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
     }
 
 

@@ -1,13 +1,13 @@
 package pl.mesayah.assistance.ui;
 
-import com.github.appreciated.material.MaterialTheme;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.server.*;
+import com.vaadin.server.DefaultErrorHandler;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.communication.PushMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
@@ -21,30 +21,24 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.Transactional;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
-import pl.mesayah.assistance.Repositories;
+import pl.mesayah.assistance.utils.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
 import pl.mesayah.assistance.project.Project;
 import pl.mesayah.assistance.security.AssistanceUserDetails;
-import pl.mesayah.assistance.security.AssistanceUserDetailsService;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.ui.AuthenticationView;
 import pl.mesayah.assistance.task.Task;
 import pl.mesayah.assistance.team.Team;
-import pl.mesayah.assistance.ui.details.DetailsViews;
-import pl.mesayah.assistance.ui.list.ListViews;
+import pl.mesayah.assistance.utils.DetailsViews;
+import pl.mesayah.assistance.utils.ListViews;
 import pl.mesayah.assistance.user.User;
-import pl.mesayah.assistance.user.UserRepository;
-import pl.mesayah.assistance.user.UserService;
 
-import java.util.*;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Main user interface class of the application.
@@ -180,11 +174,11 @@ public class AssistanceUi extends UI implements ViewDisplay {
 
             String caption, message;
             if (itemsToDelete.size() > 1) {
-                caption = "Delete " + itemsToDelete.size() + " " + first.getEntityName() + "s";
-                message = "Are you sure you want to delete " + itemsToDelete.size() + " " + first.getEntityName() + "s?";
+                caption = "Delete " + itemsToDelete.size() + " " + first.getClass().getSimpleName() + "s";
+                message = "Are you sure you want to delete " + itemsToDelete.size() + " " + first.getClass().getSimpleName() + "s?";
             } else {
-                caption = "Delete a " + first.getEntityName();
-                message = "Are you sure you want to delete this " + first.getEntityName() + "?";
+                caption = "Delete a " + first.getClass().getSimpleName();
+                message = "Are you sure you want to delete this " + first.getClass().getSimpleName() + "?";
             }
 
             YesNoDialog confirmDialog = new YesNoDialog(caption,

@@ -12,7 +12,6 @@ import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**

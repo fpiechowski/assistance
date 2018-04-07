@@ -11,10 +11,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import pl.mesayah.assistance.Entity;
-import pl.mesayah.assistance.Repositories;
+import pl.mesayah.assistance.utils.DetailsViews;
+import pl.mesayah.assistance.utils.Repositories;
 import pl.mesayah.assistance.ui.AssistanceUi;
 import pl.mesayah.assistance.ui.ViewMode;
-import pl.mesayah.assistance.ui.list.ListViews;
+import pl.mesayah.assistance.utils.ListViews;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

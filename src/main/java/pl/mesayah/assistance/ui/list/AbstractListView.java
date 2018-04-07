@@ -11,7 +11,7 @@ import pl.mesayah.assistance.AbstractFilterableEntity;
 import pl.mesayah.assistance.Filterable;
 import pl.mesayah.assistance.ui.AssistanceUi;
 import pl.mesayah.assistance.ui.ViewMode;
-import pl.mesayah.assistance.ui.details.DetailsViews;
+import pl.mesayah.assistance.utils.DetailsViews;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;

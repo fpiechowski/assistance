@@ -21,7 +21,6 @@ import java.util.*;
 @Entity
 public class Project extends AbstractFilterableEntity implements Serializable {
 
-    private static final String ENTITY_NAME = "project";
 
     /**
      * An unique identifier of this project.
@@ -154,14 +153,6 @@ public class Project extends AbstractFilterableEntity implements Serializable {
 
         return id;
     }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
-    }
-
 
     /**
      * @param id an unique identifier for this project

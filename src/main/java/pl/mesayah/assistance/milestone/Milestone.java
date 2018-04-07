@@ -18,8 +18,6 @@ import java.util.Set;
 @Entity
 public class Milestone extends AbstractFilterableEntity implements Serializable {
 
-    private static final String ENTITY_NAME = "milestone";
-
     /**
      * An unique identifier of this milestone.
      */
@@ -90,14 +88,6 @@ public class Milestone extends AbstractFilterableEntity implements Serializable 
 
         return id;
     }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
-    }
-
 
     /**
      * @param id an unique identifier for this milestone

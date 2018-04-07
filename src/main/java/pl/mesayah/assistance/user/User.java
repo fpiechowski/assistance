@@ -5,7 +5,6 @@ import pl.mesayah.assistance.security.role.Role;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,8 +15,6 @@ import java.util.Set;
  */
 @Entity
 public class User extends AbstractFilterableEntity implements Serializable {
-
-    private static final String ENTITY_NAME = "user";
 
 
     /**
@@ -109,13 +106,6 @@ public class User extends AbstractFilterableEntity implements Serializable {
     public Long getId() {
 
         return id;
-    }
-
-
-    @Override
-    public String getEntityName() {
-
-        return ENTITY_NAME;
     }
 
 
