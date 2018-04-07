@@ -46,7 +46,6 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     @Autowired
     private ProjectService projectService;
 
-    private AssistanceUserDetails userDetails;
 
     public IssueDetailsView() {
 
@@ -56,7 +55,6 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     @Override
     protected List<Component> initializeEditComponents() {
 
-        userDetails = (AssistanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         VerticalLayout container = new VerticalLayout();
         container.setSizeFull();
@@ -149,7 +147,6 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     @Override
     protected void loadData() {
 
-        userDetails.getUser().getRoles();
         Set<User> possibleAssignees = new HashSet<>();
         possibleAssignees.addAll(roleService.findByName(Role.PROJECT_MANAGER).getUsers());
         possibleAssignees.addAll(roleService.findByName(Role.DEVELOPER).getUsers());
