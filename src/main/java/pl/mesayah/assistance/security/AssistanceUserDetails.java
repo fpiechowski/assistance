@@ -9,6 +9,7 @@ import pl.mesayah.assistance.user.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class AssistanceUserDetails implements UserDetails {
 
@@ -27,12 +28,6 @@ public class AssistanceUserDetails implements UserDetails {
         this.credentialNonExpired = credentialNonExpired;
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
-    }
-
-
-    public AssistanceUserDetails(User user) {
-
-        this.user = user;
     }
 
     public Long getID(){
@@ -54,14 +49,9 @@ public class AssistanceUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role r : user.getRoles()) {
-            for (Privilege p : r.getPrivileges()) {
-                authorities.add(new SimpleGrantedAuthority(p.getName()));
-            }
-        }
-
-        return authorities;
+        return user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
 

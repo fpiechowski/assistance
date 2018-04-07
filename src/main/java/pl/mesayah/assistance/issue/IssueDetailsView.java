@@ -41,22 +41,6 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
     @Autowired
     private UserService userService;
 
-    private Label nameLabel;
-
-    private Label descriptionLabel;
-
-    private Button projectButton;
-
-    private Button reportingUserButton;
-
-    private Label reportDateLabel;
-
-    private Label statusLabel;
-
-    private ListSelect<User> assigneesListSelect;
-
-    private Label priorityLabel;
-
     private ComboBox<Project> projectComboBox;
 
     @Autowired
@@ -64,17 +48,14 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
 
     private AssistanceUserDetails userDetails;
 
-
     public IssueDetailsView() {
 
         setSizeFull();
     }
 
-
-
-
     @Override
     protected List<Component> initializeEditComponents() {
+
         userDetails = (AssistanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         VerticalLayout container = new VerticalLayout();
@@ -94,17 +75,12 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         statusNativeSelect.setSelectedItem(Task.Status.WAITING);
         statusNativeSelect.setWidth("200px");
 
-        for(Role r : userDetails.getUser().getRoles())
-        {
-            if(r.getName().equals("CLIENT"))
-            {
-                statusNativeSelect.setEnabled(false);
-                break;
-            }
-        }
-
         assignessTwinColSelect = new TwinColSelect<>("Assignees:");
         assignessTwinColSelect.setHeight("100%");
+        if(SecurityUtils.hasRole(Role.CLIENT)) {
+            assignessTwinColSelect.setEnabled(false);
+            statusNativeSelect.setEnabled(false);
+        }
 
         priorityNativeSelect = new NativeSelect<>("Priority:", Arrays.asList(Task.Priority.values()));
         priorityNativeSelect.setEmptySelectionAllowed(false);
@@ -127,13 +103,11 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         );
     }
 
-
     @Override
     protected Button initializeDeleteButton() {
 
         return new Button("Delete", VaadinIcons.TRASH);
     }
-
 
     @Override
     protected Button initializeConfirmButton() {
@@ -141,13 +115,11 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         return new Button("Confirm", VaadinIcons.CHECK);
     }
 
-
     @Override
     protected Button initializeEditButton() {
 
         return new Button("Edit", VaadinIcons.PENCIL);
     }
-
 
     @Override
     protected Binder<Issue> initializeDataBinder() {
@@ -174,9 +146,9 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         return binder;
     }
 
-
     @Override
     protected void loadData() {
+
         userDetails.getUser().getRoles();
         Set<User> possibleAssignees = new HashSet<>();
         possibleAssignees.addAll(roleService.findByName(Role.PROJECT_MANAGER).getUsers());
@@ -187,7 +159,6 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         List<Project> projects = projectService.findAll();
         projectComboBox.setItems(projects);
     }
-
 
     @Override
     protected Issue createEmptyEntity() {
@@ -200,6 +171,5 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
         created.setReportDate(LocalDate.now());
         return created;
     }
-
 
 }

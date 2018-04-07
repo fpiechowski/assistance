@@ -12,6 +12,9 @@ import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -57,7 +60,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     private void createTestUsers() {
 
-        Set<Role> allRoles = (Set<Role>) roleRepository.findAll();
+        Set<Role> allRoles = roleRepository.findAll();
         User testUserWithAllRoles = new User(
                 "admin",
                 allRoles,
@@ -65,8 +68,8 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
                 "User",
                 passwordEncoder.encode("admin"),
                 true);
-
         userRepository.save(testUserWithAllRoles);
+
         Set<Role> noRoles = null;
         User testUserWithNoRoles = new User(
                 "user",
@@ -75,7 +78,16 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
                 "User",
                 passwordEncoder.encode("12345"),
                 true);
-
         userRepository.save(testUserWithNoRoles);
+
+        Set<Role> clientRoles = new HashSet<>(Collections.singletonList(roleRepository.findByName(Role.CLIENT)));
+        User client = new User(
+                "client",
+                clientRoles,
+                "Client",
+                "User",
+                passwordEncoder.encode("client"),
+                true);
+        userRepository.save(client);
     }
 }
