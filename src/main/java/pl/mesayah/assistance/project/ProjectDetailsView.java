@@ -14,6 +14,7 @@ import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserRepository;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -219,8 +220,10 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
                 .bind(Project::getDescription, Project::setDescription);
         dataBinder.forField(startDateField)
                 .withValidator(Objects::nonNull, "Start date must not be empty.")
+                .withValidator(deadline -> deadline.isAfter(LocalDate.now()),"Cannot start in the past")
                 .bind(Project::getStartDate, Project::setStartDate);
         dataBinder.forField(deadlineDateField)
+                .withValidator(deadline -> deadline.isAfter(LocalDate.now()),"Must be in the future")
                 .bind(Project::getDeadline, Project::setDeadline);
         dataBinder.forField(managerComboBox)
                 .withValidator(Objects::nonNull, "Project must have a manager.")
