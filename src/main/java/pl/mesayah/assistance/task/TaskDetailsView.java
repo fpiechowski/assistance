@@ -11,6 +11,7 @@ import pl.mesayah.assistance.ui.details.AbstractDetailsView;
 import pl.mesayah.assistance.user.User;
 import pl.mesayah.assistance.user.UserService;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -167,7 +168,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         assignedUsersListBuilder.setHeight("100%");
 
         projectComboBox = new ComboBox<>("Project");
-        projectComboBox.setEmptySelectionAllowed(false);
+        projectComboBox.setEmptySelectionAllowed(true);
         projectComboBox.setItemCaptionGenerator((ItemCaptionGenerator<Project>) project -> project.getId() + ' ' + project.getName());
         projectComboBox.setRequiredIndicatorVisible(false);
 
@@ -267,6 +268,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         dataBinder.forField(descriptionTextArea)
                 .bind(Task::getDescription, Task::setDescription);
         dataBinder.forField(deadlineDateField)
+                .withValidator(deadline -> deadline.isAfter(LocalDate.now()),"Must be in the future")
                 .bind(Task::getDeadline, Task::setDeadline);
         dataBinder.forField(typeNativeSelect)
                 .bind(Task::getType, Task::setType);
