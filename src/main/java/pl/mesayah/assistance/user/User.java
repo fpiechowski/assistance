@@ -92,12 +92,6 @@ public class User extends AbstractFilterableEntity implements Serializable {
     }
 
 
-    @Override
-    public String toString() {
-
-        return username;
-    }
-
 
     /**
      * @return an unique identifier of this user
@@ -224,5 +218,10 @@ public class User extends AbstractFilterableEntity implements Serializable {
     public String getTextRepresentation() {
 
         return firstName + " " + lastName + " " + username;
+    }
+
+    @Override
+    public String toString() {
+        return "("+ id + ") " + username;
     }
 }

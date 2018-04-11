@@ -129,7 +129,7 @@ public class Project extends AbstractFilterableEntity implements Serializable {
     @Override
     public String toString() {
 
-        return name;
+        return "("+ id + ") " + name;
     }
 
 
@@ -343,6 +343,8 @@ public class Project extends AbstractFilterableEntity implements Serializable {
 
             return name;
         }
+
     }
+
 }
 

@@ -81,4 +81,12 @@ public class Issue extends Task {
         Issue issue = (Issue) o;
         return Objects.equals(reportingUser, issue.reportingUser);
     }
+
+    @Override
+    public String toString() {
+        return "Issue(" +
+                "reportingUser=" + reportingUser +
+                ", reportDate=" + reportDate +
+                ')';
+    }
 }

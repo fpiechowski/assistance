@@ -177,4 +177,9 @@ public class Milestone extends AbstractFilterableEntity implements Serializable 
 
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "( "+ id + ") " + name;
+    }
 }
