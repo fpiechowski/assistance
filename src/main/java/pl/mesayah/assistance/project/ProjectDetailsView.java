@@ -212,7 +212,7 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
                 .withValidator(name -> name.length() >= 3, "Name must be at least 3 characters long.")
                 .withValidator(name -> name.length() < 21, "Name is too long! (Max 20)")
                 .withValidator(name -> name.equals(name.trim()), "Name containing white spaces!")
-                //.withValidator(name -> name.equals(projectRepository.existsByName(name)),"Project with same name already existing!")
+                .withValidator(name -> projectRepository.findAllByName(name).isEmpty(),"Project with same name already existing!")
                 .bind(Project::getName, Project::setName);
         dataBinder.forField(phaseNativeSelect)
                 .bind(Project::getPhase, Project::setPhase);
