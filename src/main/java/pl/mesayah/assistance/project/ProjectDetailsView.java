@@ -220,12 +220,11 @@ public class ProjectDetailsView extends AbstractDetailsView<Project> {
                 .bind(Project::getDescription, Project::setDescription);
         dataBinder.forField(startDateField)
                 .withValidator(Objects::nonNull, "Start date must not be empty.")
-                .withValidator(start -> start.isAfter(LocalDate.now())||
-                        start.isEqual(LocalDate.now()),"Cannot start in the past")
+                .withValidator(start -> !start.isBefore(LocalDate.now()),"Cannot start in the past")
+                .withValidator(start -> !start.isAfter(deadlineDateField.getValue()),"Cannot start after deadline")
                 .bind(Project::getStartDate, Project::setStartDate);
         dataBinder.forField(deadlineDateField)
-                .withValidator(deadline -> deadline.isAfter(LocalDate.now())||
-                        deadline.isEqual(LocalDate.now()),"Cannot start in the past")
+                .withValidator(deadline -> !deadline.isBefore(LocalDate.now()),"Cannot end in the past")
                 .bind(Project::getDeadline, Project::setDeadline);
         dataBinder.forField(managerComboBox)
                 .withValidator(Objects::nonNull, "Project must have a manager.")
