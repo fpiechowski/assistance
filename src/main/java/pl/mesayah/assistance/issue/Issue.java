@@ -89,4 +89,11 @@ public class Issue extends Task {
                 ", reportDate=" + reportDate +
                 ')';
     }
+
+    public String getTextPresentation(){
+        return "Issue(" +
+                "reportingUser=" + reportingUser +
+                ", reportDate=" + reportDate +
+                ')';
+    }
 }

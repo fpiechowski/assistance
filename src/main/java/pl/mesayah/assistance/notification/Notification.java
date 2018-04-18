@@ -147,4 +147,8 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
     public String toString() {
         return "("+ id + ") " + title;
     }
+
+    public String getTextPresentation(){
+        return title;
+    }
 }
