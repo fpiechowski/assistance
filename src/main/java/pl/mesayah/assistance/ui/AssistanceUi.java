@@ -155,6 +155,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         rootLayout.setComponentAlignment(viewDisplay, Alignment.TOP_CENTER);
         rootLayout.setSizeFull();
         rootLayout.setExpandRatio(viewDisplay, 1.0f);
+        navigator.navigateTo(ListViews.getListViewNameFor(Task.class));
     }
 
 
@@ -271,6 +272,18 @@ public class AssistanceUi extends UI implements ViewDisplay {
             window.setWidth("30%");
             window.setResizable(false);
             window.setDraggable(false);
+
+            HorizontalLayout hor = new HorizontalLayout();
+            //Simple notify view
+            Label date = new Label("08.03 11:11");
+            Label title = new Label("Test");
+            Label desc = new Label("askdjfhlkasjdhflkjashdflkhasdlkfhaslkdjfhlaksdhflkashdflkahsdlfkhasdf");
+            desc.setWidth("70%");
+            hor.addComponents(date, title, desc);
+            newWindowContent.addComponent(hor);
+            //end of simple notify
+
+
             userMenu.addItem("", VaadinIcons.FLAG, c -> {
                 addWindow(window);
                 window.setPosition((int) (getPage().getBrowserWindowWidth() * 0.7) - marigin, marigin);
