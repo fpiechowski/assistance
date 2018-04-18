@@ -8,6 +8,7 @@ import pl.mesayah.assistance.user.User;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -116,6 +117,7 @@ public class Task extends AbstractFilterableEntity implements Serializable {
         this.status = Status.WAITING;
         this.type = Type.TASK;
         this.priority = Priority.MEDIUM;
+        this.subtasks = new HashSet<>();
     }
 
 

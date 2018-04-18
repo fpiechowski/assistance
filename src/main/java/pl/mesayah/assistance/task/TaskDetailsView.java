@@ -13,10 +13,7 @@ import pl.mesayah.assistance.user.UserService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * A view of task details. It presents parameters of a given task.
@@ -155,7 +152,7 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         subtasksListBuilder.setRows(6);
         subtasksListBuilder.setLeftColumnCaption("Available subtasks");
         subtasksListBuilder.setRightColumnCaption("Selected subtasks");
-        subtasksListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId() + ' ' + task.getName());
+        subtasksListBuilder.setItemCaptionGenerator((ItemCaptionGenerator<Task>) task -> task.getId() + " " + task.getName());
         subtasksListBuilder.setWidth("90%");
         subtasksListBuilder.setHeight("100%");
 
@@ -277,20 +274,42 @@ public class TaskDetailsView extends AbstractDetailsView<Task> {
         dataBinder.forField(projectComboBox)
                 .bind(Task::getProject, Task::setProject);
         dataBinder.forField(subtasksListBuilder)
-                .bind(Task::getSubtasks, Task::setSubtasks);
+                .bind(c->
+                        {
+                            Set<Task> finalTasks = new HashSet<>();
+                            for (Task t : tasks) {
+                                for (Task r2 : c.getSubtasks()) {
+                                    if (t.getId().equals(r2.getId())) {
+                                        finalTasks.add(t);
+                                    }
+                                }
+                            }
+                            return finalTasks;
+                        },
+                        (c,p)->{
+                    c.setSubtasks(p);
+                    taskService.save(c);
+                    for(Task t : p)
+                            {
+                                t.setParentTask(c);
+                                taskService.save(t);
+
+                            }
+                        } );
         dataBinder.forField(assignedUsersListBuilder)
                 .bind(Task::getAssignedUsers, Task::setAssignedUsers);
 
         return dataBinder;
     }
 
-
+    Collection<Task> tasks;
     @Override
     protected void loadData() {
 
         Collection<User> users = userService.findAll();
         assignedUsersListBuilder.setItems(users);
-        Collection<Task> tasks = taskService.findAll();
+        tasks = taskService.findAll();
+        if(tasks==null) tasks = new HashSet<>();
         subtasksListBuilder.setItems(tasks);
         Collection<Project> projects = projectService.findAll();
         projectComboBox.setItems(projects);
