@@ -5,6 +5,8 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.mesayah.assistance.security.SecurityUtils;
+import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.ui.list.AbstractListView;
 
 import java.util.Collection;
@@ -60,21 +62,30 @@ public class IssueListView extends AbstractListView<Issue> {
     @Override
     protected Button initializeNewButton() {
 
-        return new Button("Report", VaadinIcons.PLUS);
+        Button newButton = new Button("New", VaadinIcons.PLUS);
+
+        return newButton;
     }
 
 
     @Override
     protected Button initializeEditButton() {
 
-        return new Button("Edit", VaadinIcons.PENCIL);
+
+        Button editButton = new Button("Edit", VaadinIcons.PENCIL);
+
+        return editButton;
     }
 
 
     @Override
     protected Button initializeDeleteButton() {
 
-        return new Button("Delete", VaadinIcons.TRASH);
+
+        Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
+
+        return deleteButton;
+
     }
 
 
