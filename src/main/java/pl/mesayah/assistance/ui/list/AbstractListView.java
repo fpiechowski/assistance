@@ -64,16 +64,16 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
-                if (selectionEvent.getAllSelectedItems().size() > 1 && editButton.getDescription() == "t") {
+                if (selectionEvent.getAllSelectedItems().size() > 1 && editButton.getDescription() != "t") {
                     editButton.setEnabled(false);
                     deleteButton.setEnabled(true);
-                } else if(editButton.getDescription() == "t"){
+                } else if(editButton.getDescription() != "t"){
                     editButton.setEnabled(true);
                     deleteButton.setEnabled(true);
                 }
             }
 
-            
+
 
         });
         listing.deselectAll();

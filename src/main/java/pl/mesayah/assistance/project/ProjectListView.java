@@ -70,6 +70,7 @@ public class ProjectListView extends AbstractListView<Project> {
         Button newButton = new Button("New", VaadinIcons.PLUS);
         if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER) ) {
             newButton.setEnabled(false);
+            newButton.setDescription("t");
         }
         return newButton;
     }
@@ -82,6 +83,7 @@ public class ProjectListView extends AbstractListView<Project> {
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
         if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
             editButton.setEnabled(false);
+            editButton.setDescription("t");
         }
         return editButton;
     }
@@ -94,6 +96,7 @@ public class ProjectListView extends AbstractListView<Project> {
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
         if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
             deleteButton.setEnabled(false);
+            deleteButton.setDescription("t");
         }
         return deleteButton;
 

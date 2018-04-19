@@ -78,8 +78,9 @@ public class UserListView extends AbstractListView<User> {
 
 
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER) || SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
+        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
             editButton.setEnabled(false);
+            editButton.setDescription("t");
         }
         return editButton;
     }
@@ -90,8 +91,9 @@ public class UserListView extends AbstractListView<User> {
 
 
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER) || SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
+        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
             deleteButton.setEnabled(false);
+            deleteButton.setDescription("t");
         }
         return deleteButton;
 

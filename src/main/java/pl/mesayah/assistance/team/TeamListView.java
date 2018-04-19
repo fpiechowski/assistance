@@ -68,7 +68,7 @@ public class TeamListView extends AbstractListView<Team> {
         Button newButton = new Button("New", VaadinIcons.PLUS);
         if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER) ) {
             newButton.setEnabled(false);
-            newButton.setDisableOnClick(true);
+            newButton.setDescription("t");
         }
         return newButton;
     }
@@ -81,7 +81,7 @@ public class TeamListView extends AbstractListView<Team> {
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
         if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
             editButton.setEnabled(false);
-            editButton.setDisableOnClick(true);
+            editButton.setDescription("t");
         }
         return editButton;
     }
@@ -94,7 +94,6 @@ public class TeamListView extends AbstractListView<Team> {
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
         if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
             deleteButton.setEnabled(false);
-            deleteButton.setDisableOnClick(true);
             deleteButton.setDescription("t");
         }
         return deleteButton;
