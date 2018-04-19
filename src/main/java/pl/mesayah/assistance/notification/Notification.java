@@ -143,5 +143,12 @@ public class Notification implements Serializable, pl.mesayah.assistance.Entity 
         INFO, ALERT, WARNING;
     }
 
+    @Override
+    public String toString() {
+        return "("+ id + ") " + title;
+    }
 
+    public String getTextPresentation(){
+        return title;
+    }
 }

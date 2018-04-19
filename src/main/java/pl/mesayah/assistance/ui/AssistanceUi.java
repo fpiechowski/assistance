@@ -155,6 +155,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
         rootLayout.setComponentAlignment(viewDisplay, Alignment.TOP_CENTER);
         rootLayout.setSizeFull();
         rootLayout.setExpandRatio(viewDisplay, 1.0f);
+        navigator.navigateTo(ListViews.getListViewNameFor(Task.class));
     }
 
 
@@ -249,19 +250,20 @@ public class AssistanceUi extends UI implements ViewDisplay {
     class UserInfoLayout extends HorizontalLayout {
 
 
-
         @Autowired
         private AssistanceUserDetails userDetails;
 
         public UserInfoLayout() {
+
+            final int marigin = 40;
 
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             userDetails = (AssistanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             setSizeUndefined();
             this.setMargin(true);
             this.setId("userInfoLayout");
-            Button notifyButton = new Button(VaadinIcons.FLAG);
             // Notification window
+            MenuBar userMenu = new MenuBar();
             final Window window = new Window("Notifications");
             window.setWidth(300.0f, Unit.PIXELS);
             VerticalLayout newWindowContent = new VerticalLayout();
@@ -270,10 +272,25 @@ public class AssistanceUi extends UI implements ViewDisplay {
             window.setWidth("30%");
             window.setResizable(false);
             window.setDraggable(false);
-            MenuBar userMenu = new MenuBar();
-            userMenu.addItem("", VaadinIcons.FLAG, null);
+
+            HorizontalLayout hor = new HorizontalLayout();
+            //Simple notify view
+            Label date = new Label("08.03 11:11");
+            Label title = new Label("Test");
+            Label desc = new Label("askdjfhlkasjdhflkjashdflkhasdlkfhaslkdjfhlaksdhflkashdflkahsdlfkhasdf");
+            desc.setWidth("70%");
+            hor.addComponents(date, title, desc);
+            newWindowContent.addComponent(hor);
+            //end of simple notify
+
+
+            userMenu.addItem("", VaadinIcons.FLAG, c -> {
+                addWindow(window);
+                window.setPosition((int) (getPage().getBrowserWindowWidth() * 0.7) - marigin, marigin);
+
+            });
             userMenu.addItem(username, VaadinIcons.USER, c -> {
-            navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + userDetails.getID().toString());
+                navigator.navigateTo(DetailsViews.getDetailsViewNameFor(User.class) + "/" + userDetails.getID().toString());
             });
             userMenu.addItem("Sign Out", VaadinIcons.SIGN_OUT, c -> logout());
 

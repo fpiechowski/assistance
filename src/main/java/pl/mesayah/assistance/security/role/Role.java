@@ -118,4 +118,9 @@ public class Role implements Serializable, pl.mesayah.assistance.Entity {
 
         this.privileges = privileges;
     }
+
+    @Override
+    public String toString() {
+        return "("+ id + ") " + name;
+    }
 }

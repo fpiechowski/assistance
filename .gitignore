@@ -25,3 +25,4 @@ nbdist/
 
 ### Database Configuration ###
 src/main/resources/application-database.properties
+/src/test/java/pl/mesayah/assistance/task/TaskListViewTest.java

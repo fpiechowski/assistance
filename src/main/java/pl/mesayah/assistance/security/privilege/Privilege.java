@@ -85,4 +85,9 @@ public class Privilege implements Serializable, pl.mesayah.assistance.Entity {
 
         this.roles = roles;
     }
+
+    @Override
+    public String toString() {
+        return "("+ id + ") " + name;
+    }
 }

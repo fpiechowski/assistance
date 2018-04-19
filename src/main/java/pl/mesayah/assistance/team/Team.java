@@ -123,4 +123,9 @@ public class Team extends AbstractFilterableEntity implements Serializable {
 
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "("+ id + ") " + name;
+    }
 }

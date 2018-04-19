@@ -9,6 +9,8 @@ import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.mesayah.assistance.AbstractFilterableEntity;
 import pl.mesayah.assistance.Filterable;
+import pl.mesayah.assistance.security.SecurityUtils;
+import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.ui.AssistanceUi;
 import pl.mesayah.assistance.ui.ViewMode;
 import pl.mesayah.assistance.utils.DetailsViews;
@@ -57,18 +59,22 @@ public abstract class AbstractListView<T extends AbstractFilterableEntity> exten
         listing.setSelectionMode(Grid.SelectionMode.SINGLE);
         listing.addSelectionListener(selectionEvent -> {
 
+
             if (selectionEvent.getAllSelectedItems().isEmpty()) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
-                if (selectionEvent.getAllSelectedItems().size() > 1) {
+                if (selectionEvent.getAllSelectedItems().size() > 1 && editButton.getDescription() != "t") {
                     editButton.setEnabled(false);
                     deleteButton.setEnabled(true);
-                } else {
+                } else if(editButton.getDescription() != "t"){
                     editButton.setEnabled(true);
                     deleteButton.setEnabled(true);
                 }
             }
+
+
+
         });
         listing.deselectAll();
 

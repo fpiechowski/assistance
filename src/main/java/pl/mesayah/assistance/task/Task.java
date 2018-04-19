@@ -363,6 +363,11 @@ public class Task extends AbstractFilterableEntity implements Serializable {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "("+ id + ") " + name;
+    }
+
 
     /**
      * Describes a nature of a task.
