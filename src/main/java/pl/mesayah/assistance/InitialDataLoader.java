@@ -60,10 +60,10 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     private void createTestUsers() {
 
-        Set<Role> allRoles = roleRepository.findAll();
+        Set<Role> adminRoles = new HashSet<>(Collections.singletonList(roleRepository.findByName(Role.SUPER_ADMIN)));
         User testUserWithAllRoles = new User(
                 "admin",
-                allRoles,
+                adminRoles,
                 "Test",
                 "User",
                 passwordEncoder.encode("admin"),
