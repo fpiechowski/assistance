@@ -32,7 +32,7 @@ public class AuthenticationView extends VerticalLayout {
         /**
          * Components declaration
          */
-        ThemeResource resource = new ThemeResource("img/assistanceprojekt.png");
+        ThemeResource resource = new ThemeResource("img/Bez.png");
         Image logo = new Image();
         TextField username = new TextField("Username:");
         username.setWidth("100%");
