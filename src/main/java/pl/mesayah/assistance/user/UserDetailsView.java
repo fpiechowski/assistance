@@ -6,6 +6,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.security.role.RoleService;
 import pl.mesayah.assistance.ui.details.AbstractDetailsView;
@@ -71,8 +72,12 @@ public class UserDetailsView extends AbstractDetailsView<User> {
         confirmPasswordTextField.setWidth("100%");
         confirmPasswordTextField.setRequiredIndicatorVisible(true);
 
+
         roleTwinColSelect = new TwinColSelect<>("Choose roles of the user");
         roleTwinColSelect.setItemCaptionGenerator((ItemCaptionGenerator<Role>) role -> role.getName());
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN)){
+            roleTwinColSelect.setEnabled(false);
+        }
 
         enabledCheckBox = new CheckBox("Enabled");
         enabledCheckBox.setWidth("100%");
@@ -90,7 +95,13 @@ public class UserDetailsView extends AbstractDetailsView<User> {
     @Override
     protected Button initializeDeleteButton() {
 
-        return new Button("Delete", VaadinIcons.TRASH);
+        Button initializeButton = new
+                Button("Delete", VaadinIcons.TRASH);
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN)) {
+            initializeButton.setEnabled(false);
+            initializeButton.setDescription("t");
+        }
+        return initializeButton;
     }
 
 

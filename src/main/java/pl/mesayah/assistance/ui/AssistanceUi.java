@@ -278,7 +278,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
             //Simple notify view
             Label date = new Label("08.03 11:11");
             Label title = new Label("Test");
-            Label desc = new Label("askdjfhlkasjdhflkjashdflkhasdlkfhaslkdjfhlaksdhflkashdflkahsdlfkhasdf");
+            Label desc = new Label("This is a test notification");
             desc.setWidth("70%");
             hor.addComponents(date, title, desc);
             newWindowContent.addComponent(hor);
@@ -328,7 +328,7 @@ public class AssistanceUi extends UI implements ViewDisplay {
             menuBar.addItem("Teams", c -> navigator.navigateTo(ListViews.getListViewNameFor(Team.class)));
             menuBar.addItem("Issues", c -> navigator.navigateTo(ListViews.getListViewNameFor(Issue.class)));
             menuBar.addItem("Milestones", c -> navigator.navigateTo(ListViews.getListViewNameFor(Milestone.class)));
-            if(!SecurityUtils.hasRole(Role.CLIENT)) {
+            if(SecurityUtils.hasRole(Role.PROJECT_MANAGER) ||SecurityUtils.hasRole(Role.DEVELOPER) ||SecurityUtils.hasRole(Role.SUPER_ADMIN)) {
                 menuBar.addItem("Users", c -> navigator.navigateTo(ListViews.getListViewNameFor(User.class)));
             }
             addComponent(menuBar);

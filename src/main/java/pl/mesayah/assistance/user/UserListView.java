@@ -59,7 +59,7 @@ public class UserListView extends AbstractListView<User> {
     @Override
     protected Button initializeDetailsButton() {
         Button detailsButton = new Button("Details", VaadinIcons.EYE);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER) || SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN)) {
             detailsButton.setEnabled(false);
         }
         return detailsButton;
@@ -68,8 +68,11 @@ public class UserListView extends AbstractListView<User> {
 
     @Override
     protected Button initializeNewButton() {
-
         Button newButton = new Button("New", VaadinIcons.PLUS);
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN)) {
+            newButton.setEnabled(false);
+
+        }
         return newButton;
     }
 
@@ -79,7 +82,7 @@ public class UserListView extends AbstractListView<User> {
 
 
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN)) {
             editButton.setEnabled(false);
             editButton.setDescription("t");
         }
@@ -92,7 +95,7 @@ public class UserListView extends AbstractListView<User> {
 
 
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN)) {
             deleteButton.setEnabled(false);
             deleteButton.setDescription("t");
         }

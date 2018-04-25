@@ -58,15 +58,22 @@ public class TeamListView extends AbstractListView<Team> {
     @Override
     protected Button initializeDetailsButton() {
 
-        return new Button("Details", VaadinIcons.EYE);
+        Button initializeButton = new
+                Button("Details", VaadinIcons.EYE);
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN) && !SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
+            initializeButton.setEnabled(false);
+            initializeButton.setDescription("t");
+        }
+        return initializeButton;
     }
 
 
     @Override
     protected Button initializeNewButton() {
 
-        Button newButton = new Button("New", VaadinIcons.PLUS);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER) ) {
+        Button newButton = new
+                Button("New", VaadinIcons.PLUS);
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN) && !SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
             newButton.setEnabled(false);
             newButton.setDescription("t");
         }
@@ -79,7 +86,7 @@ public class TeamListView extends AbstractListView<Team> {
 
 
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN) && !SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
             editButton.setEnabled(false);
             editButton.setDescription("t");
         }
@@ -92,7 +99,7 @@ public class TeamListView extends AbstractListView<Team> {
 
 
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
-        if(SecurityUtils.hasRole(Role.CLIENT) || SecurityUtils.hasRole(Role.DEVELOPER)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN) && !SecurityUtils.hasRole(Role.PROJECT_MANAGER)) {
             deleteButton.setEnabled(false);
             deleteButton.setDescription("t");
         }

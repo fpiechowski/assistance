@@ -75,7 +75,7 @@ public class IssueDetailsView extends AbstractDetailsView<Issue> {
 
         assignessTwinColSelect = new TwinColSelect<>("Assignees:");
         assignessTwinColSelect.setHeight("100%");
-        if(SecurityUtils.hasRole(Role.CLIENT)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN) && !SecurityUtils.hasRole(Role.PROJECT_MANAGER)&& !SecurityUtils.hasRole(Role.DEVELOPER)) {
             assignessTwinColSelect.setEnabled(false);
             statusNativeSelect.setEnabled(false);
         }

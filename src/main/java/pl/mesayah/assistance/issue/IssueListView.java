@@ -54,8 +54,8 @@ public class IssueListView extends AbstractListView<Issue> {
 
     @Override
     protected Button initializeDetailsButton() {
-
-        return new Button("Details", VaadinIcons.EYE);
+        Button detailsButton = new Button("Details", VaadinIcons.EYE);
+        return detailsButton;
     }
 
 
@@ -63,7 +63,6 @@ public class IssueListView extends AbstractListView<Issue> {
     protected Button initializeNewButton() {
 
         Button newButton = new Button("New", VaadinIcons.PLUS);
-
         return newButton;
     }
 
@@ -73,10 +72,6 @@ public class IssueListView extends AbstractListView<Issue> {
 
 
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
-        if(SecurityUtils.hasRole(Role.CLIENT)) {
-            editButton.setEnabled(false);
-            editButton.setDescription("t");
-        }
         return editButton;
     }
 
@@ -86,7 +81,7 @@ public class IssueListView extends AbstractListView<Issue> {
 
 
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
-        if(SecurityUtils.hasRole(Role.CLIENT)) {
+        if(!SecurityUtils.hasRole(Role.SUPER_ADMIN) && !SecurityUtils.hasRole(Role.PROJECT_MANAGER)&& !SecurityUtils.hasRole(Role.DEVELOPER)) {
             deleteButton.setEnabled(false);
             deleteButton.setDescription("t");
         }
