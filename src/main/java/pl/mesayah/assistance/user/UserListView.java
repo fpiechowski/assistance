@@ -6,6 +6,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import pl.mesayah.assistance.security.SecurityUtils;
 import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.ui.list.AbstractListView;

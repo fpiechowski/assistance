@@ -73,7 +73,10 @@ public class IssueListView extends AbstractListView<Issue> {
 
 
         Button editButton = new Button("Edit", VaadinIcons.PENCIL);
-
+        if(SecurityUtils.hasRole(Role.CLIENT)) {
+            editButton.setEnabled(false);
+            editButton.setDescription("t");
+        }
         return editButton;
     }
 
@@ -83,7 +86,10 @@ public class IssueListView extends AbstractListView<Issue> {
 
 
         Button deleteButton = new Button("Delete", VaadinIcons.TRASH);
-
+        if(SecurityUtils.hasRole(Role.CLIENT)) {
+            deleteButton.setEnabled(false);
+            deleteButton.setDescription("t");
+        }
         return deleteButton;
 
     }

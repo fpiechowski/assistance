@@ -23,6 +23,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import pl.mesayah.assistance.AssistanceApplication;
 import pl.mesayah.assistance.Entity;
+import pl.mesayah.assistance.security.role.Role;
 import pl.mesayah.assistance.utils.Repositories;
 import pl.mesayah.assistance.issue.Issue;
 import pl.mesayah.assistance.milestone.Milestone;
@@ -327,8 +328,9 @@ public class AssistanceUi extends UI implements ViewDisplay {
             menuBar.addItem("Teams", c -> navigator.navigateTo(ListViews.getListViewNameFor(Team.class)));
             menuBar.addItem("Issues", c -> navigator.navigateTo(ListViews.getListViewNameFor(Issue.class)));
             menuBar.addItem("Milestones", c -> navigator.navigateTo(ListViews.getListViewNameFor(Milestone.class)));
-            menuBar.addItem("Users", c -> navigator.navigateTo(ListViews.getListViewNameFor(User.class)));
-
+            if(!SecurityUtils.hasRole(Role.CLIENT)) {
+                menuBar.addItem("Users", c -> navigator.navigateTo(ListViews.getListViewNameFor(User.class)));
+            }
             addComponent(menuBar);
         }
     }
